@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Artifact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/Yusuke1/choozoo/frameframe/.claude/hooks/artifact-to-docs.sh",
+            "timeout": 15,
+            "statusMessage": "Checking artifact source is under docs/artifacts..."
+          }
+        ]
+      }
+    ]
+  }
+}

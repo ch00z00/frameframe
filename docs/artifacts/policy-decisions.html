@@ -1,0 +1,404 @@
+<title>FrameFrame 方針決定ログ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#eae6dc;
+  --surface:#f7f5ef;
+  --surface-raised:#ffffff;
+  --ink:#201f1c;
+  --ink-soft:#3c3a35;
+  --muted:#726c5f;
+  --rule:#d8d2c2;
+  --accent:#8a6412;
+  --accent-ink:#5f4409;
+  --accent-soft:#e8dcb8;
+  --tag-bg:#dfd8c1;
+  --done:#4b6b45;
+  --done-bg:#e2e8da;
+  --open-bg:#f3ece0;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#18181a;
+    --surface:#212023;
+    --surface-raised:#28272a;
+    --ink:#ece7dc;
+    --ink-soft:#cac4b4;
+    --muted:#96907f;
+    --rule:#3a3833;
+    --accent:#d9ab3f;
+    --accent-ink:#f0c869;
+    --accent-soft:#3a3120;
+    --tag-bg:#332c1c;
+    --done:#8fbf85;
+    --done-bg:#233123;
+    --open-bg:#28241b;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#18181a;
+  --surface:#212023;
+  --surface-raised:#28272a;
+  --ink:#ece7dc;
+  --ink-soft:#cac4b4;
+  --muted:#96907f;
+  --rule:#3a3833;
+  --accent:#d9ab3f;
+  --accent-ink:#f0c869;
+  --accent-soft:#3a3120;
+  --tag-bg:#332c1c;
+  --done:#8fbf85;
+  --done-bg:#233123;
+  --open-bg:#28241b;
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",sans-serif;
+  font-weight:400;
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+
+.page{
+  max-width:760px;
+  margin:0 auto;
+  padding:64px 24px 120px;
+}
+
+header.masthead{
+  border-bottom:1px solid var(--rule);
+  padding-bottom:28px;
+  margin-bottom:40px;
+}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--accent-ink);
+  margin:0 0 14px;
+}
+h1.title{
+  font-family:"Shippori Mincho",serif;
+  font-weight:800;
+  font-size:clamp(32px,6vw,46px);
+  line-height:1.3;
+  margin:0 0 12px;
+  text-wrap:balance;
+  letter-spacing:0.02em;
+}
+.subtitle{
+  font-size:16px;
+  color:var(--muted);
+  margin:0;
+  max-width:52ch;
+}
+.meta-row{
+  display:flex;
+  gap:18px;
+  margin-top:22px;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12px;
+  color:var(--muted);
+  flex-wrap:wrap;
+}
+
+.summary{
+  background:var(--surface);
+  border:1px solid var(--rule);
+  border-radius:3px;
+  padding:26px 28px;
+  margin-bottom:52px;
+}
+.summary h2{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--accent-ink);
+  margin:0 0 14px;
+  font-weight:500;
+}
+.summary p{
+  margin:0;
+  font-size:16px;
+  color:var(--ink-soft);
+}
+.summary p + p{margin-top:10px;}
+
+section.decision{
+  margin-bottom:44px;
+}
+section.decision .num{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12px;
+  color:var(--muted);
+  letter-spacing:0.08em;
+}
+h2.head{
+  font-family:"Shippori Mincho",serif;
+  font-weight:600;
+  font-size:23px;
+  margin:6px 0 18px;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--rule);
+}
+h3.sub{
+  font-family:"Shippori Mincho",serif;
+  font-weight:600;
+  font-size:16px;
+  margin:22px 0 8px;
+  color:var(--ink);
+}
+p{
+  font-size:15.5px;
+  color:var(--ink-soft);
+  margin:0 0 14px;
+  max-width:62ch;
+}
+strong{color:var(--ink); font-weight:700;}
+
+.decision-block{
+  display:flex;
+  gap:18px;
+  padding:18px 20px;
+  background:var(--done-bg);
+  border-left:3px solid var(--done);
+  border-radius:0 3px 3px 0;
+  margin:20px 0 22px;
+}
+.decision-block .label{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11px;
+  color:var(--done);
+  letter-spacing:0.06em;
+  white-space:nowrap;
+  padding-top:2px;
+}
+.decision-block .value{
+  font-family:"Shippori Mincho",serif;
+  font-size:16.5px;
+  font-weight:600;
+  color:var(--ink);
+  line-height:1.6;
+}
+
+ul.plain{
+  margin:0 0 14px;
+  padding-left:20px;
+}
+ul.plain li{
+  font-size:15.5px;
+  color:var(--ink-soft);
+  margin-bottom:8px;
+  max-width:60ch;
+}
+ul.plain li::marker{color:var(--accent);}
+
+table.stack{
+  width:100%;
+  border-collapse:collapse;
+  margin:18px 0;
+  font-size:14.5px;
+}
+table.stack th{
+  text-align:left;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11px;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:500;
+  padding:0 12px 10px 0;
+  border-bottom:1px solid var(--rule);
+}
+table.stack td{
+  padding:12px 12px 12px 0;
+  border-bottom:1px solid var(--rule);
+  color:var(--ink-soft);
+  vertical-align:top;
+}
+table.stack tr:last-child td{border-bottom:none;}
+table.stack td.role{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12.5px;
+  color:var(--ink);
+  white-space:nowrap;
+}
+.tw{overflow-x:auto;}
+
+.open-list{
+  list-style:none;
+  margin:0;
+  padding:0;
+  background:var(--open-bg);
+  border:1px solid var(--rule);
+  border-radius:3px;
+}
+.open-list li{
+  display:flex;
+  gap:14px;
+  padding:16px 20px;
+  border-bottom:1px solid var(--rule);
+}
+.open-list li:last-child{border-bottom:none;}
+.open-list .box{
+  flex:none;
+  width:16px;
+  height:16px;
+  margin-top:3px;
+  border:1.5px solid var(--muted);
+  border-radius:3px;
+}
+.open-list .otext{
+  font-size:15px;
+  color:var(--ink);
+}
+.open-list .odesc{
+  display:block;
+  font-size:13.5px;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+.next-step{
+  margin-top:64px;
+  padding:22px 24px;
+  background:var(--accent-soft);
+  border-radius:3px;
+  font-size:15px;
+  color:var(--ink-soft);
+}
+.next-step .k{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--accent-ink);
+  margin:0 0 8px;
+}
+
+footer{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:1px solid var(--rule);
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12px;
+  color:var(--muted);
+}
+
+@media (max-width:560px){
+  .decision-block{flex-direction:column; gap:8px;}
+}
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">Decision Log — 開発ログ #2</p>
+    <h1 class="title">FrameFrame 方針決定ログ</h1>
+    <p class="subtitle">戦略メモで残っていた4つの未決定事項について、対話を通じて方針を確定した記録</p>
+    <div class="meta-row">
+      <span>2026-08-26</span>
+      <span>ステータス：4項目とも確定</span>
+      <span>次工程：/kiro:steering</span>
+    </div>
+  </header>
+
+  <div class="summary">
+    <h2>Summary</h2>
+    <p><a href="./strategy-memo.html">戦略メモ</a>で「次工程」として残していた、<strong>収益設計・情報設計・技術スタック・制作体制</strong>の4点を確定した。共通する考え方は「今はやらないことを決める」こと — 有料化・独立した事典ページ・重量級フレームワークは、いずれも今のフェーズでは過剰投資と判断し保留にした。</p>
+    <p>唯一まだ数値が決まっていないのは、有料化を再検討するタイミングの指標（月間PV/フォロワー数など）。運用を始めてから実測ベースで置く。</p>
+  </div>
+
+  <section class="decision">
+    <p class="num">01 / 04</p>
+    <h2 class="head">無料/有料の切り分け・価格帯</h2>
+    <div class="decision-block">
+      <span class="label">DECISION</span>
+      <span class="value">当面すべて無料公開。有料化は保留</span>
+    </div>
+    <p>集客ゼロの状態で課金導線を作っても、信頼・認知が無い記事は「有料に見合う」と判断されずコンバージョンしない。むしろ課金対象記事はSNSで拡散されにくくなり、初速に必要な「拡散→流入→SEO蓄積」のループ自体を弱める。よって初期は全記事を無料にし、拡散とSEO資産化を最優先する。</p>
+    <p>ただし後から有料化する余地は残す。記事のfrontmatterに<code>is_premium</code>フラグを持たせておき、値は当面すべて<code>false</code>とする。</p>
+  </section>
+
+  <section class="decision">
+    <p class="num">02 / 04</p>
+    <h2 class="head">情報設計・UI構造</h2>
+    <div class="decision-block">
+      <span class="label">DECISION</span>
+      <span class="value">監督/俳優/ロケーションの独立ページは持たない</span>
+    </div>
+    <p>周辺情報（監督・俳優・ロケーション等）は、批評記事の説得力を補強するデータとして記事内に留め、<code>/directors/xxx</code>のような独立した一覧・詳細ページは作らない。戦略メモの「批評記事が主役」という方針をそのまま実装に反映する。</p>
+    <h3 class="sub">記事の実装方式</h3>
+    <div class="decision-block">
+      <span class="label">DECISION</span>
+      <span class="value">MDX＋自作コンポーネントライブラリ</span>
+    </div>
+    <p>汎用CMSやMarkdownの標準レイアウトでは、記事ごとに見せ方を変える独自性が出せない。MDXならfrontmatterで<code>title</code>・<code>tags</code>・<code>is_premium</code>などの構造化メタデータを保ちながら、本文中に引用ブロック・比較表・画像エッセイといった自作コンポーネントを埋め込める。将来「やはりタグページが欲しい」となっても、データの作り直しが不要になる。</p>
+  </section>
+
+  <section class="decision">
+    <p class="num">03 / 04</p>
+    <h2 class="head">技術スタック</h2>
+    <div class="decision-block">
+      <span class="label">DECISION</span>
+      <span class="value">Astro + Vercel + 素のCSS（デザイントークン）</span>
+    </div>
+    <table class="stack tw">
+      <tr><th>領域</th><th>選定</th><th>理由</th></tr>
+      <tr>
+        <td class="role">フレームワーク</td>
+        <td>Astro</td>
+        <td>コンテンツ中心・MDXファーストのサイトに最適。Content Collectionsでfrontmatterを型安全に扱え、デフォルトでJSをほぼ送らないためSEO/表示速度が強い</td>
+      </tr>
+      <tr>
+        <td class="role">ホスティング</td>
+        <td>Vercel</td>
+        <td>無料枠で運用可能。git pushで自動デプロイ。将来Stripe連携や認証が必要になってもサーバーレス関数で後付けできる</td>
+      </tr>
+      <tr>
+        <td class="role">スタイリング</td>
+        <td>素のCSS（デザイントークン）</td>
+        <td>Tailwindの汎用的なユーティリティは「記事ごとに見せ方を変える」独自性と相性が悪いため、CSS変数によるトークン方式を採用</td>
+      </tr>
+    </table>
+    <p style="font-size:13.5px;color:var(--muted);">※ 開発ログ（本ページ）はGitHub Pages、本番サイトはVercelとホスティング先が分かれる</p>
+  </section>
+
+  <section class="decision">
+    <p class="num">04 / 04</p>
+    <h2 class="head">制作体制・更新頻度</h2>
+    <div class="decision-block">
+      <span class="label">DECISION</span>
+      <span class="value">ローンチ時10本以上、以後は週数本ペース</span>
+    </div>
+    <p>初日のボリュームで回遊率・SEO評価を早めに稼ぐ方針。フラッグシップ企画1本＋単体批評記事の積み上げでローンチを構成し、以後は週数本ペースで更新を継続する。</p>
+  </section>
+
+  <section>
+    <h2 class="head" style="border-bottom:none; margin-bottom:8px;">まだ残っている未決定事項</h2>
+    <ul class="open-list">
+      <li>
+        <span class="box"></span>
+        <span class="otext">有料化の再検討トリガー
+          <span class="odesc">月間PV・Xフォロワー数など、有料化を検討し始める具体的な指標は未設定。運用開始後の実測値をもとに置く</span>
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <div class="next-step">
+    <p class="k">Next</p>
+    <p style="margin:0;">この4つの決定を<code>.kiro/steering/</code>（product.md / tech.md / structure.md）に落とし込み、以降のセッションでも同じ前提で開発を進める。</p>
+  </div>
+
+  <footer>
+    FrameFrame — Decision Log · 2026-08-26
+  </footer>
+
+</div>

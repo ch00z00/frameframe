@@ -26,7 +26,24 @@ in the repo yet except the dev-log tooling described at the end of this file.
   - No headless CMS (e.g. microCMS) — content stays authored and versioned in this repo.
 - **Styling: plain CSS with a design-token system** (CSS custom properties), not a utility
   framework like Tailwind. Utility-class systems pull toward generic, uniform layouts, which
-  conflicts with wanting each article's presentation to be able to differ.
+  conflicts with wanting each article's presentation to be able to differ. Astro components
+  (`.astro` files) have built-in style scoping per component (similar to Vue SFCs), which
+  covers the modularity Sass partials/mixins would otherwise be reached for.
+  - Rejected: SCSS — its main advantages (variables, modularity via partials/mixins) are
+    already covered: design tokens must be **runtime** CSS custom properties anyway (to
+    support the light/dark theme switching already used in the dev-log Artifacts), which
+    SCSS's compile-time `$variables` can't do, and Astro's component style scoping replaces
+    the modularity role of Sass partials. Native CSS nesting also covers most of what SCSS
+    nesting offered. Not worth the added build tooling for the remaining marginal benefit
+    (mixins/loops).
+- **Search and tag filtering: no backend needed.** Both are handled at the static-site layer:
+  - Tag filtering: static pages generated at build time per tag (e.g. `/tags/[tag]/`) from
+    Content Collections queries — also functions as an SEO entry point, consistent with the
+    growth strategy in `product.md`.
+  - Full-text search: a static search index generated at build time (e.g. via Pagefind),
+    queried entirely client-side in the browser. No server-side search API/database.
+  - Both fit inside Astro's islands model (see `structure.md`): the page is static HTML by
+    default, and only a search widget opts into client-side JS hydration.
 - **Hosting (product site): Vercel.** Deploys on `git push`; free tier is sufficient at this
   stage; serverless functions are available later if a deferred paywall needs
   auth/Stripe-webhook handling, without changing hosting provider.

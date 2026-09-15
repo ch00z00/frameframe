@@ -1,5 +1,10 @@
 # frameframe
 
+## Active Specifications
+- `article-rendering`: Astro上でのMDX記事のContent Collections定義、記事詳細/一覧/タグページ（検索は範囲外）
+- Check `.kiro/specs/` for active specifications
+- Use `/kiro:spec-status [feature-name]` to check progress
+
 ## Artifacts
 
 Published Artifact source files must live under `docs/artifacts/` in this repo,

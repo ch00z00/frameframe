@@ -1,0 +1,60 @@
+/* Design tokens shared across the site. Ported from the accepted homepage
+   design (docs/artifacts/homepage-concept-a-imax-snap.html). Light is the
+   default palette; dark overrides follow system preference, then an
+   explicit [data-theme] wins in either direction. */
+
+:root {
+  --ink: #f2ede0;
+  --ink-raised: #e9e2d0;
+  --paper: #1c1712;
+  --paper-dim: #4a4236;
+  --ash: #7a7160;
+  --ash-faint: #a89c88;
+  --rule: #ddd3bd;
+  --ember: #a3411b;
+
+  --cold: #3f6a82;
+  --cold-deep: #b9cdd6;
+  --warm: #a9773a;
+  --warm-deep: #f0d9ab;
+
+  --serif-display: 'Fraunces', 'Georgia', serif;
+  --serif-body: 'Newsreader', 'Iowan Old Style', 'Georgia', serif;
+  --mono: 'Space Mono', 'SFMono-Regular', ui-monospace, monospace;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --ink: #08090b;
+    --ink-raised: #101317;
+    --paper: #eae5d8;
+    --paper-dim: #c7bfab;
+    --ash: #8a897f;
+    --ash-faint: #55564d;
+    --rule: #26261f;
+    --ember: #c2481b;
+    --cold: #6f93a8;
+    --cold-deep: #16232b;
+    --warm: #d9a851;
+    --warm-deep: #2c2010;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --ink: #08090b;
+  --ink-raised: #101317;
+  --paper: #eae5d8;
+  --paper-dim: #c7bfab;
+  --ash: #8a897f;
+  --ash-faint: #55564d;
+  --rule: #26261f;
+  --ember: #c2481b;
+  --cold: #6f93a8;
+  --cold-deep: #16232b;
+  --warm: #d9a851;
+  --warm-deep: #2c2010;
+  color-scheme: dark;
+}

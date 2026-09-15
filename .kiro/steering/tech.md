@@ -52,8 +52,19 @@ in the repo yet except the dev-log tooling described at the end of this file.
 
 ## Development Environment
 
-Not yet established (no `package.json` in the repo). To be filled in once the Astro project
-is scaffolded: Node version, package manager, and local dev commands.
+The Astro project is scaffolded at the repo root (Astro 7, `@astrojs/mdx`, npm). Commands:
+
+- `npm run dev` — local dev server (default port 4321)
+- `npm run build` — static build to `dist/`
+- `npm run preview` — serve the built `dist/` locally
+
+Content Collections config lives at `src/content.config.ts` (Astro 7's Content Layer API
+moved this out of `src/content/config.ts`; a `glob()` loader points at
+`src/content/articles/`). The `articles` collection schema extends the
+`.kiro/specs/article-rendering/requirements.md` baseline with three presentation fields
+added once the homepage was actually implemented: `tone` (`cold`/`warm`, drives the
+color-graded IMAX frame), and `work`/`subtitle` (let the headline render the film title in
+italics without parsing `title`).
 
 ## Dev Log / Artifact Tooling (implemented, distinct from the product site)
 

@@ -1,0 +1,19 @@
+{
+  "name": "frameframe",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ch00z00/frameframe.git"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^8.0.1",
+    "astro": "^7.3.2"
+  }
+}

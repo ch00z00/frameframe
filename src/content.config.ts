@@ -1,0 +1,25 @@
+import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
+
+// Schema baseline from .kiro/specs/article-rendering/requirements.md Requirement 1.
+// `tone`, `work`, `subtitle` are presentation fields added during implementation of
+// the accepted homepage design (docs/artifacts/homepage-concept-a-imax-snap.html):
+// `tone` drives the color-graded IMAX frame per article, `work`/`subtitle` let the
+// headline render the film title in italics without string-parsing `title`.
+const articles = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/articles' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    publishDate: z.date(),
+    updatedDate: z.date().optional(),
+    tags: z.array(z.string()).min(1),
+    is_premium: z.boolean().default(false),
+    draft: z.boolean().default(false),
+    tone: z.enum(['cold', 'warm']),
+    work: z.string(),
+    subtitle: z.string(),
+  }),
+});
+
+export const collections = { articles };

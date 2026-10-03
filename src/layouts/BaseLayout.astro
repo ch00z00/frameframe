@@ -24,6 +24,34 @@ const { title, description } = Astro.props;
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=Space+Mono:wght@400;700&display=swap"
     />
     <style is:global>
+      /* Smooth cross-page navigation: a real browser cross-document View
+         Transition (not Astro's SPA-style client router) — every page here
+         still does a plain full navigation, the browser just crossfades the
+         old/new page snapshots over it. Unsupported browsers silently fall
+         back to an instant navigation, so this is pure progressive
+         enhancement with no JS and no risk to each page's own scripts. */
+      @view-transition {
+        navigation: auto;
+      }
+      /* Every pseudo-element Chrome generates for this transition — the
+         root crossfade AND the named hero-photo/hero-work/hero-subtitle
+         groups from the card↔header morph — must share one duration and
+         easing, or they finish at different times and the motion reads
+         as janky instead of one continuous move. */
+      ::view-transition-group(*),
+      ::view-transition-old(*),
+      ::view-transition-new(*) {
+        animation-duration: 0.9s;
+        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        ::view-transition-group(*),
+        ::view-transition-old(*),
+        ::view-transition-new(*) {
+          animation: none !important;
+        }
+      }
+
       * {
         box-sizing: border-box;
       }

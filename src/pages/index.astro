@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
 
 const allArticles = (await getCollection('articles', ({ data }) => {
   return !data.draft && data.publishDate <= new Date();
@@ -13,23 +14,57 @@ function formatDate(d: Date) {
   return `${y}.${m}.${day}`;
 }
 
-const clientArticles = allArticles.map((entry) => ({
-  slug: entry.id,
-  href: `/articles/${entry.id}/`,
-  date: formatDate(entry.data.publishDate),
-  tone: entry.data.tone,
-  toneLabel: entry.data.tone === 'cold' ? 'COOL' : 'WARM',
-  work: entry.data.work,
-  subtitle: entry.data.subtitle,
-  desc: entry.data.description,
-  tags: entry.data.tags.join(' / '),
-}));
+const clientArticles = await Promise.all(
+  allArticles.map(async (entry) => {
+    const image = entry.data.image
+      ? (await getImage({ src: entry.data.image, width: 1600 })).src
+      : null;
+    return {
+      slug: entry.id,
+      href: `/articles/${entry.id}/`,
+      date: formatDate(entry.data.publishDate),
+      tone: entry.data.tone,
+      toneLabel: entry.data.tone === 'cold' ? 'COOL' : 'WARM',
+      work: entry.data.work,
+      englishTitle: entry.data.englishTitle,
+      subtitle: entry.data.subtitle,
+      desc: entry.data.description,
+      tags: entry.data.tags.join(' / '),
+      director: entry.data.director,
+      production: entry.data.production,
+      cast: entry.data.cast.join(' / '),
+      image,
+    };
+  })
+);
 
 // The visible slot window matches the article count, capped at 5 so the
 // rack-focus effect always has neighbours to blur even if the catalog is
 // still small (see docs/artifacts/homepage-concept-a-imax-snap.html).
-const initialSlots = clientArticles.slice(0, Math.min(5, clientArticles.length));
+//
+// Each slot's *position* is centered around the middle slot client-side
+// (see SLOT_COUNT/CENTER/baseIndex in the script below), but the server was
+// handing slot i the article at the same raw index i — off by CENTER from
+// what the client's own wrap(i - CENTER) math expects that slot to hold.
+// The mismatch self-corrects the first time a given slot recycles (its
+// baseIndex crosses the wrap threshold and paintSlot repaints it), but until
+// then it's still showing its stale server-rendered article — and because
+// slots recycle at different times as the user scrolls, there's a window
+// where some slots have already corrected and others haven't, which can
+// land two slots on the same article (and drop another) at once. Computing
+// the slot→article mapping here with the identical wrap(i - CENTER) formula
+// keeps the server's first paint already consistent with the client, so
+// there's nothing left to "correct" later.
 const total = clientArticles.length;
+const SLOT_COUNT = Math.min(5, total);
+const CENTER = (SLOT_COUNT - 1) / 2;
+function wrapIndex(n: number) {
+  return total ? ((n % total) + total) % total : 0;
+}
+const initialSlots = Array.from({ length: SLOT_COUNT }, (_, i) => {
+  const contentIndex = wrapIndex(i - CENTER);
+  return { ...clientArticles[contentIndex], contentIndex };
+});
 ---
 
 <BaseLayout
@@ -59,27 +94,46 @@ const total = clientArticles.length;
 
   <div class="stage" id="stage" role="region" aria-label="批評記事、縦方向の無限スクロール">
     {initialSlots.map((a, i) => (
-      <div class="slot" data-content-index={i}>
-        <div class="beat-stage" data-tone={a.tone}>
+      <div class="slot" data-content-index={a.contentIndex}>
+        <a class="beat-stage" data-tone={a.tone} href={a.href} aria-label={`『${a.work}』${a.subtitle}を読む`}>
           <div class="frame">
             <div class="frame-field"></div>
+            <img
+              class={`frame-image${a.image ? ' is-visible' : ''}`}
+              src={a.image ?? undefined}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
             <div class="frame-grain" aria-hidden="true"></div>
             <div class="frame-vignette" aria-hidden="true"></div>
             <div class="frame-scrim-b" aria-hidden="true"></div>
           </div>
           <span class="frame-tick tl" aria-hidden="true"></span>
+          <span class="frame-tick tr" aria-hidden="true"></span>
+          <span class="frame-tick bl" aria-hidden="true"></span>
           <span class="frame-tick br" aria-hidden="true"></span>
           <div class="beat-overlay">
-            <p class="beat-index">{`${String(i + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')} — ${a.date}`}</p>
-            <h2 class="beat-title">{`『`}<span class="work">{a.work}</span>{`』${a.subtitle}`}</h2>
-            <p class="beat-desc">{a.desc}</p>
-            <div class="beat-meta">
-              <span class="beat-tone"><span class="dot"></span><span class="tone-text">{a.toneLabel}</span></span>
-              <span class="tags-text">{a.tags}</span>
+            <p class="beat-work">
+              {a.englishTitle !== a.work && <span class="beat-work-en">{a.englishTitle}</span>}
+              <span class="beat-work-jp">{a.work}</span>
+            </p>
+            <p class="beat-date">{a.date}</p>
+            <div class="beat-main">
+              <h2 class="beat-subtitle">{a.subtitle}</h2>
+              <p class="beat-desc">{a.desc}</p>
+              <div class="beat-meta">
+                <span class="beat-tone"><span class="dot"></span><span class="tone-text">{a.toneLabel}</span></span>
+                <span class="tags-text">{a.tags}</span>
+              </div>
             </div>
-            <a class="beat-link" href={a.href}>READ THE ESSAY →</a>
+            <dl class="beat-crew">
+              <div><dt>監督</dt><dd>{a.director}</dd></div>
+              <div><dt>プロダクション</dt><dd>{a.production}</dd></div>
+              <div><dt>出演</dt><dd>{a.cast}</dd></div>
+            </dl>
           </div>
-        </div>
+        </a>
       </div>
     ))}
   </div>
@@ -185,8 +239,9 @@ const total = clientArticles.length;
     will-change: transform;
   }
   .beat-stage {
-    position: relative; width: min(94vw, 1500px); aspect-ratio: 1.43 / 1; max-height: 82svh;
+    display: block; position: relative; width: min(94vw, 1500px); aspect-ratio: 1.43 / 1; max-height: 82svh;
     margin: 0 auto; overflow: hidden; isolation: isolate; will-change: filter, opacity, transform;
+    text-decoration: none;
   }
   .frame {
     position: absolute; inset: 0; border-radius: 22px; overflow: hidden;
@@ -196,24 +251,64 @@ const total = clientArticles.length;
   .frame-field { position: absolute; inset: -6%; background-image: radial-gradient(120% 140% at 14% -8%, var(--field-hi), transparent 58%), linear-gradient(155deg, var(--field-a) 0%, var(--field-b) 60%, var(--field-c) 100%); }
   [data-tone="cold"] .frame-field { --field-hi: color-mix(in srgb, var(--cold-deep) 55%, transparent); --field-a: var(--cold); --field-b: color-mix(in srgb, var(--cold) 55%, var(--ink) 45%); --field-c: color-mix(in srgb, var(--cold) 18%, black 58%); }
   [data-tone="warm"] .frame-field { --field-hi: color-mix(in srgb, var(--warm-deep) 55%, transparent); --field-a: var(--warm); --field-b: color-mix(in srgb, var(--warm) 55%, var(--ink) 45%); --field-c: color-mix(in srgb, var(--warm) 16%, black 58%); }
+  /* Real key art, when an article has one — sits over .frame-field (which
+     stays as the fallback wash for articles without one yet) and under the
+     grain/vignette/scrim so every card still reads as the same "projected
+     frame" regardless of whether it's backed by a photo or a gradient. */
+  .frame-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: none; }
+  .frame-image.is-visible { display: block; }
   .frame-grain { position: absolute; inset: -6%; opacity: .45; mix-blend-mode: overlay; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); }
   .frame-vignette { position: absolute; inset: 0; background: radial-gradient(120% 120% at 50% 55%, transparent 40%, rgba(0,0,0,.55) 100%); }
   .frame-scrim-b { position: absolute; inset: auto 0 0 0; height: 62%; background: linear-gradient(to top, rgba(0,0,0,.64), transparent); }
-  .frame-tick { position: absolute; width: 15px; height: 15px; z-index: 2; opacity: calc(.2 + var(--focus, 0) * .7); transition: opacity .2s linear; }
+  /* Corner focus brackets — all four now (was tl/br only), so hovering
+     the card reads as a viewfinder locking focus across the whole frame
+     rather than just two corners twitching. */
+  .frame-tick { position: absolute; width: 15px; height: 15px; z-index: 2; opacity: calc(.2 + var(--focus, 0) * .7); transition: opacity .2s linear, transform .4s cubic-bezier(.19,1,.22,1); }
   .frame-tick.tl { top: 16px; left: 16px; border-top: 1.5px solid #fff; border-left: 1.5px solid #fff; }
+  .frame-tick.tr { top: 16px; right: 16px; border-top: 1.5px solid #fff; border-right: 1.5px solid #fff; }
+  .frame-tick.bl { bottom: 16px; left: 16px; border-bottom: 1.5px solid #fff; border-left: 1.5px solid #fff; }
   .frame-tick.br { bottom: 16px; right: 16px; border-bottom: 1.5px solid #fff; border-right: 1.5px solid #fff; }
+  .beat-stage:hover .frame-tick.tl, .beat-stage:focus-visible .frame-tick.tl { transform: translate(-7px, -7px); }
+  .beat-stage:hover .frame-tick.tr, .beat-stage:focus-visible .frame-tick.tr { transform: translate(7px, -7px); }
+  .beat-stage:hover .frame-tick.bl, .beat-stage:focus-visible .frame-tick.bl { transform: translate(-7px, 7px); }
+  .beat-stage:hover .frame-tick.br, .beat-stage:focus-visible .frame-tick.br { transform: translate(7px, 7px); }
 
-  .beat-overlay { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; justify-content: flex-end; padding: clamp(24px,4vw,52px); color: #fff; }
-  .beat-index { font-family: var(--mono); font-size: .7rem; letter-spacing: .16em; color: rgba(255,255,255,.72); font-variant-numeric: tabular-nums; margin: 0 0 clamp(10px,1.6vw,16px); }
-  .beat-title { font-family: var(--serif-display); font-optical-sizing: auto; font-weight: 460; font-size: clamp(1.5rem, 3.6vw, 3.1rem); line-height: 1.1; letter-spacing: -.01em; margin: 0; text-wrap: balance; max-width: 22ch; text-shadow: 0 2px 24px rgba(0,0,0,.4); }
-  .beat-title .work { font-style: italic; font-weight: 400; }
-  .beat-desc { margin: clamp(12px,1.8vw,18px) 0 0; max-width: 46ch; font-family: var(--serif-body); font-style: italic; color: rgba(255,255,255,.82); font-size: clamp(.9rem, 1.1vw, 1rem); line-height: 1.65; }
-  .beat-meta { display: flex; align-items: center; gap: 14px; margin-top: clamp(16px,2.4vw,22px); font-family: var(--mono); font-size: .66rem; letter-spacing: .05em; color: rgba(255,255,255,.68); flex-wrap: wrap; }
+  /* Overlay — four corners on one grid instead of a single bottom-anchored
+     column: work title (small, top-left) / publish date (small, top-right)
+     / subtitle + description (large, bottom-left — this card's actual
+     headline) / director-production-cast (small, bottom-right). */
+  .beat-overlay {
+    position: absolute; inset: 0; z-index: 3; color: #fff;
+    padding: clamp(24px,4vw,52px);
+    display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto;
+    column-gap: clamp(16px,3vw,32px);
+  }
+  .beat-work { grid-column: 1; grid-row: 1; justify-self: start; align-self: start; margin: 0; line-height: 1.5; }
+  .beat-work-en { display: block; font-family: var(--mono); font-style: italic; font-size: .62rem; letter-spacing: .06em; color: rgba(255,255,255,.58); }
+  .beat-work-jp { display: block; font-family: var(--serif-display); font-size: .82rem; letter-spacing: .01em; color: rgba(255,255,255,.92); }
+  .beat-date { grid-column: 2; grid-row: 1; justify-self: end; align-self: start; margin: 0; font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; color: rgba(255,255,255,.7); font-variant-numeric: tabular-nums; }
+
+  .beat-main { grid-column: 1; grid-row: 3; align-self: end; }
+  .beat-subtitle {
+    position: relative; margin: 0; padding-left: clamp(14px,2vw,20px);
+    font-family: var(--serif-display); font-optical-sizing: auto; font-weight: 460;
+    font-size: clamp(1.8rem, 4.4vw, 3.5rem); line-height: 1.1; letter-spacing: -.01em;
+    text-wrap: balance; max-width: 22ch; text-shadow: 0 2px 24px rgba(0,0,0,.4);
+  }
+  .beat-subtitle::before { content: ""; position: absolute; left: 0; top: .1em; bottom: .14em; width: 4px; }
+  [data-tone="cold"] .beat-subtitle::before { background: #9fd0e6; }
+  [data-tone="warm"] .beat-subtitle::before { background: #f4c778; }
+  .beat-desc { margin: clamp(12px,1.8vw,18px) 0 0; padding-left: clamp(14px,2vw,20px); max-width: 46ch; font-family: var(--serif-body); font-style: italic; color: rgba(255,255,255,.82); font-size: clamp(.9rem, 1.1vw, 1rem); line-height: 1.65; }
+  .beat-meta { display: flex; align-items: center; gap: 14px; margin-top: clamp(16px,2.4vw,22px); padding-left: clamp(14px,2vw,20px); font-family: var(--mono); font-size: .66rem; letter-spacing: .05em; color: rgba(255,255,255,.68); flex-wrap: wrap; }
   .beat-tone { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border: 1px solid rgba(255,255,255,.35); border-radius: 100px; }
   .beat-tone .dot { width: 6px; height: 6px; border-radius: 50%; }
   [data-tone="cold"] .beat-tone .dot { background: #9fd0e6; }
   [data-tone="warm"] .beat-tone .dot { background: #f4c778; }
-  .beat-link { display: inline-flex; align-items: center; gap: 8px; margin-top: clamp(16px,2.2vw,22px); text-decoration: none; font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; color: #fff; }
+
+  .beat-crew { grid-column: 2; grid-row: 3; justify-self: end; align-self: end; margin: 0; display: flex; flex-direction: column; gap: 5px; }
+  .beat-crew > div { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+  .beat-crew dt { margin: 0; font-family: var(--mono); font-size: .58rem; letter-spacing: .14em; color: rgba(255,255,255,.5); text-transform: uppercase; }
+  .beat-crew dd { margin: 0; font-family: var(--mono); font-size: .7rem; letter-spacing: .01em; color: rgba(255,255,255,.88); text-align: right; }
 
   .scroll-hint {
     position: fixed; left: 50%; bottom: clamp(20px,3vw,32px); transform: translateX(-50%); z-index: 45;
@@ -225,7 +320,14 @@ const total = clientArticles.length;
 
   @media (max-width: 640px) {
     .beat-stage { width: 96vw; max-height: 74svh; }
-    .beat-title { max-width: 100%; }
+    .beat-overlay { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr auto; row-gap: 6px; }
+    .beat-work { grid-column: 1; grid-row: 1; }
+    .beat-date { grid-column: 1; grid-row: 2; justify-self: start; }
+    .beat-main { grid-column: 1; grid-row: 3; }
+    .beat-subtitle { max-width: 100%; }
+    .beat-crew { grid-column: 1; grid-row: 4; justify-self: start; align-items: flex-start; margin-top: 10px; }
+    .beat-crew > div { align-items: flex-start; }
+    .beat-crew dd { text-align: left; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -259,6 +361,24 @@ const total = clientArticles.length;
 
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------------- returning from an article? ----------------
+     If the referrer is one of our own article pages, this load is the
+     "back" half of the card ↔ header morph, not a fresh visit — skip the
+     logo splash below and (further down, once the slots exist) recentre
+     the carousel on that article and tag its card for the matching
+     view-transition-name so the header can morph back down into it. */
+  var returningSlug = null, returningIndex = -1;
+  try {
+    var refMatch = document.referrer && document.referrer.match(/\/articles\/([^/?#]+)\/?/);
+    if (refMatch) returningSlug = decodeURIComponent(refMatch[1]);
+  } catch (e) {}
+  if (returningSlug) {
+    for (var ri = 0; ri < ARTICLES.length; ri++) {
+      if (ARTICLES[ri].slug === returningSlug) { returningIndex = ri; break; }
+    }
+  }
+  var isReturning = returningIndex > -1;
+
   /* ---------------- opening sequence, replays every load ----------------
      title gently develops into focus (like a print in the tray), holds,
      dissolves away, a brief blank pause, then the feed is revealed. */
@@ -275,7 +395,11 @@ const total = clientArticles.length;
     setTimeout(function(){ intro.style.display = 'none'; }, leaveMs);
   }
 
-  if (reduced){
+  if (isReturning){
+    intro.style.display = 'none';
+    chrome.classList.add('is-visible');
+    scrollHint.classList.add('is-visible');
+  } else if (reduced){
     setTimeout(function(){ introContent.classList.add('is-fading'); revealStage(); }, 200);
   } else {
     var HOLD = 3100;       /* title stays fully readable before it starts to fade */
@@ -312,13 +436,40 @@ const total = clientArticles.length;
     slot.renderedContentIndex = ci;
     var a = ARTICLES[ci];
     var el = slot.el;
-    el.querySelector('.beat-stage').setAttribute('data-tone', a.tone);
-    el.querySelector('.beat-index').textContent = (ci+1).toString().padStart(2,'0') + ' / ' + String(N).padStart(2,'0') + ' — ' + a.date;
-    el.querySelector('.beat-title').innerHTML = '『<span class="work">' + a.work + '</span>』' + a.subtitle;
+    var stageEl = el.querySelector('.beat-stage');
+    stageEl.setAttribute('data-tone', a.tone);
+    stageEl.setAttribute('href', a.href);
+    stageEl.setAttribute('aria-label', '『' + a.work + '』' + a.subtitle + 'を読む');
+    var imgEl = el.querySelector('.frame-image');
+    if (a.image) {
+      imgEl.src = a.image;
+      imgEl.classList.add('is-visible');
+    } else {
+      imgEl.removeAttribute('src');
+      imgEl.classList.remove('is-visible');
+    }
+    var workEl = el.querySelector('.beat-work');
+    var origEl = workEl.querySelector('.beat-work-en');
+    if (a.englishTitle !== a.work) {
+      if (!origEl) {
+        origEl = document.createElement('span');
+        origEl.className = 'beat-work-en';
+        workEl.insertBefore(origEl, workEl.firstChild);
+      }
+      origEl.textContent = a.englishTitle;
+    } else if (origEl) {
+      origEl.remove();
+    }
+    workEl.querySelector('.beat-work-jp').textContent = a.work;
+    el.querySelector('.beat-date').textContent = a.date;
+    el.querySelector('.beat-subtitle').textContent = a.subtitle;
     el.querySelector('.beat-desc').textContent = a.desc;
     el.querySelector('.tone-text').textContent = a.toneLabel;
     el.querySelector('.tags-text').textContent = a.tags;
-    el.querySelector('.beat-link').setAttribute('href', a.href);
+    var crewDds = el.querySelectorAll('.beat-crew dd');
+    crewDds[0].textContent = a.director;
+    crewDds[1].textContent = a.production;
+    crewDds[2].textContent = a.cast;
   }
 
   /* ---------------- virtual scroll: position eases toward target ---------------- */
@@ -334,9 +485,16 @@ const total = clientArticles.length;
 
   function updateSlot(slot){
     var offset = slot.baseIndex - position;
-    /* recycle slots once they scroll well past either edge, to loop infinitely */
-    if (offset < -(SLOT_COUNT/2 + 0.6)){ slot.baseIndex += SLOT_COUNT; offset = slot.baseIndex - position; paintSlot(slot); }
-    else if (offset > (SLOT_COUNT/2 + 0.6)){ slot.baseIndex -= SLOT_COUNT; offset = slot.baseIndex - position; paintSlot(slot); }
+    /* recycle slots once they scroll well past either edge, to loop infinitely.
+       (±SLOT_COUNT never changes wrap()'s result, so this alone can't cause
+       the wrong article to show — see the slot→article mapping comment in
+       the frontmatter above for the bug that actually did.) A while loop
+       instead of a single if/else-if step just keeps `offset` itself from
+       drifting arbitrarily large under a fast wheel flick, so the blur/scale/
+       opacity curve below — which is driven by |offset| — stays sane even if
+       `position` jumps by more than one slot-spacing in a single frame. */
+    while (offset < -(SLOT_COUNT/2 + 0.6)){ slot.baseIndex += SLOT_COUNT; offset = slot.baseIndex - position; paintSlot(slot); }
+    while (offset > (SLOT_COUNT/2 + 0.6)){ slot.baseIndex -= SLOT_COUNT; offset = slot.baseIndex - position; paintSlot(slot); }
 
     var y = offset * spacing;
     slot.el.style.transform = 'translate3d(0, calc(' + y + 'px - 50%), 0)';
@@ -387,6 +545,67 @@ const total = clientArticles.length;
     touching = false; target = Math.round(target);
   });
 
+  /* ---------------- card → article-hero morph (there and back) ----------------
+     Forward (list → article): the clicked card's photo/title/subtitle get a
+     view-transition-name right before the native navigation fires, matching
+     the static names ArticleHero.astro sets on the equivalent elements of
+     the destination page.
+     Back (article → list): handled below once the carousel is recentred on
+     the article we came from — the matching slot gets the same three names
+     reapplied via the pagereveal event, so the browser morphs the header
+     back down into its card instead of just cross-fading the whole page. */
+  function clearHeroNames(){
+    slotEls.forEach(function(el){
+      var imgEl = el.querySelector('.frame-image');
+      var workEl = el.querySelector('.beat-work');
+      var subtitleEl = el.querySelector('.beat-subtitle');
+      if (imgEl) imgEl.style.viewTransitionName = '';
+      if (workEl) workEl.style.viewTransitionName = '';
+      if (subtitleEl) subtitleEl.style.viewTransitionName = '';
+    });
+  }
+
+  stage.addEventListener('click', function(e){
+    var stageEl = e.target.closest('.beat-stage');
+    if (!stageEl) return;
+    clearHeroNames();
+    var imgEl = stageEl.querySelector('.frame-image');
+    if (imgEl && imgEl.classList.contains('is-visible')) {
+      imgEl.style.viewTransitionName = 'hero-photo';
+    }
+    var workEl = stageEl.querySelector('.beat-work');
+    if (workEl) workEl.style.viewTransitionName = 'hero-work';
+    var subtitleEl = stageEl.querySelector('.beat-subtitle');
+    if (subtitleEl) subtitleEl.style.viewTransitionName = 'hero-subtitle';
+  });
+
+  if (isReturning){
+    var applyReturning = function(viewTransition){
+      slots.forEach(function(slot, i){
+        slot.baseIndex = (i - CENTER) + returningIndex;
+        slot.renderedContentIndex = -1;
+        paintSlot(slot);
+        updateSlot(slot);
+      });
+      position = target = returningIndex;
+      if (!viewTransition) return;
+      var centerSlot = slots.filter(function(s){ return wrap(s.baseIndex) === returningIndex; })[0];
+      if (!centerSlot) return;
+      var imgEl = centerSlot.stageEl.querySelector('.frame-image');
+      var workEl = centerSlot.stageEl.querySelector('.beat-work');
+      var subtitleEl = centerSlot.stageEl.querySelector('.beat-subtitle');
+      if (imgEl && imgEl.classList.contains('is-visible')) imgEl.style.viewTransitionName = 'hero-photo';
+      if (workEl) workEl.style.viewTransitionName = 'hero-work';
+      if (subtitleEl) subtitleEl.style.viewTransitionName = 'hero-subtitle';
+      viewTransition.finished.then(clearHeroNames, clearHeroNames);
+    };
+    if ('onpagereveal' in window){
+      window.addEventListener('pagereveal', function(e){ applyReturning(e.viewTransition); });
+    } else {
+      applyReturning(null);
+    }
+  }
+
   window.addEventListener('keydown', function(e){
     if (['ArrowDown','PageDown',' '].indexOf(e.key) > -1){ e.preventDefault(); target = Math.round(target) + 1; }
     else if (['ArrowUp','PageUp'].indexOf(e.key) > -1){ e.preventDefault(); target = Math.round(target) - 1; }
@@ -403,7 +622,7 @@ const total = clientArticles.length;
       mx = e.clientX; my = e.clientY;
       if (!cursorSeen){ cursorSeen = true; cx = mx; cy = my; cursor.classList.add('is-ready'); }
       var t = document.elementFromPoint(mx, my);
-      var interactive = t && t.closest('a, button, .beat-link, .theme-toggle');
+      var interactive = t && t.closest('a, button, .theme-toggle');
       cursor.classList.toggle('is-hover', !!interactive);
     });
     (function cursorLoop(){

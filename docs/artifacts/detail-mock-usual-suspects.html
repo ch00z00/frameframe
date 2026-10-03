@@ -1,0 +1,844 @@
+<title>ヴァーバルの調書</title>
+<meta name="description" content="FrameFrame 記事詳細ページ デザインモックアップ — 『ユージュアル・サスペクツ』評。取調室の供述調書に見立てたレイアウトで、信頼できない語り手というトリックを視覚化する">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Mono:wght@400;700&display=swap">
+<style>
+  /* ============================================================
+     FRAMEframe — 記事詳細モックアップ v2
+     『ユージュアル・サスペクツ』評: 取調室の供述調書に見立てた装置。
+     各節に「記録№ / 時刻 / 信頼度メーター」を付し、ヴァーバルの
+     証言が進むほど信頼度が cold → warm → ember へと崩落してゆく。
+     終盤は赤いスタンプが結論を上書きし、供述全体を無効化する。
+
+     v2 では以下を変更:
+     - カーソルをトップページ(案A)と同一実装に統一(rAF追従 + difference)。
+     - 本文1列・中央寄せの単調な構成をやめ、証言記録(本文)と
+       証拠品・注記(サイドカラム)を左右に並べる非対称グリッドへ。
+     - CSS/SVGの概念図を追加(取調室見取り図、面通し配置図、
+       信頼度の推移チャート、歩行の変化図)。実写は使用しない。
+     ============================================================ */
+
+  :root{
+    --ink:        #f2ede0;
+    --ink-raised: #e9e2d0;
+    --paper:      #1c1712;
+    --paper-dim:  #4a4236;
+    --ash:        #7a7160;
+    --ash-faint:  #a89c88;
+    --rule:       #ddd3bd;
+    --ember:      #a3411b;
+    --cold:       #3f6a82;
+    --cold-deep:  #b9cdd6;
+    --warm:       #a9773a;
+    --warm-deep:  #f0d9ab;
+    --serif-display: "Fraunces", "Georgia", serif;
+    --serif-body:    "Newsreader", "Iowan Old Style", "Georgia", serif;
+    --mono:          "Space Mono", "SFMono-Regular", ui-monospace, monospace;
+    --content-max: 1560px;
+    /* 信頼度メーターの3段階。tone(cold/warm)の語彙をそのまま
+       「信用できる/怪しい」の軸として転用し、ember で警報にする。 */
+    --trust-high: var(--cold);
+    --trust-mid:  var(--warm);
+    --trust-low:  var(--ember);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#08090b; --ink-raised:#101317; --paper:#eae5d8; --paper-dim:#c7bfab;
+      --ash:#8a897f; --ash-faint:#55564d; --rule:#26261f; --ember:#c2481b;
+      --cold:#6f93a8; --cold-deep:#16232b; --warm:#d9a851; --warm-deep:#2c2010;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#08090b; --ink-raised:#101317; --paper:#eae5d8; --paper-dim:#c7bfab;
+    --ash:#8a897f; --ash-faint:#55564d; --rule:#26261f; --ember:#c2481b;
+    --cold:#6f93a8; --cold-deep:#16232b; --warm:#d9a851; --warm-deep:#2c2010;
+    color-scheme: dark;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-text-size-adjust: 100%; }
+  body{
+    margin: 0; background: var(--ink); color: var(--paper);
+    font-family: var(--serif-body); -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection{ background: var(--ember); color: var(--ink); }
+  a{ color: inherit; }
+  :focus-visible{ outline: 2px solid var(--ember); outline-offset: 3px; }
+  button{ font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  img, svg{ display: block; max-width: 100%; }
+
+  /* ---------------------------------------------------------------
+     Custom cursor — ported from the homepage (案A) as-is: fixed
+     dot+ring, rAF lerp toward the pointer, mix-blend-mode: difference,
+     enlarges over links/buttons. Kept identical across the site.
+     --------------------------------------------------------------- */
+  @media (hover: hover) and (pointer: fine){
+    body.cursor-ready{ cursor: none; }
+    body.cursor-ready a, body.cursor-ready button{ cursor: none; }
+  }
+  .cursor{
+    position: fixed; top: 0; left: 0; width: 36px; height: 36px;
+    margin: -18px 0 0 -18px; border-radius: 50%; border: 1.5px solid #fff;
+    pointer-events: none; z-index: 90; opacity: 0; mix-blend-mode: difference;
+    transition: width .35s cubic-bezier(.16,.8,.24,1), height .35s cubic-bezier(.16,.8,.24,1),
+                margin .35s cubic-bezier(.16,.8,.24,1), opacity .3s ease, border-width .3s ease;
+    will-change: transform;
+  }
+  .cursor.is-ready{ opacity: 1; }
+  .cursor.is-hover{ width: 64px; height: 64px; margin: -32px 0 0 -32px; border-width: 2px; }
+  .cursor-dot{ position: absolute; inset: 0; margin: auto; width: 4px; height: 4px; border-radius: 50%; background: #fff; }
+  @media (prefers-reduced-motion: reduce){
+    .cursor{ display: none; }
+    body.cursor-ready{ cursor: auto; }
+  }
+
+  /* ---------------------------------------------------------------
+     Sitebar — thin utility strip, not the cinematic chrome of the
+     homepage; this is a page to be read, not scrolled through.
+     --------------------------------------------------------------- */
+  .sitebar{
+    position: sticky; top: 0; z-index: 40;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px clamp(20px, 4vw, 40px);
+    background: color-mix(in srgb, var(--ink) 92%, var(--paper) 8%);
+    border-bottom: 1px solid var(--rule);
+    backdrop-filter: blur(6px);
+  }
+  .sitebar-mark{ font-family: var(--serif-display); font-weight: 600; font-size: .95rem; text-decoration: none; letter-spacing: -.01em; }
+  .sitebar-mark .accent-i{ font-style: italic; font-weight: 400; color: var(--ash); }
+  .theme-toggle{
+    display: flex; align-items: center; gap: 7px;
+    font-family: var(--mono); font-size: .64rem; letter-spacing: .12em;
+    padding: 6px 10px; border: 1px solid var(--rule); border-radius: 100px;
+    color: var(--paper);
+  }
+  .theme-toggle .dot{ width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .theme-toggle:hover{ border-color: var(--ash); }
+
+  /* ---------------------------------------------------------------
+     Cover sheet — case-file cover. Title block on the left, a
+     vertical "case file" card (docket fields + ID silhouette) on
+     the right: an asymmetric two-column head instead of one
+     centered slab.
+     --------------------------------------------------------------- */
+  .cover{
+    position: relative; overflow: hidden;
+    /* symmetric top/bottom padding (was heavier on top than bottom,
+       which read as top-heavy) — combined with .cover-inner's
+       align-items:center below, this keeps the whole head block
+       balanced within the header rather than pinned to its top. */
+    padding: clamp(36px, 6vw, 60px) clamp(20px, 6vw, 40px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .cover-grain{
+    position: absolute; inset: 0; opacity: .05; mix-blend-mode: multiply; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+  :root[data-theme="dark"] .cover-grain{ opacity: .09; mix-blend-mode: overlay; }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .cover-grain{ opacity: .09; mix-blend-mode: overlay; }
+  }
+  .cover-inner{
+    position: relative; max-width: var(--content-max); margin: 0 auto;
+    display: grid; grid-template-columns: minmax(0,1fr) 300px;
+    gap: clamp(28px, 5vw, 72px);
+    /* centers the title block against the case-file card vertically,
+       so the two columns sit on a shared midline instead of both
+       being pinned to the top (which read as top-heavy since the
+       card is shorter than the title block). */
+    align-items: center;
+  }
+  .cover-main{ min-width: 0; }
+
+  .cover-kicker{
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .22em; color: var(--ash);
+    margin: 0 0 14px;
+  }
+  .cover-kicker::before{ content:""; width: 20px; height: 1px; background: var(--ash); }
+
+  .cover-title{
+    font-family: var(--serif-display); font-optical-sizing: auto; font-weight: 560;
+    font-size: clamp(2.1rem, 6vw, 4.4rem); line-height: 1.08; letter-spacing: -.015em;
+    margin: 0 0 clamp(14px, 2vw, 20px); text-wrap: balance;
+  }
+  .cover-title .quote-mark{ color: var(--ash); font-weight: 400; }
+
+  .cover-deck{
+    font-family: var(--serif-body); font-style: italic; font-weight: 500;
+    font-size: clamp(1.15rem, 2.4vw, 1.6rem); line-height: 1.55; color: var(--paper-dim);
+    max-width: 30ch; margin: 0 0 clamp(24px, 4vw, 34px);
+  }
+
+  .cover-meta{ display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
+  .tone-badge{
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .12em;
+    padding: 5px 11px; border: 1px solid var(--cold); border-radius: 100px; color: var(--paper);
+  }
+  .tone-badge .dot{ width: 7px; height: 7px; border-radius: 50%; background: var(--cold); }
+  .cover-tags{ font-family: var(--mono); font-size: .7rem; letter-spacing: .03em; color: var(--ash); }
+  .cover-tags span{ color: var(--paper-dim); }
+
+  /* the case-file card: docket fields + ID silhouette, standing in
+     for a physical folder tab clipped to the side of the cover */
+  .case-file-card{
+    border: 1px solid var(--rule); border-radius: 3px; padding: 16px 18px 18px;
+    background: color-mix(in srgb, var(--ink) 96%, var(--paper) 4%);
+  }
+  .case-file-head{
+    font-family: var(--mono); font-size: .6rem; letter-spacing: .18em; color: var(--ash);
+    margin: 0 0 12px; padding-bottom: 10px; border-bottom: 1px dashed var(--rule);
+  }
+  .docket-fields{
+    display: grid; grid-template-columns: auto 1fr; gap: 9px 12px;
+    font-family: var(--mono); font-size: .64rem; letter-spacing: .03em;
+  }
+  .docket-fields dt{ color: var(--ash); letter-spacing: .1em; white-space: nowrap; }
+  .docket-fields dd{ margin: 0; color: var(--paper); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .suspect-card{ margin-top: 16px; border-top: 1px dashed var(--rule); padding-top: 14px; }
+  .suspect-card svg{ width: 100%; height: auto; }
+  .suspect-card-cap{
+    margin-top: 8px; font-family: var(--mono); font-size: .58rem; letter-spacing: .06em;
+    color: var(--ash); text-align: center;
+  }
+
+  @media (max-width: 900px){
+    .cover-inner{ grid-template-columns: 1fr; }
+    .case-file-card{ max-width: 360px; }
+  }
+
+  /* ---------------------------------------------------------------
+     Case body — the main asymmetric grid: transcript (article body)
+     on the left, a sticky "evidence & notes" column on the right.
+     This replaces the old single centered 900px column.
+     --------------------------------------------------------------- */
+  .case-body{
+    display: grid; grid-template-columns: minmax(0,1fr) 340px;
+    gap: clamp(28px, 4vw, 64px);
+    max-width: var(--content-max); margin: 0 auto;
+    padding: 0 clamp(20px, 6vw, 40px) 0;
+    align-items: start;
+  }
+  @media (max-width: 1080px){
+    .case-body{ grid-template-columns: 1fr; }
+    .case-aside{ position: static; order: 2; max-height: none; overflow: visible; padding-right: 0; }
+  }
+
+  .transcript{ min-width: 0; }
+  /* first entry sits directly under the cover's tag row, so it gets a
+     tighter top pad than the clamp(30px,5vw,46px) used between entries
+     elsewhere — the wide gap here was flagged as excessive on review. */
+  .transcript > .entry:first-child{ padding-top: clamp(14px, 2.4vw, 22px); }
+
+  .entry{
+    display: grid; grid-template-columns: 148px minmax(0,1fr); gap: clamp(20px, 4vw, 40px);
+    padding: clamp(30px, 5vw, 46px) 0; border-bottom: 1px solid var(--rule);
+  }
+  .entry:last-of-type{ border-bottom: none; }
+
+  .docket{ display: flex; flex-direction: column; gap: 14px; padding-top: 4px; }
+  .docket-no{ font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; color: var(--paper); }
+  .docket-time{ font-family: var(--mono); font-size: .66rem; letter-spacing: .04em; color: var(--ash); font-variant-numeric: tabular-nums; }
+  .docket-time::before{ content: "⏱ "; opacity: .55; }
+
+  .trust{ display: flex; flex-direction: column; gap: 6px; }
+  .trust-label{ font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; color: var(--ash); }
+  .trust-track{ position: relative; height: 4px; border-radius: 2px; background: var(--rule); overflow: hidden; }
+  .trust-fill{
+    position: absolute; inset: 0; width: var(--trust); background: var(--trust-color);
+    border-radius: 2px; transform-origin: left center; transform: scaleX(0);
+    animation: fillIn .9s cubic-bezier(.22,1,.36,1) forwards; animation-delay: var(--delay, 0s);
+  }
+  .trust-pct{ font-family: var(--mono); font-size: .78rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--trust-color); }
+  .trust-note{ font-family: var(--mono); font-size: .62rem; line-height: 1.5; color: var(--ash); }
+
+  @keyframes fillIn{ to{ transform: scaleX(1); } }
+
+  .entry[data-trust="97"], .entry[data-trust="91"]{ --trust-color: var(--trust-high); }
+  .entry[data-trust="68"]{ --trust-color: var(--trust-mid); }
+  .entry[data-trust="12"], .entry[data-trust="0"]{ --trust-color: var(--trust-low); }
+
+  .prose h2{
+    font-family: var(--serif-display); font-optical-sizing: auto; font-weight: 540;
+    font-size: clamp(1.5rem, 3vw, 2.3rem); line-height: 1.24; letter-spacing: -.01em;
+    margin: 0 0 clamp(16px, 2.4vw, 22px); text-wrap: balance; max-width: 24ch;
+  }
+  .prose p{
+    font-size: clamp(1.05rem, 1.3vw, 1.15rem); line-height: 1.95;
+    max-width: 38em; margin: 0 0 1.3em; color: var(--paper);
+  }
+  .prose p:last-child{ margin-bottom: 0; }
+  .prose em.diegetic{ font-style: italic; color: var(--paper-dim); }
+
+  /* the officer's-remark entry uses a different label voice: no
+     meter, because this is the critic's own frame, not testimony
+     under evaluation. */
+  .docket-remark{ font-family: var(--mono); font-size: .62rem; letter-spacing: .08em; color: var(--ash); max-width: 12ch; line-height: 1.6; }
+
+  /* ---------------------------------------------------------------
+     Figures — CSS/SVG diagrams embedded in the transcript. They are
+     deliberately allowed to run wider than the prose column (no
+     38em cap) so the page reads as more than a single thin ribbon
+     of text, while paragraph line-length stays untouched.
+     --------------------------------------------------------------- */
+  .figure{ margin: clamp(26px, 4vw, 40px) 0; max-width: none; }
+  .figure svg{
+    width: 100%; height: auto; display: block;
+    background: color-mix(in srgb, var(--ink) 96%, var(--paper) 4%);
+    border: 1px solid var(--rule); border-radius: 6px;
+  }
+  .figure figcaption{
+    margin-top: 10px; font-family: var(--mono); font-size: .68rem; line-height: 1.7;
+    color: var(--ash); max-width: 42em;
+  }
+  .figure figcaption b{ color: var(--paper-dim); font-weight: 700; }
+  .fig-label{ font-family: var(--mono); font-size: 8px; letter-spacing: .04em; }
+
+  /* ---------------------------------------------------------------
+     Evidence box — used both inline (legacy) and in the aside.
+     --------------------------------------------------------------- */
+  .exhibits{
+    border: 1px solid var(--rule); border-radius: 3px;
+    background: color-mix(in srgb, var(--ink) 96%, var(--paper) 4%);
+  }
+  .exhibits-head{
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 10px 16px; border-bottom: 1px dashed var(--rule);
+    font-family: var(--mono); font-size: .6rem; letter-spacing: .1em; color: var(--ash);
+  }
+  .exhibits ul{ list-style: none; margin: 0; padding: 0; }
+  .exhibits li{
+    padding: 12px 16px; border-bottom: 1px solid var(--rule);
+  }
+  .exhibits li:last-child{ border-bottom: none; }
+  /* Each exhibit is a title (the prop/name) over a description (what
+     it's the source of, and where in the testimony it resurfaces) —
+     a two-tier structure so it reads as "footnote", not a bare tag list. */
+  .exhibit-title{
+    margin: 0 0 5px; font-family: var(--mono); font-size: .72rem; font-weight: 700;
+    letter-spacing: .02em; line-height: 1.5; color: var(--paper);
+  }
+  .exhibit-desc{
+    margin: 0; font-family: var(--mono); font-size: .66rem; line-height: 1.75; color: var(--paper-dim);
+  }
+  .exhibit-desc .arrow{ color: var(--ash); margin-right: 4px; }
+  .exhibits-foot{ padding: 9px 16px; font-family: var(--mono); font-size: .6rem; color: var(--ash); font-style: italic; }
+
+  /* ---------------------------------------------------------------
+     Transcript quote — verbatim excerpt, framed as a recorded line
+     --------------------------------------------------------------- */
+  .verbatim{ max-width: 38em; margin: clamp(20px, 3vw, 28px) 0; }
+  .verbatim-label{
+    display: block; font-family: var(--mono); font-size: .62rem; letter-spacing: .12em;
+    color: var(--ash); margin-bottom: 10px;
+  }
+  .verbatim blockquote{
+    margin: 0; padding: clamp(18px, 3vw, 26px) clamp(20px, 3vw, 28px);
+    border-left: 3px solid var(--ember);
+    background: color-mix(in srgb, var(--ember) 6%, transparent);
+    font-family: var(--serif-display); font-style: italic; font-optical-sizing: auto; font-weight: 440;
+    font-size: clamp(1.2rem, 2.2vw, 1.5rem); line-height: 1.55; color: var(--paper);
+  }
+  .verbatim cite{ display: block; margin-top: 12px; font-style: normal; font-family: var(--mono); font-size: .68rem; letter-spacing: .04em; color: var(--ash); }
+
+  /* ---------------------------------------------------------------
+     Closing entry — the invalidation stamp over the verdict
+     --------------------------------------------------------------- */
+  .entry--closing .prose{ position: relative; }
+  .stamp{
+    float: right; shape-outside: margin-box;
+    margin: 4px 0 18px 22px;
+    border: 3px double var(--ember); border-radius: 3px;
+    padding: 12px 18px; transform: rotate(-6deg);
+    color: var(--ember); opacity: .82; text-align: center;
+  }
+  .stamp-main{ font-family: var(--serif-display); font-weight: 700; font-size: 1.3rem; letter-spacing: .04em; white-space: nowrap; }
+  .stamp-sub{ font-family: var(--mono); font-size: .58rem; letter-spacing: .16em; margin-top: 4px; white-space: nowrap; }
+
+  /* ---------------------------------------------------------------
+     Case aside — the sticky "evidence & notes" side column: a
+     persistent trust-trajectory chart, the exhibits list, and a
+     small methodological note about the diagrams.
+     --------------------------------------------------------------- */
+  .case-aside{
+    position: sticky; top: 84px;
+    /* Sidebar content can run longer than the viewport (esp. once the
+       exhibits list grows) — without its own scroll region, the lower
+       items were only reachable by scrolling the entire article body
+       to the bottom. Give the aside an independent scroll area capped
+       to the viewport instead. */
+    max-height: calc(100vh - 84px - 24px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    display: flex; flex-direction: column; gap: clamp(22px, 3vw, 32px);
+    /* The sidebar previously sat on the same flat page background as
+       the transcript, so its independent scroll region wasn't legible
+       as a separate surface until you actually scrolled it. --ink-raised
+       (defined in :root but unused until now) is a step off --ink in
+       both themes — slightly deeper/warmer in light, slightly lighter
+       in dark — so the whole evidence column now reads as its own
+       panel rather than a continuation of the main column. */
+    background: var(--ink-raised);
+    border-radius: 10px;
+    padding: clamp(16px, 2.4vw, 22px) 16px clamp(20px, 3vw, 28px) 18px;
+  }
+  .case-aside::-webkit-scrollbar{ width: 6px; }
+  .case-aside::-webkit-scrollbar-track{ background: transparent; }
+  .case-aside::-webkit-scrollbar-thumb{ background: var(--rule); border-radius: 3px; }
+  .case-aside::-webkit-scrollbar-thumb:hover{ background: var(--ash); }
+  .case-panel{
+    border: 1px solid var(--rule); border-radius: 3px; padding: 16px 18px 18px;
+    background: color-mix(in srgb, var(--ink) 96%, var(--paper) 4%);
+  }
+  .case-panel-head{
+    display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .12em; color: var(--ash);
+    margin: 0 0 12px; padding-bottom: 10px; border-bottom: 1px dashed var(--rule);
+  }
+  .case-panel-head span:last-child{ letter-spacing: .06em; color: var(--ash-faint); }
+  .trend-chart{ width: 100%; height: auto; }
+  .case-panel-note{
+    margin: 12px 0 0; font-family: var(--mono); font-size: .64rem; line-height: 1.7; color: var(--ash);
+  }
+  .aside-footnote{
+    font-family: var(--mono); font-size: .6rem; line-height: 1.8; color: var(--ash-faint);
+    padding: 0 2px;
+  }
+
+  /* ---------------------------------------------------------------
+     Footer
+     --------------------------------------------------------------- */
+  .site-footer{
+    max-width: var(--content-max); margin: 0 auto;
+    padding: clamp(30px, 5vw, 46px) clamp(20px, 6vw, 40px) clamp(50px, 8vw, 80px);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .footer-close{
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; color: var(--paper);
+    padding: 10px 16px; border: 1px solid var(--rule); border-radius: 3px;
+  }
+  .footer-close:hover{ border-color: var(--ember); color: var(--ember); }
+  .footer-close::before{ content: "←"; }
+  .footer-note{ font-family: var(--mono); font-size: .64rem; color: var(--ash); letter-spacing: .04em; }
+
+  /* ---------------------------------------------------------------
+     Responsive
+     --------------------------------------------------------------- */
+  @media (max-width: 720px){
+    .entry{ grid-template-columns: 1fr; }
+    .docket{ flex-direction: row; flex-wrap: wrap; align-items: center; gap: 16px; padding-top: 0; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+    .trust{ flex: 1 1 160px; }
+    .docket-remark{ max-width: none; }
+    .stamp{ float: none; margin: 0 0 20px; display: inline-block; }
+    .prose h2{ max-width: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .trust-fill{ animation: none; transform: scaleX(1); }
+  }
+</style>
+
+<div class="cursor" id="cursor" aria-hidden="true"><span class="cursor-dot"></span></div>
+
+<div class="sitebar">
+  <a class="sitebar-mark" href="#" aria-label="FRAMEframe トップへ">FRAME<span class="accent-i">frame</span></a>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">
+    <span class="dot" aria-hidden="true"></span>
+    <span id="themeLabel">DARK</span>
+  </button>
+</div>
+
+<header class="cover">
+  <div class="cover-grain" aria-hidden="true"></div>
+  <div class="cover-inner">
+    <div class="cover-main">
+      <p class="cover-kicker">FILM CRITICISM JOURNAL — 供述調書 №95-1106</p>
+      <h1 class="cover-title"><span class="quote-mark">『</span>ユージュアル・サスペクツ<span class="quote-mark">』</span></h1>
+      <p class="cover-deck">証言は、いつ噓に変わったか</p>
+      <div class="cover-meta">
+        <span class="tone-badge"><span class="dot" aria-hidden="true"></span>COOL</span>
+        <span class="cover-tags"><span>ブライアン・シンガー</span> / <span>信頼できない語り手</span> / <span>ミステリー</span></span>
+      </div>
+    </div>
+
+    <div class="case-file-card">
+      <p class="case-file-head">CASE FILE</p>
+      <dl class="docket-fields">
+        <div><dt>CASE NO.</dt><dd>95-1106</dd></div>
+        <div><dt>聴取日</dt><dd>2026.09.16</dd></div>
+        <div><dt>聴取場所</dt><dd>地方検事局<br>取調室14</dd></div>
+        <div><dt>供述人</dt><dd>ヴァーバル・キント</dd></div>
+        <div><dt>記録者</dt><dd>FRAMEframe<br>編集部</dd></div>
+      </dl>
+      <div class="suspect-card">
+        <svg viewBox="0 0 200 190" role="img" aria-label="供述人の識別用シルエット図(概念図、実写ではない)">
+          <line x1="18" y1="24" x2="182" y2="24" stroke="var(--rule)" stroke-width="1" opacity=".5"/>
+          <line x1="18" y1="52" x2="182" y2="52" stroke="var(--rule)" stroke-width="1" opacity=".5"/>
+          <line x1="18" y1="80" x2="182" y2="80" stroke="var(--rule)" stroke-width="1" opacity=".5"/>
+          <line x1="18" y1="108" x2="182" y2="108" stroke="var(--rule)" stroke-width="1" opacity=".5"/>
+          <line x1="18" y1="136" x2="182" y2="136" stroke="var(--rule)" stroke-width="1" opacity=".5"/>
+          <path d="M62 158 Q100 100 138 158 Z" fill="var(--paper)" opacity=".14" stroke="var(--paper-dim)" stroke-width="1.5"/>
+          <circle cx="100" cy="66" r="27" fill="var(--paper)" opacity=".14" stroke="var(--paper-dim)" stroke-width="1.5"/>
+          <g class="fig-label" fill="var(--ash)">
+            <text x="10" y="27" text-anchor="middle">6'</text>
+            <text x="10" y="83" text-anchor="middle">5'6</text>
+            <text x="10" y="139" text-anchor="middle">5'</text>
+          </g>
+          <g transform="translate(150,168) rotate(-8)">
+            <rect x="-30" y="-11" width="60" height="20" fill="none" stroke="var(--ember)" stroke-width="1.5" opacity=".85"/>
+            <text x="0" y="4" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--ember)" opacity=".9">№95-1106</text>
+          </g>
+        </svg>
+      </div>
+      <p class="suspect-card-cap">供述人識別カード(概念図)</p>
+    </div>
+  </div>
+</header>
+
+<div class="case-body">
+<main class="transcript">
+
+  <section class="entry" data-trust="97">
+    <div class="docket">
+      <span class="docket-no">記録 №1</span>
+      <span class="docket-time">14:52</span>
+      <div class="trust">
+        <span class="trust-label">証言の信頼度</span>
+        <div class="trust-track"><div class="trust-fill" style="--trust:97%"></div></div>
+        <span class="trust-pct">97%</span>
+        <span class="trust-note">参考人の状況説明。矛盾点なし。</span>
+      </div>
+    </div>
+    <div class="prose">
+      <h2>発端 — 面通しから始まった供述</h2>
+      <p><em class="diegetic">「これは全部、本当にあった話だ」</em>——ヴァーバル・キントは机の前でそう前置きし、地方検事局の一室で供述を始める。しがない詐欺師である彼が語るのは、偶然の面通しで顔を合わせた五人の犯罪者が、いかにして一隻の貨物船を焼き尽くす惨劇に巻き込まれていったかという顛末だ。観客がスクリーンで目にする回想のほぼ全てが、この一人の証言者の口述から立ち上がる再現映像であるという事実を、私たちは物語が転がり出した瞬間から驚くほど簡単に忘れる。『ユージュアル・サスペクツ』最大のトリックは、キーザー・ソゼの正体そのもの以前に、観客に「これは映像化された事実だ」と信じ込ませたことにある。</p>
+
+      <p>その企みを下支えしているのは、ヴァーバル自身の語り口でもある。猫背気味の姿勢、視線を伏せがちな話し方、「おれみたいな三流の詐欺師の話なんて」と繰り返す卑下——これらは全て、コージャン刑事の警戒心を解くための計算された演技だ。優位に立っていると信じ込んだ聞き手ほど、細部の矛盾を見逃しやすくなる。ヴァーバルは供述の第一声から、すでに相手の心理を操作するサイオプ(心理作戦)を仕掛けている。</p>
+
+      <figure class="figure figure--lineup">
+        <svg viewBox="0 0 600 210" role="img" aria-label="五人の容疑者が並ぶ面通しの配置を示す概念図">
+          <line x1="0" y1="30" x2="600" y2="30" stroke="var(--rule)" stroke-width="1" opacity=".4"/>
+          <line x1="0" y1="70" x2="600" y2="70" stroke="var(--rule)" stroke-width="1" opacity=".4"/>
+          <line x1="0" y1="110" x2="600" y2="110" stroke="var(--rule)" stroke-width="1" opacity=".4"/>
+          <line x1="0" y1="150" x2="600" y2="150" stroke="var(--rule)" stroke-width="1" opacity=".4"/>
+          <g class="fig-label" fill="var(--ash)">
+            <text x="590" y="33" text-anchor="end">6'2</text>
+            <text x="590" y="73" text-anchor="end">6'0</text>
+            <text x="590" y="113" text-anchor="end">5'10</text>
+            <text x="590" y="153" text-anchor="end">5'8</text>
+          </g>
+          <g stroke="var(--paper)" stroke-width="1.5" fill="none">
+            <g transform="translate(80,0)"><circle cx="0" cy="78" r="15"/><path d="M-20 190 Q0 130 20 190 Z" fill="color-mix(in srgb, var(--paper) 8%, transparent)"/></g>
+            <g transform="translate(200,0)"><circle cx="0" cy="78" r="15"/><path d="M-20 190 Q0 130 20 190 Z" fill="color-mix(in srgb, var(--paper) 8%, transparent)"/></g>
+            <g transform="translate(320,0)"><circle cx="0" cy="78" r="15"/><path d="M-20 190 Q0 130 20 190 Z" fill="color-mix(in srgb, var(--paper) 8%, transparent)"/></g>
+          </g>
+          <g stroke="var(--ember)" stroke-width="2" fill="color-mix(in srgb, var(--ember) 10%, transparent)">
+            <g transform="translate(440,0)"><circle cx="0" cy="78" r="15"/><path d="M-20 190 Q0 130 20 190 Z"/></g>
+          </g>
+          <g stroke="var(--paper)" stroke-width="1.5" fill="none">
+            <g transform="translate(560,0)"><circle cx="0" cy="78" r="15"/><path d="M-20 190 Q0 130 20 190 Z" fill="color-mix(in srgb, var(--paper) 8%, transparent)"/></g>
+          </g>
+          <g font-family="var(--mono)" font-size="11" text-anchor="middle" fill="var(--ash)">
+            <text x="80" y="200">1</text><text x="200" y="200">2</text><text x="320" y="200">3</text>
+            <text x="560" y="200">5</text>
+          </g>
+          <text x="440" y="200" text-anchor="middle" font-family="var(--mono)" font-size="11" fill="var(--ember)">4 — V. KINT</text>
+        </svg>
+        <figcaption>図: 面通し(police lineup)の配置(概念図)。<b>この部屋にたまたま居合わせた五人</b>という偶然が、以後スクリーンで語られる全ての証言の出発点になる。</figcaption>
+      </figure>
+
+      <p>取調室という設定そのものが、この企みを支える装置になっている。密室、供述、記録という体裁を借りることで、観客は無意識のうちに「これは事実を再構成した映像だ」という契約を結ばされる。刑事ドラマが積み重ねてきた「証言イコール真実」という視聴習慣を逆手に取った、きわめて周到な語りの罠だ。</p>
+
+      <figure class="figure figure--room">
+        <svg viewBox="0 0 600 320" role="img" aria-label="取調室14の見取り図。ヴァーバルの座席、コージャン刑事の座席、証拠品の位置を示す概念図">
+          <rect x="20" y="20" width="560" height="280" rx="6" fill="color-mix(in srgb, var(--ink) 94%, var(--paper) 6%)" stroke="var(--rule)" stroke-width="1.5"/>
+          <rect x="46" y="20" width="54" height="7" fill="var(--paper-dim)" opacity=".6"/>
+          <path d="M100 27 A54 54 0 0 1 100 81" fill="none" stroke="var(--rule)" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="73" y="46" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--ash)">ドア</text>
+          <line x1="574" y1="46" x2="574" y2="274" stroke="var(--cold)" stroke-width="4" opacity=".55"/>
+          <text x="588" y="160" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--cold)" transform="rotate(90 588 160)">マジックミラー</text>
+          <rect x="220" y="120" width="170" height="70" rx="8" fill="none" stroke="var(--paper)" stroke-width="1.5"/>
+          <circle cx="305" cy="100" r="10" fill="none" stroke="var(--paper)" stroke-width="1.5"/>
+          <text x="305" y="80" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--ash)">コージャン刑事</text>
+          <circle cx="305" cy="212" r="10" fill="none" stroke="var(--ember)" stroke-width="2"/>
+          <text x="305" y="236" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--ember)">ヴァーバル・キント</text>
+          <circle cx="356" cy="112" r="10" fill="var(--ink)" stroke="var(--ember)" stroke-width="1.5"/>
+          <text x="356" y="116" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--ember)">①</text>
+          <text x="380" y="102" font-family="var(--mono)" font-size="9" fill="var(--ash-faint)">MUG “KOBAYASHI”</text>
+          <circle cx="60" cy="130" r="10" fill="var(--ink)" stroke="var(--ember)" stroke-width="1.5"/>
+          <text x="60" y="134" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--ember)">②</text>
+          <text x="42" y="112" font-family="var(--mono)" font-size="9" fill="var(--ash-faint)">POSTER</text>
+          <text x="42" y="152" font-family="var(--mono)" font-size="9" fill="var(--ash-faint)">“REDFOOT”</text>
+        </svg>
+        <figcaption>図: 取調室14の見取り図(概念図)。<b>①</b>マグカップの銘「KOBAYASHI」、<b>②</b>指名手配ポスターの「REDFOOT」——いずれもヴァーバルの視界に入っていた備品で、のちに供述内の固有名詞として使われる(記録№2参照)。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="entry" data-trust="91">
+    <div class="docket">
+      <span class="docket-no">記録 №2</span>
+      <span class="docket-time">15:08</span>
+      <div class="trust">
+        <span class="trust-label">証言の信頼度</span>
+        <div class="trust-track"><div class="trust-fill" style="--trust:91%; --delay:.1s"></div></div>
+        <span class="trust-pct">91%</span>
+        <span class="trust-note">周辺情報。裏付け未検証。</span>
+      </div>
+    </div>
+    <div class="prose">
+      <h2>壁の中の名前 — 二度目に見つかる証拠</h2>
+      <p>再見して初めて発見できる仕掛けが、この取調室の場面には仕込まれている。ヴァーバルが語る一味の名前——コバヤシ、レッドフット——の由来は、彼が実際にその部屋で目にしていたものにある。捜査官コージャンのデスクに置かれたマグカップの銘、壁に貼られた指名手配ポスターの文字(記録№1の見取り図の①②を参照)。ヴァーバルは供述しながら視線をさまよわせ、目に入った文字をその場で物語に縫い込んでいく。制作陣が後年のコメンタリーで明かしたこの手口は、一度目の鑑賞では単なる背景でしかない。二度目に見て初めて「証拠」に変わる、というその時間差そのものが、この映画の企みを裏づけている。ヴァーバルの供述は、机上で即興的にでっち上げられた代物だったのだ。詳細な照合結果は右カラムの証拠品目録にまとめた。</p>
+      <p>注目すべきは、その場ででっち上げているようにはまったく見えない語り口だ。ヴァーバルは時折視線を宙にさまよわせ、言葉に詰まったふりをして間を置く。それは記憶を手繰り寄せる仕草そのものであり、聞き手には「今まさに思い出している」ように映る。実際には、その一拍の沈黙の間に彼は室内の文字を拾い、次の固有名詞を選んでいるにすぎない。淀みなく語れば嘘に聞こえ、多少つっかえながら語れば真実味が増す——その呼吸の作り方こそが、ヴァーバルの話術の核心である。</p>
+      <p>スクリーンの端に紛れ込んだ固有名詞は、映画がのちに回収する伏線であると同時に、ヴァーバルという語り手の作業工程そのものを目撃してしまう痕跡でもある。</p>
+    </div>
+  </section>
+
+  <section class="entry" data-trust="68">
+    <div class="docket">
+      <span class="docket-no">記録 №3</span>
+      <span class="docket-time">15:24</span>
+      <div class="trust">
+        <span class="trust-label">証言の信頼度</span>
+        <div class="trust-track"><div class="trust-fill" style="--trust:68%; --delay:.2s"></div></div>
+        <span class="trust-pct">68%</span>
+        <span class="trust-note">本人の弁。誇張の疑いあり。</span>
+      </div>
+    </div>
+    <div class="prose">
+      <h2>「存在しないと信じさせること」</h2>
+      <div class="verbatim">
+        <span class="verbatim-label">逐語記録 — ヴァーバル・キントの供述より</span>
+        <blockquote>悪魔が使った最大のトリックは、自分の存在を人に信じさせないことだ。</blockquote>
+        <cite>『ユージュアル・サスペクツ』(1995) より</cite>
+      </div>
+      <p>シャルル・ボードレールの言葉を引く体でヴァーバルが放つこの一節は、単なる気の利いた警句ではない。この映画の構造そのものを予告する自己言及である。「信頼できない語り手」というトリックの存在を、脚本は物語の途中で明示的に告げている。それでいて観客は気づかない。種明かしを浴びせられてなお、その正体を信じない——これこそが騙されるということの本質だと、この台詞は言っている。この台詞が映画史に残る名台詞として繰り返し引用されるのは、それが説明ではなく予告として機能しているからだ。</p>
+      <p>この台詞の言い方にも仕掛けがある。ボードレールの一節を引くくだりでは声のトーンを一段落とし、芝居がかった抑揚で言葉を区切ってみせる。まるで自分自身のことではないかのように、他人事の警句として差し出す語り口だ。言い終えた直後、ヴァーバルはふっと表情を緩め、肩をすくめるような仕草で場の空気を和らげる——踏み込みすぎた発言を茶化して見せることで、コージャンに「今のは深読みしすぎだ」と思わせるための緩急である。挑発と韜晦を同じ呼吸の中でやってのける、この場面の演技こそが台詞そのものより雄弁に彼の正体を語っている。</p>
+    </div>
+  </section>
+
+  <section class="entry" data-trust="12">
+    <div class="docket">
+      <span class="docket-no">記録 №4</span>
+      <span class="docket-time">15:47</span>
+      <div class="trust">
+        <span class="trust-label">証言の信頼度</span>
+        <div class="trust-track"><div class="trust-fill" style="--trust:12%; --delay:.3s"></div></div>
+        <span class="trust-pct">12%</span>
+        <span class="trust-note">供述の根幹に重大な疑義。</span>
+      </div>
+    </div>
+    <div class="prose">
+      <h2>引きずる足が、治る</h2>
+      <p>コージャンが自分のデスクに戻り、供述に基づいて似顔絵の元となった資料の断片——マグカップの銘、壁の掲示——が、取調室の備品と寸分違わず一致することに気づく。その瞬間、駐車場を歩き去るヴァーバルの足取りが、数十メートルの間に静かに変わっていく。杖を必要としていた右足の引きずりが消え、震えていた左手が止まる。ケヴィン・スペイシーは撮影期間全篇を通じ、この一瞬のためだけに不自然な右足の引きずりを維持し続けていた。編集は説明的な回想もモンタージュも使わない。ただ歩き去る後ろ姿を追う一続きのショットだけで、これまで積み上げられてきた供述のすべてを無効化する。劇伴も台詞もこの一瞬には介入しない。音を削ぎ落とすことで、観客の目だけに全てを託す——その一点にこの映画の演出上の胆力がある。</p>
+
+      <p>思えば、ヴァーバル・キントという人格そのものが全篇にわたる長回しの演技だった。取調べの最中、彼は幾度となく声を震わせ、目を潤ませ、手を強張らせてみせる——それは同情を引くための涙であり、油断を誘うための怯えである。コージャンが苛立って声を荒げるたびにヴァーバルはさらに縮こまり、弱者を演じることで尋問のペースそのものを握り続けた。取り調べる側が「壊れやすい証人を追い詰めている」と錯覚した瞬間、主導権はとうに供述者の手に渡っている。杖にすがる足取り、怯えたまばたき、言葉に詰まるふり——その全てが、退室直後にまっすぐな背筋へと霧消する。</p>
+
+      <figure class="figure figure--gait">
+        <svg viewBox="0 0 600 200" role="img" aria-label="取調室内での引きずる歩行と、退室直後の均等な歩行を対比する概念図">
+          <line x1="300" y1="14" x2="300" y2="188" stroke="var(--rule)" stroke-width="1" stroke-dasharray="4,4"/>
+          <text x="150" y="24" text-anchor="middle" font-family="var(--mono)" font-size="10" letter-spacing=".05em" fill="var(--ash)">供述中 — 取調室内</text>
+          <text x="450" y="24" text-anchor="middle" font-family="var(--mono)" font-size="10" letter-spacing=".05em" fill="var(--ash)">退室直後 — 駐車場</text>
+
+          <g stroke="var(--paper-dim)" stroke-width="1.5" fill="none">
+            <circle cx="150" cy="72" r="10"/>
+            <line x1="150" y1="82" x2="150" y2="118"/>
+            <line x1="150" y1="118" x2="132" y2="165"/>
+            <line x1="150" y1="118" x2="168" y2="150"/>
+            <line x1="168" y1="150" x2="188" y2="172"/>
+          </g>
+          <g stroke="var(--ember)" stroke-width="2" opacity=".75" fill="none">
+            <ellipse cx="120" cy="180" rx="14" ry="4"/>
+            <ellipse cx="148" cy="183" rx="10" ry="3"/>
+          </g>
+          <text x="150" y="196" text-anchor="middle" font-family="var(--mono)" font-size="8" fill="var(--ember)">引きずり跡・不均等</text>
+
+          <text x="300" y="108" text-anchor="middle" font-family="var(--mono)" font-size="20" fill="var(--ash)">→</text>
+          <text x="300" y="128" text-anchor="middle" font-family="var(--mono)" font-size="8" fill="var(--ash)">数十メートル</text>
+
+          <g stroke="var(--paper-dim)" stroke-width="1.5" fill="none">
+            <circle cx="450" cy="72" r="10"/>
+            <line x1="450" y1="82" x2="450" y2="118"/>
+            <line x1="450" y1="118" x2="434" y2="168"/>
+            <line x1="450" y1="118" x2="466" y2="168"/>
+          </g>
+          <g fill="var(--cold)" opacity=".8">
+            <ellipse cx="430" cy="180" rx="9" ry="3.5"/>
+            <ellipse cx="470" cy="180" rx="9" ry="3.5"/>
+          </g>
+          <text x="450" y="196" text-anchor="middle" font-family="var(--mono)" font-size="8" fill="var(--cold)">均等な足取り</text>
+        </svg>
+        <figcaption>図(概念図): 取調室内で見せていた右足の引きずり(左)が、駐車場を歩き去る間に静かに消えていく(右)。台詞にも編集にも頼らず、歩行という身体の情報だけで供述の虚偽を明かす。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="entry">
+    <div class="docket">
+      <span class="docket-no">捜査官所感</span>
+      <span class="docket-time">16:02</span>
+      <p class="docket-remark">※以下は証言の評価対象外。記録者本人の見解。</p>
+    </div>
+    <div class="prose">
+      <h2>見る前に、見たあとに</h2>
+      <p>初めて見る観客には、あえてここでキーザー・ソゼの正体を明かさない。五人の凡庸な犯罪者の面通しから始まった小さな事件が、都市伝説じみた怪物の存在にまで接続されていく、その飛躍の角度こそが本作最大の推進力だからだ。この記事があえて正体を伏せて書かれているのも、その体験を先取りしないための配慮である。まっさらな状態で、この角度に驚いてほしい。</p>
+      <p>一方、結末を知って二度目に見返す観客には、まったく別の快楽が待っている。壁のポスター、デスク上の備品、コージャンの何気ない相槌——一度目には風景でしかなかったものが、二度目には全て「証拠」として立ち上がる。結末を知ってから見返すことで初めて全篇が「証言のでっち上げの実況中継」に変わる、稀有な設計を持つ一本である。</p>
+      <p>この「実況中継」で最も見応えがあるのは、証言の中身そのものより、ケヴィン・スペイシーの演技の設計図が可視化される瞬間だ。声の震え、視線の外し方、間の取り方——一度目の鑑賞では感情の発露としか映らなかった芝居のひとつひとつが、二度目には全て計算された道具に見えてくる。嘘をつく技術を演じる俳優の技術、という二重の入れ子がここにはある。</p>
+
+      <h2>本当の話と、作り話——供述の解剖</h2>
+      <p>取調室で語られた供述を、最後まで信じてよい部分と、その場ででっち上げられた部分とに切り分けるなら、線引きはおおよそ次のようになる。<strong>外部の証拠と独立に符合する部分</strong>——貨物船で大規模な爆発と銃撃があったこと、生存者が一人いたこと、五人の男が面通しをきっかけに手を組んだこと、そのうち複数が死亡したこと——は、ヴァーバルの口以外の情報源(生存者の証言、現場検証)によっても裏付けられており、事件の大枠としてはおそらく事実である。</p>
+      <p>一方、<strong>取調室を出た瞬間に崩れ去る部分</strong>——弁護士「コバヤシ」、仲介者「レッドフット」にまつわる具体的なエピソード、キーザー・ソゼの出自にまつわる逸話の細部、そして取調べの間ずっと保たれていた足の引きずりと震える手そのもの——は、コージャンの捜査資料が壁一面のコルクボードとして再構成される終盤のモンタージュで、取調室の備品と一致することが示される。つまりヴァーバルは、大枠の事件を骨格にしながら、細部の固有名詞と自分自身の弱者としての人物像を、その場にあったものから即興で肉付けしていったのだ。右カラムの証拠品目録は、その対応関係を一覧にしたものである。</p>
+    </div>
+  </section>
+
+  <section class="entry entry--closing" data-trust="0">
+    <div class="docket">
+      <span class="docket-no">総括</span>
+      <span class="docket-time">16:15</span>
+      <div class="trust">
+        <span class="trust-label">証言の信頼度</span>
+        <div class="trust-track"><div class="trust-fill" style="--trust:0%; --delay:.4s"></div></div>
+        <span class="trust-pct">0%</span>
+        <span class="trust-note">記録全体を虚偽と認定。</span>
+      </div>
+    </div>
+    <div class="prose">
+      <div class="stamp" aria-hidden="true">
+        <div class="stamp-main">証言、無効</div>
+        <div class="stamp-sub">TESTIMONY VOID</div>
+      </div>
+      <h2>証言、無効</h2>
+      <p>取調室を出た瞬間、ヴァーバル・キントの供述調書は証拠としての効力を失う。だがフィルムとしての『ユージュアル・サスペクツ』は、その無効化された記録を、何度でも見返せる芸術作品に変えてみせた。信頼できない語り手は、二度目に見返されることを前提に設計されて初めて、真に恐ろしい発明になる。声の震え、間の置き方、涙の一粒に至るまで、ヴァーバルは相手の心理を読みながら己の演技を微調整し続けた。それは詐欺師としての手管であると同時に、俳優としての演出でもある。供述は嘘だった。だが、嘘を語る技術そのものは、紛れもなく本物だった。</p>
+    </div>
+  </section>
+
+</main>
+
+<aside class="case-aside">
+  <div class="case-panel">
+    <p class="case-panel-head"><span>信頼度の推移</span><span>TRUST TRAJECTORY</span></p>
+    <svg class="trend-chart" viewBox="0 0 260 150" role="img" aria-label="証言の信頼度は記録1の97%から記録2の91%、記録3の68%、記録4の12%、総括の0%まで一貫して下落する">
+      <line x1="24" y1="17.5" x2="234" y2="17.5" stroke="var(--rule)" stroke-width="1" stroke-dasharray="2,3"/>
+      <line x1="24" y1="130" x2="234" y2="130" stroke="var(--rule)" stroke-width="1"/>
+      <text x="18" y="20" text-anchor="end" font-family="var(--mono)" font-size="7" fill="var(--ash)">100%</text>
+      <text x="18" y="133" text-anchor="end" font-family="var(--mono)" font-size="7" fill="var(--ash)">0%</text>
+      <polyline points="26,17.5 78,24.4 130,51.1 182,116.1 234,130" fill="none" stroke="var(--ash)" stroke-width="1.5"/>
+      <circle cx="26" cy="17.5" r="4" fill="var(--trust-high)"/>
+      <circle cx="78" cy="24.4" r="4" fill="var(--trust-high)"/>
+      <circle cx="130" cy="51.1" r="4" fill="var(--trust-mid)"/>
+      <circle cx="182" cy="116.1" r="4" fill="var(--trust-low)"/>
+      <circle cx="234" cy="130" r="4" fill="var(--trust-low)"/>
+      <g font-family="var(--mono)" font-size="7" text-anchor="middle" fill="var(--ash)">
+        <text x="26" y="145">記録1</text>
+        <text x="78" y="145">記録2</text>
+        <text x="130" y="145">記録3</text>
+        <text x="182" y="145">記録4</text>
+        <text x="234" y="145">総括</text>
+      </g>
+    </svg>
+    <p class="case-panel-note">記録①→総括にかけ、信頼度は一度も回復しない。この供述は最初から最後まで、右肩下がりの一本道だった。</p>
+  </div>
+
+  <div class="exhibits">
+    <div class="exhibits-head"><span>証拠品目録</span><span>EXHIBITS — ROOM 14</span></div>
+    <ul>
+      <li>
+        <p class="exhibit-title">① マグカップ「KOBAYASHI」</p>
+        <p class="exhibit-desc"><span class="arrow">→</span>弁護士「コバヤシ」の名の元ネタ。一味の背後にいる黒幕の使者として供述に登場する(記録№2)。コージャンのデスクに置かれた備品で、ヴァーバルの視線の先にあった。</p>
+      </li>
+      <li>
+        <p class="exhibit-title">② 指名手配ポスター「REDFOOT」</p>
+        <p class="exhibit-desc"><span class="arrow">→</span>仲介者「レッドフット」の名の元ネタ。武器の調達役として供述に登場する(記録№2)。壁に貼られたポスターの文字がそのまま流用されたと見られる。</p>
+      </li>
+      <li>
+        <p class="exhibit-title">③ 壁面コルクボードの資料群</p>
+        <p class="exhibit-desc"><span class="arrow">→</span>供述内で語られる一味の人物往来・立ち回り先の細部を裏付ける小道具として流用されたと劇中の描写から示唆される。断定的な裏付けは取れていない。</p>
+      </li>
+      <li>
+        <p class="exhibit-title">④ コージャンのデスク周りの備品全般</p>
+        <p class="exhibit-desc"><span class="arrow">→</span>ヴァーバルが視線を落とすたびに新しい固有名詞を拾う“引き出し”として機能していると劇中の演出から示唆される。個々の備品と供述の対応は本人の証言以外に裏付けがない。</p>
+      </li>
+      <li>
+        <p class="exhibit-title">⑤ メモ用紙の走り書き「SKOKIE, ILLINOIS」</p>
+        <p class="exhibit-desc"><span class="arrow">→</span>ヴァーバルが自らの出自として語る土地の名の元ネタと劇中の描写から示唆される。身の上話という最も検証しづらい部分にまで、同じ手口が及んでいた可能性を示す一枚。</p>
+      </li>
+      <li>
+        <p class="exhibit-title">⑥ 電話機脇の内線番号表</p>
+        <p class="exhibit-desc"><span class="arrow">→</span>一味を招集する連絡手段の描写(電話でのやり取り)に転用されたと劇中の描写から示唆される。供述中、連絡の経緯を語る場面でヴァーバルの視線が電話機の方向に流れる。</p>
+      </li>
+      <li>
+        <p class="exhibit-title">⑦ 灰皿脇のマッチブック</p>
+        <p class="exhibit-desc"><span class="arrow">→</span>一味が落ち合う酒場やクラブの名称の元ネタと劇中の描写から示唆される。供述の中盤、仲間内の待ち合わせ場所を語る細部の出どころとして疑われる。</p>
+      </li>
+      <li>
+        <p class="exhibit-title">⑧ 指名手配ポスター群のうち判読できる別の氏名</p>
+        <p class="exhibit-desc"><span class="arrow">→</span>一味以外の脇役・情報屋として供述に登場する人物名の元ネタと劇中の描写から示唆される。①②と同じ壁面に並んでおり、視線の動線上にある。</p>
+      </li>
+    </ul>
+    <div class="exhibits-foot">注記: ①②は取調室備品からの流用である旨が制作側のコメンタリーで言及されている。③〜⑧は劇中の描写から推測される元ネタであり、断定的な裏付けは取れていない。なお「キーザー・ソゼ」という呼称自体は取調室備品に由来するものではなく、供述の核として語り手が独自に案出した固有名詞と考えられる。位置関係は記録№1の見取り図を参照。</div>
+  </div>
+
+  <p class="aside-footnote">※本ページの図版(見取り図・面通し配置図・歩行の変化図・信頼度チャート)はすべて概念的な再構成であり、実際の場面写真ではない。</p>
+</aside>
+</div>
+
+<footer class="site-footer">
+  <a class="footer-close" href="#">一覧へ戻る</a>
+  <span class="footer-note">FRAMEframe — FILM CRITICISM JOURNAL</span>
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var body = document.body;
+  var KEY = 'frameframe-theme';
+  var themeBtn = document.getElementById('themeToggle');
+  var themeLabel = document.getElementById('themeLabel');
+  function systemDark(){ return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function effective(){ var s=null; try{ s=localStorage.getItem(KEY);}catch(e){} return s || (systemDark()?'dark':'light'); }
+  function renderTheme(){ var m=effective(); themeLabel.textContent = m==='dark'?'DARK':'LIGHT'; themeBtn.setAttribute('aria-pressed', String(m==='dark')); }
+  try{ var stored = localStorage.getItem(KEY); if (stored) root.setAttribute('data-theme', stored); }catch(e){}
+  renderTheme();
+  themeBtn.addEventListener('click', function(){
+    var next = effective()==='dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try{ localStorage.setItem(KEY, next); }catch(e){}
+    renderTheme();
+  });
+  var mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+  if (mq && mq.addEventListener){ mq.addEventListener('change', function(){ if(!root.hasAttribute('data-theme')) renderTheme(); }); }
+
+  /* ---------------- custom cursor: rAF lerp toward the pointer ----------------
+     Ported from the homepage (案A) as-is, so the cursor experience is
+     identical across the site. */
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cursor = document.getElementById('cursor');
+  var supportsFinePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (cursor && supportsFinePointer && !reduced){
+    body.classList.add('cursor-ready');
+    var mx = window.innerWidth/2, my = window.innerHeight/2, cx = mx, cy = my;
+    var cursorSeen = false;
+    window.addEventListener('mousemove', function(e){
+      mx = e.clientX; my = e.clientY;
+      if (!cursorSeen){ cursorSeen = true; cx = mx; cy = my; cursor.classList.add('is-ready'); }
+      var target = document.elementFromPoint(mx, my);
+      var interactive = target && target.closest('a, button');
+      cursor.classList.toggle('is-hover', !!interactive);
+    });
+    (function cursorLoop(){
+      cx += (mx - cx) * 0.16;
+      cy += (my - cy) * 0.16;
+      cursor.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+      requestAnimationFrame(cursorLoop);
+    })();
+  }
+})();
+</script>

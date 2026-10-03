@@ -1,0 +1,33 @@
+---
+// One label + note pair for a ChapterRow's `margin` slot. Several can be
+// stacked inside one aside. Ported from docs/artifacts/detail-mock-2001-odyssey.html
+// and docs/artifacts/detail-mock-dragon-tattoo.html.
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+---
+
+<p class="margin-label">{label}</p>
+<p class="margin-note"><slot /></p>
+
+<style>
+  .margin-label {
+    margin: 0 0 0.9rem;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+    color: var(--ash);
+    text-transform: uppercase;
+  }
+  .margin-label:not(:first-child) {
+    margin-top: 1.6rem;
+  }
+  .margin-note {
+    margin: 0;
+    font-family: var(--serif-body);
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--paper-dim);
+  }
+</style>

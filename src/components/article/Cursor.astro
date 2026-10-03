@@ -1,0 +1,107 @@
+---
+// Custom cursor: fixed dot+ring, position set via JS each frame (rAF lerp).
+// Identical technique across the homepage and every article mock — see
+// docs/artifacts/detail-mock-*.html for the originals this was ported from.
+---
+
+<div class="cursor" id="cursor" aria-hidden="true"><span class="cursor-dot"></span></div>
+
+<style>
+  @media (hover: hover) and (pointer: fine) {
+    :global(body.cursor-ready) {
+      cursor: none;
+    }
+    :global(body.cursor-ready a),
+    :global(body.cursor-ready button) {
+      cursor: none;
+    }
+  }
+
+  .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
+    border-radius: 50%;
+    border: 1.5px solid #fff;
+    pointer-events: none;
+    z-index: 90;
+    opacity: 0;
+    mix-blend-mode: difference;
+    transition:
+      width 0.35s cubic-bezier(0.16, 0.8, 0.24, 1),
+      height 0.35s cubic-bezier(0.16, 0.8, 0.24, 1),
+      margin 0.35s cubic-bezier(0.16, 0.8, 0.24, 1),
+      opacity 0.3s ease,
+      border-width 0.3s ease;
+    will-change: transform;
+  }
+  .cursor.is-ready {
+    opacity: 1;
+  }
+  .cursor.is-hover {
+    width: 64px;
+    height: 64px;
+    margin: -32px 0 0 -32px;
+    border-width: 2px;
+  }
+  .cursor-dot {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor {
+      display: none;
+    }
+    :global(body.cursor-ready) {
+      cursor: auto;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    var body = document.body;
+    var cursor = document.getElementById('cursor');
+    if (!cursor) return;
+
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var supportsFinePointer =
+      window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!supportsFinePointer || reduced) return;
+
+    body.classList.add('cursor-ready');
+    var mx = window.innerWidth / 2,
+      my = window.innerHeight / 2,
+      cx = mx,
+      cy = my;
+    var cursorSeen = false;
+    window.addEventListener('mousemove', function (e) {
+      mx = e.clientX;
+      my = e.clientY;
+      if (!cursorSeen) {
+        cursorSeen = true;
+        cx = mx;
+        cy = my;
+        cursor.classList.add('is-ready');
+      }
+      var hoverTarget = document.elementFromPoint(mx, my);
+      var interactive = hoverTarget && hoverTarget.closest('a, button');
+      cursor.classList.toggle('is-hover', !!interactive);
+    });
+    (function cursorLoop() {
+      cx += (mx - cx) * 0.16;
+      cy += (my - cy) * 0.16;
+      cursor.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+      requestAnimationFrame(cursorLoop);
+    })();
+  })();
+</script>

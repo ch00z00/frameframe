@@ -1,0 +1,75 @@
+---
+// 3-tier theme toggle (light / dark / system), persisted to localStorage.
+// Pairs with the token structure in src/styles/tokens.css.
+---
+
+<button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">
+  <span class="dot" aria-hidden="true"></span>
+  <span id="themeLabel">DARK</span>
+</button>
+
+<style>
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
+    color: var(--paper);
+    padding: 6px 10px;
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+  }
+  .theme-toggle .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+</style>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var KEY = 'frameframe-theme';
+    var themeBtn = document.getElementById('themeToggle');
+    var themeLabel = document.getElementById('themeLabel');
+    if (!themeBtn || !themeLabel) return;
+
+    function systemDark() {
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    function effective() {
+      var s = null;
+      try {
+        s = localStorage.getItem(KEY);
+      } catch (e) {}
+      return s || (systemDark() ? 'dark' : 'light');
+    }
+    function renderTheme() {
+      var m = effective();
+      themeLabel.textContent = m === 'dark' ? 'DARK' : 'LIGHT';
+      themeBtn.setAttribute('aria-pressed', String(m === 'dark'));
+    }
+    try {
+      var stored = localStorage.getItem(KEY);
+      if (stored) root.setAttribute('data-theme', stored);
+    } catch (e) {}
+    renderTheme();
+    themeBtn.addEventListener('click', function () {
+      var next = effective() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try {
+        localStorage.setItem(KEY, next);
+      } catch (e) {}
+      renderTheme();
+    });
+    var mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq && mq.addEventListener) {
+      mq.addEventListener('change', function () {
+        if (!root.hasAttribute('data-theme')) renderTheme();
+      });
+    }
+  })();
+</script>

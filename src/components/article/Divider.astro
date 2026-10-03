@@ -1,0 +1,94 @@
+---
+// Full-bleed intertitle divider: a theme-invariant black bar that arms on
+// mount and fades/scales into view once scrolled near. Ported from
+// docs/artifacts/detail-mock-2001-odyssey.html.
+interface Props {
+  kicker: string;
+  gloss: string;
+}
+const { kicker, gloss } = Astro.props;
+---
+
+<div class="divider" data-reveal>
+  <p class="divider-title">{kicker}</p>
+  <p class="divider-gloss">{gloss}</p>
+</div>
+
+<style>
+  .divider {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    margin-top: clamp(8rem, 17vh, 13rem);
+    margin-bottom: clamp(8rem, 17vh, 13rem);
+    background: #000;
+    color: #f2e6c8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(5.5rem, 15vh, 9.5rem) 1.5rem;
+    transition:
+      opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1),
+      transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .divider.js-armed {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  .divider.js-armed.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .divider-title {
+    font-family: var(--mono);
+    font-size: clamp(0.85rem, 2vw, 1.05rem);
+    letter-spacing: 0.34em;
+    margin: 0;
+  }
+  .divider-gloss {
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 340;
+    font-size: clamp(1.3rem, 3vw, 1.9rem);
+    color: rgba(242, 230, 200, 0.72);
+    margin: 1.1rem 0 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .divider {
+      transition: none;
+    }
+    .divider.js-armed {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var dividers = document.querySelectorAll('.divider[data-reveal]');
+    if (!reduced && 'IntersectionObserver' in window) {
+      dividers.forEach(function (d) {
+        d.classList.add('js-armed');
+      });
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+      dividers.forEach(function (d) {
+        io.observe(d);
+      });
+    }
+  })();
+</script>

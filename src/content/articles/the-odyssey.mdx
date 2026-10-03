@@ -1,0 +1,663 @@
+---
+title: "『The Odyssey』英雄の帰還は、誰の言葉で語られるべきか"
+description: "ホメロス『オデュッセイア』を下敷きにしたノーランの2026年作。客人歓待の掟、吟遊詩人役のトラヴィス・スコット起用、IMAXへのこだわりから、帰還(ノストス)というノーラン自身の物語系譜までを読む。"
+publishDate: 2026-09-24
+tags: ["クリストファー・ノーラン", "叙事詩", "IMAX"]
+tone: warm
+work: "オデュッセイア"
+englishTitle: "The Odyssey"
+subtitle: "英雄の帰還は、誰の言葉で語られるべきか"
+director: "クリストファー・ノーラン"
+production: "ユニバーサル・ピクチャーズ"
+cast: ["マット・デイモン", "アン・ハサウェイ", "シャーリーズ・セロン"]
+image: "../../assets/articles/the_odyssey.jpg"
+---
+
+import ChapterRow from '../../components/article/ChapterRow.astro';
+import Divider from '../../components/article/Divider.astro';
+import PullQuote from '../../components/article/PullQuote.astro';
+
+{/*
+  褪せたセピアの配色はこの記事だけの固有パレット(:root の再定義)。
+  topbar/footer を含むページ全体に効かせるため、スコープ用クラスでは
+  なくグローバルな :root として定義している。
+  docs/artifacts/detail-mock-2001-odyssey.html からの移植。
+*/}
+
+<main class="page">
+  <header class="hero">
+    <div class="opening-mark" aria-hidden="true"></div>
+    <p class="kicker">FILM CRITICISM JOURNAL — 徹底考察</p>
+    <h1 class="title">
+      <span class="title-rest">THE</span><span class="title-num">Odyssey</span>
+    </h1>
+    <p class="subtitle">英雄の帰還は、誰の言葉で語られるべきか</p>
+    <div class="meta">
+      <span class="meta-date">2026.09.24</span>
+      <span class="meta-sep" aria-hidden="true">/</span>
+      <span class="meta-tags">クリストファー・ノーラン / 叙事詩 / IMAX</span>
+      <span class="tone-badge" data-tone="epic"><span class="dot" aria-hidden="true"></span>MYTHIC</span>
+    </div>
+  </header>
+
+  <ChapterRow>
+    <div class="lede">
+      <p>『オッペンハイマー』から3年、クリストファー・ノーランが選んだ次の題材は、人類最古の叙事詩のひとつだった。ホメロス『オデュッセイア』——トロイア戦争を終えた英雄オデュッセウスが、妻ペネロペイアの待つ故郷イタケーへと帰り着くまでの、危険に満ちた長い航海の物語である。2026年7月に公開された『The Odyssey』は、製作費2億5000万ドルに対し興行収入17億2100万ドルという、疑いようのない大ヒットとなった。だが数字の大きさは、この作品がどう読まれるべきかについて、ほとんど何も教えてくれない。公開から2ヶ月あまりが経ち、熱狂と論争の余波がいくらか引いたいま、あらためてこの航海の航跡をたどってみたい。</p>
+    </div>
+    <Fragment slot="margin">
+      <p class="margin-label">Film Data</p>
+      <dl class="margin-facts">
+        <div><dt>監督</dt><dd>クリストファー・ノーラン</dd></div>
+        <div><dt>脚本</dt><dd>ノーラン(原作: ホメロス)</dd></div>
+        <div><dt>公開</dt><dd>2026</dd></div>
+        <div><dt>上映時間</dt><dd>173分</dd></div>
+      </dl>
+    </Fragment>
+  </ChapterRow>
+
+  <section class="stat chapter-row">
+    <p class="stat-label">興行収益倍率 — Box Office Multiple</p>
+    <p class="stat-number"><span class="num">6.9</span><span class="unit">×</span><span class="of">/ 予算比</span></p>
+    <p class="stat-caption">製作費2億5000万ドルに対し、全世界興行収入は17億2100万ドル——投じた予算の約6.9倍を回収した計算になる。批評家の評価は賛否に割れたが、動員規模において『The Odyssey』は紛れもない成功作だった。</p>
+  </section>
+
+  <section class="wide-panel">
+    <p class="panel-eyebrow">Fig. 1 — 航路(抽象図)</p>
+    <figure class="voyage-figure">
+      <svg viewBox="0 0 900 260" role="img" aria-labelledby="voyageTitle voyageDesc">
+        <title id="voyageTitle">オデュッセウスの航路、抽象図</title>
+        <desc id="voyageDesc">トロイアからイタケーへ、複数の寄り道を経てぐるりと戻る円環的な航路を抽象化した図。冥府行は実線ではなく破線の不確かな分岐として示す。</desc>
+        <path class="route-line" d="M60,190 C110,120 150,70 195,70 S270,140 330,205 S420,140 465,65 S560,140 600,200 S760,230 855,175" />
+        <path class="route-line is-uncertain" d="M600,200 Q670,120 735,80 Q800,120 855,175" />
+        <circle class="route-node is-origin" cx="60" cy="190" r="7" />
+        <circle class="route-node" cx="195" cy="70" r="6" />
+        <circle class="route-node" cx="330" cy="205" r="6" />
+        <circle class="route-node" cx="465" cy="65" r="6" />
+        <circle class="route-node" cx="600" cy="200" r="6" />
+        <circle class="route-node is-uncertain" cx="735" cy="80" r="6" />
+        <circle class="route-node is-origin" cx="855" cy="175" r="7" />
+        <text class="route-label is-origin" x="60" y="216" text-anchor="middle">TROY</text>
+        <text class="route-label" x="195" y="50" text-anchor="middle">CALYPSO</text>
+        <text class="route-label" x="330" y="231" text-anchor="middle">POLYPHEMUS</text>
+        <text class="route-label" x="465" y="45" text-anchor="middle">SIRENS</text>
+        <text class="route-label" x="600" y="226" text-anchor="middle">CIRCE</text>
+        <text class="route-label is-uncertain" x="735" y="60" text-anchor="middle">underworld?</text>
+        <text class="route-label is-origin" x="855" y="151" text-anchor="middle">ITHACA</text>
+      </svg>
+      <figcaption class="voyage-figure-caption">オデュッセウスの航路を抽象化した図。トロイアとイタケーという、同じだけの重みを持つ二点のあいだに複数の寄り道が挟まる——物語の形そのものが直線ではなく回り道であることを示す。冥府行(ネキュイア)は破線で示した。本作の劇中描写としては未確認であり、あくまで本稿の間奏見出しに対応する仮の位置づけとして置いている(後述の比較表を参照)。</figcaption>
+    </figure>
+  </section>
+
+  <Divider kicker="ΜΟΥΣΑ" gloss="女神よ、語れ" />
+
+  <ChapterRow>
+    <h2>吟遊詩人は、なぜラッパーだったのか</h2>
+    <p>劇中、宮廷で英雄たちの武勲を歌い継ぐ吟遊詩人(アオイドス)役に、ノーランはミュージシャンのトラヴィス・スコットを起用した。俳優経験のほとんどない人選に、公開前から疑問の声が上がったのは当然だろう。だが本人は「ラップと口承詩を、類似の芸術形式として結びつけるためだ」と、この起用理由を語っている。</p>
+    <p>ノーラン自身の言葉を借りれば、彼が探していたのは「画面の中で言葉を発し、今日の世界に生きる我々が信じられるやり方で部屋の注意を引きつけられる誰か——それによって、詩による語りから生まれるドラマと感情を、観客が理解できるようにしたかった」人物だった。俳優としての経歴の有無より、"語りの説得力"そのものを基準に据えたキャスティングだったことがうかがえる。</p>
+    <p>考えてみれば理にかなった選択でもある。ホメロスの叙事詩は、もともと文字ではなく声によって——韻律とリズムに乗せて、聴衆の前で即興的に語り継がれてきた芸能だった。ラップもまた、韻を踏み、拍に乗せて言葉を紡ぐ、現代におけるもっとも生きた口承詩の形式のひとつである。スコットはエンドクレジット曲の共作・演奏も手がけており、劇中の吟遊詩人の歌声は、そのままクレジットの先のトラックへと地続きに接続される。三千年前の語り部と、21世紀のラッパーを同じ系譜に置くという着想は、キャスティングというより一種の批評的な補助線に近い。</p>
+    <p>スコット自身は起用の打診について、ノーランから直接、前触れのない電話を受けたと明かしている。本人いわく、演技への挑戦には「めちゃくちゃ緊張した」――畑違いの現場に飛び込む不安を率直に語りつつも、その緊張感自体が、宮廷で武勲を語り聞かせる吟遊詩人という役どころに、ある種の生々しさを与える結果になったとも読める。なお両者の協働はこれが初めてではなく、スコットは前作『TENET』(2020)にも楽曲「The Plan」を提供しており、今回の起用はその延長線上にある。</p>
+    <Fragment slot="margin">
+      <p class="margin-label">Casting</p>
+      <p class="margin-note">吟遊詩人(アオイドス)役——トラヴィス・スコット。ノーラン曰く、ラップと口承詩は「同じ系譜にある芸術形式」。エンドクレジット曲の共作・演奏も担当している。</p>
+      <p class="margin-label" style="margin-top:1.6rem">Nolan × Scott</p>
+      <p class="margin-note">両者の協働は本作が初ではない。スコットは『TENET』(2020)に楽曲「The Plan」を提供済み。今回のキャスティングは、その関係の延長線上で持ちかけられた。</p>
+      <p class="margin-label" style="margin-top:1.6rem">Credits Song</p>
+      <p class="margin-note">エンドクレジット曲「When I'm Home」はスコット自身が作詞・作曲・歌唱。劇中の吟遊詩人の声が、そのままクレジットの先の一曲へ地続きに接続される構成になっている。</p>
+      <p class="margin-label" style="margin-top:1.6rem">反応 Reception</p>
+      <p class="margin-note">発表直後は畑違いの人選への反発の声も上がった。スコット自身は後にこの反応について、番組出演などの場で自らの言葉で説明を試みている。</p>
+    </Fragment>
+  </ChapterRow>
+
+  <Divider kicker="ΝΕΚΥΙΑ" gloss="冥府に呼びかける声" />
+
+  <ChapterRow>
+    <h2>一つ目の巨人と、一つ目のレンズ</h2>
+    <p>ノーランがIMAXフィルムへのこだわりを手放したことは一度もない。『インターステラー』の氷惑星も、『ダンケルク』の浜辺も、『オッペンハイマー』の爆心地も、彼は一貫して巨大な画角で撮り続けてきた。今回、一つ目の巨人ポリュペモスの洞窟や、セイレーンの岩礁、魔女キルケーの島といった神話的な光景に、この画角が選ばれたのは必然だったのかもしれない。ポリュペモスのただひとつの眼は、劇場の巨大なスクリーンそのものの隠喩のようにも見える——観客もまた、たったひとつの巨大な"目"を通して、この航海を追体験させられるのだ。</p>
+    <p>もっとも、この賭けがすべての観客を満足させたわけではない。IMAX上映の画質が「濁って見劣りする」と指摘する声は、公開直後から根強くあった。神話のスケールを実写と巨大フォーマットで受け止めようとする野心と、フィルムそのものの解像感や明るさの限界とのあいだに、無視できない摩擦があったことは認めるべきだろう。それでも、Roger Ebertはこの作品を肯定的に評価している。</p>
+
+    <PullQuote cite="Roger Ebert">
+      <span class="cyclops-eye" slot="marker" aria-hidden="true"></span>
+      「同種の映画の多くより洗練された人間性への視座を持つ、壮大な叙事詩」
+    </PullQuote>
+
+    <p>賛否の分かれ目は、結局のところ「スケール」というこの映画の主題そのものにあった。神話的な大きさを、あえて技術的な限界すれすれの大きさで撮ることの是非——それは瑕疵であると同時に、ノーランという作家が終始選び続けてきた賭けの延長線上にあるものでもある。</p>
+    <Fragment slot="margin">
+      <p class="margin-label">IMAX</p>
+      <p class="margin-note">IMAXへの一貫したこだわりは『インターステラー』以来変わらない。神話的スケールとの相性が、今回は賛否を分けた。</p>
+    </Fragment>
+  </ChapterRow>
+
+  <Divider kicker="ΝΌΣΤΟΣ" gloss="英雄、家路につく" />
+
+  <ChapterRow>
+    <h2>英雄か、罪人か</h2>
+    <p>そもそもトロイア陥落の発端となった木馬の策は、誰の発案だったか。オデュッセウスである。木造の贈り物を装い、敵の城壁の内側に兵を忍ばせるという策略は、客人歓待の掟——旅人や贈り物を装う者を欺いてはならないという、ゼウスが司る不文律——を真っ向から踏みにじる行為だった。トロイアを滅ぼしたのは知略ではなく、掟破りだったと言い換えてもいい。</p>
+    <p>劇中、オデュッセウスはこの一件を誇らしく語る英雄としては描かれない。ポセイドンの息子である一つ目の巨人ポリュペモスを盲目にしたことも同様だ。「ウーティス(誰でもない者)」と名乗って正体を隠す詐術で洞窟を脱した直後、彼は勝ち誇って本名を叫んでしまう——この一瞬の慢心が、のちの十年に及ぶ漂流という罰を呼び込む。木馬の策略も、ポリュペモスの一件も、共通しているのは「賢さが同時に罪でもある」という構図だ。ノーラン版オデュッセウスは、単純な英雄ではなく、自らの知略によって自らを罰する男として立ち上がってくる。</p>
+    <p>だからこそ終盤、彼が選び取るものが重要になる。故郷イタケーに帰り着いてなお、彼は凱旋の栄誉ではなく、追放の身となり死者を弔う旅を選ぶ——これは償いの姿勢そのものであり、キリスト教における「赦し」の観念に近い。自らの過ちを認め、罰を引き受け、その先でなお生きていく道を探すこと。『The Odyssey』が最終的に問うているのは、英雄がどう勝つかではなく、罪人がどう過ちと共に生き続けるか、という一点なのかもしれない。</p>
+    <Fragment slot="margin">
+      <p class="margin-label">War &amp; Guilt 木馬の罪</p>
+      <figure class="key-figure helm-figure">
+        <div class="key-figure-mark">
+          <svg viewBox="0 0 140 140" role="img" aria-label="兜の抽象シルエット。トロイアの木馬と、誓いを破った戦争を象徴する図">
+            <path class="helm-dome" d="M20,92 Q18,18 70,16 Q122,18 120,92 L120,102 Q70,114 20,102 Z"></path>
+            <rect class="helm-crest" x="63" y="2" width="14" height="22" rx="3"></rect>
+            <rect class="helm-slit" x="44" y="58" width="52" height="11" rx="2"></rect>
+            <path class="helm-cheek" d="M26,90 L14,134 L38,124 L40,92 Z"></path>
+            <path class="helm-cheek" d="M114,90 L126,134 L102,124 L100,92 Z"></path>
+          </svg>
+        </div>
+        <figcaption class="key-figure-caption">兜 — 誓いを破って落とされた城市</figcaption>
+      </figure>
+      <p class="margin-note">木馬の策も、ポリュペモスを盲目にした一件も、客人歓待の掟への違反だった。英雄の知略は、同時に罪でもある。</p>
+    </Fragment>
+  </ChapterRow>
+
+  <ChapterRow>
+    <h2>ゼウスの掟という背骨</h2>
+    <p>劇中で繰り返し口にされる「ゼウスの掟」という言葉は、字面以上の重みを持つ。ギリシャ神話において、旅人や客人をもてなす義務——客人歓待——は、ゼウスその人が司る秩序だった。誰が、誰をもてなし、誰を裏切ったか。『The Odyssey』という映画は、この一点を物語全体の背骨として据えている。</p>
+    <p>トロイアでの木馬の策は、客としての礼を偽って敵地に入り込むという、掟そのものへの違反として物語の起点に置かれる。ポリュペモスの洞窟では、巨人が客であるオデュッセウスたちを喰らおうとする、掟の逆向きの違反が描かれる——双方が同じ掟を、異なる形で破っている。イタケーに戻れば、こんどは求婚者たちがペネロペイアの館に居座り、歓待を食い潰す者として立ち現れる。掟破りの主体が、旅の各段階で入れ替わりながら反復されていく構造だ。</p>
+    <p>そして物語の終盤、オデュッセウスが変装を解かずに館へ戻るのは、誰がまだ掟を守っているかを見定めるためでもある。豚飼いエウマイオスの忠義も、老乳母の記憶も、求婚者たちの傲慢も、すべてはこの一つの物差しで測られる。結末の裁き——弓の試練から始まる対決——もまた、掟を破り続けた者たちへの、ゼウス的な秩序の執行として位置づけられる。冒頭の罪、島々の悲劇、帰還後の吟味、そして結末。この映画のどの場面を切り取っても、「誰が客人歓待の掟を守り、誰が破ったか」という同じ問いが顔を出す。</p>
+    <Fragment slot="margin">
+      <p class="margin-label">Ξενία 掟の吟味</p>
+      <figure class="key-figure bow-figure">
+        <div class="key-figure-mark">
+          <svg viewBox="0 0 140 140" role="img" aria-label="弓矢の抽象図。忠誠を見定める試練を象徴する図">
+            <path class="bow-arc" d="M32,16 Q76,70 32,124"></path>
+            <line class="bow-string" x1="32" y1="16" x2="32" y2="124"></line>
+            <line class="arrow-shaft" x1="16" y1="70" x2="120" y2="70"></line>
+            <path class="arrow-head" d="M120,70 L104,59 L104,81 Z"></path>
+            <path class="arrow-fletch" d="M16,70 L30,60 M16,70 L30,80"></path>
+          </svg>
+        </div>
+        <figcaption class="key-figure-caption">弓矢 — 忠誠を射抜く最後の試練</figcaption>
+      </figure>
+      <p class="margin-note">求婚者たちを討つ弓の試練は、力比べであると同時に、誰が掟を守り続けたかを見定める最後の吟味でもある。</p>
+    </Fragment>
+  </ChapterRow>
+
+  <section class="wide-panel">
+    <p class="panel-eyebrow">Fig. 2 — ゼウスの掟、破られては裁かれる糸</p>
+    <figure class="law-figure">
+      <svg viewBox="0 0 900 200" role="img" aria-labelledby="lawTitle lawDesc">
+        <title id="lawTitle">「ゼウスの掟」が物語を貫くさまを示す図</title>
+        <desc id="lawDesc">客人歓待の掟が、トロイア、ポリュペモスの洞窟、求婚者たちの場面で繰り返し破られ、帰還後の吟味を経て、結末で秩序として回復されるさまを、一本の横線の破断と修復として示した図。</desc>
+        <line class="law-line" x1="70" y1="110" x2="830" y2="110"></line>
+        <g class="law-break"><path d="M64,96 L76,124 M80,96 L68,124"></path></g>
+        <g class="law-break"><path d="M254,96 L266,124 M270,96 L258,124"></path></g>
+        <g class="law-break"><path d="M444,96 L456,124 M460,96 L448,124"></path></g>
+        <circle class="law-node is-trial" cx="640" cy="110" r="7"></circle>
+        <circle class="law-node is-resolved-ring" cx="830" cy="110" r="15"></circle>
+        <circle class="law-node is-resolved" cx="830" cy="110" r="9"></circle>
+        <text class="law-label" x="70" y="150" text-anchor="middle">TROY</text>
+        <text class="law-sub" x="70" y="78" text-anchor="middle">誓いを欺く</text>
+        <text class="law-label" x="260" y="150" text-anchor="middle">POLYPHEMUS</text>
+        <text class="law-sub" x="260" y="78" text-anchor="middle">双方の違反</text>
+        <text class="law-label" x="450" y="150" text-anchor="middle">SUITORS</text>
+        <text class="law-sub" x="450" y="78" text-anchor="middle">歓待の蹂躙</text>
+        <text class="law-label" x="640" y="150" text-anchor="middle">TRIAL</text>
+        <text class="law-sub" x="640" y="78" text-anchor="middle">忠誠を見定める</text>
+        <text class="law-label is-resolved" x="830" y="150" text-anchor="middle">JUDGMENT</text>
+        <text class="law-sub" x="830" y="78" text-anchor="middle">秩序の回復</text>
+      </svg>
+      <figcaption class="law-figure-caption">「ゼウスの掟」——客人をもてなし、客人として礼を尽くす義務——が、物語の各段階でどう破られ、どう裁かれるかを一本の横線で示した図。トロイアの木馬、ポリュペモスの洞窟、求婚者たちの居座りは、いずれもこの掟への違反として起こる(破断)。帰還後の吟味は違反そのものではなく、誰が掟を守り続けたかを見定める過程(開いた円)。結末の裁きにおいて、線はふたたび一つに結ばれる(塗りつぶされた円)。本稿による構成上の図解であり、劇中の字幕や台詞を再現したものではない。</figcaption>
+    </figure>
+  </section>
+
+  <div class="trivia-panel">
+    <div class="trivia-panel-head">
+      <p class="trivia-eyebrow">制作こぼれ話 — Behind the Voyage</p>
+      <p class="trivia-tag">批評ではなく、余談として</p>
+    </div>
+    <div class="trivia-grid">
+      <div class="trivia-item">
+        <p class="trivia-label">不在のアキレス</p>
+        <p>本作にトロイア戦争最大の英雄アキレスは登場しない。アキレスについて問われたマット・デイモンは「それはブラッド・ピットに聞いてくれ」と返したという——2004年の映画『トロイ』でアキレスを演じたのが、他ならぬブラッド・ピットだったことを踏まえた返答だ。</p>
+      </div>
+      <div class="trivia-item">
+        <p class="trivia-label">神話が伝える二つの関係</p>
+        <p>ギリシャ神話において、オデュッセウスはキルケーとカリュプソの双方と関係を持ったとされる。二人の魔女/女神のもとで過ごした歳月は、彼の長い漂流のなかでもとりわけ長い足止めとして伝えられている。</p>
+      </div>
+      <div class="trivia-item">
+        <p class="trivia-label">身長差で作った巨人族</p>
+        <p>ライストリュゴネスの巨人族が登場する場面では、身長2メートルの俳優が巨人役を、身長1.5メートル台の俳優たちがギリシャ軍を演じることで、体格差そのものを実際のスケールとして作り出したという。</p>
+      </div>
+      <div class="trivia-item">
+        <p class="trivia-label">グルテンを絶った日々</p>
+        <p>マット・デイモンは本作のためにグルテンを断ち、筋力トレーニングに励み、「人生で最高の身体」を作り上げたと語っている。</p>
+      </div>
+    </div>
+  </div>
+
+  <ChapterRow>
+    <h2>海の民、そして神話の余白</h2>
+    <p>劇中に登場する「海からの民」という呼び名は、注意深く見るとひとつのひねりを含んでいる。字面だけを追えば異民族の侵略者を指しているようにも読めるが、文脈をたどっていくと、それは他ならぬギリシャ軍自身を指す呼称として立ち上がってくる。トロイアの人々にとって、船で海の向こうからやってきて、十年をかけて自分たちの町を滅ぼした者たち——それはまさに「海からの民」以外の何者でもない。加害者の呼び名が、語る主体によって裏返る。この映画が誰の視点を借りて語られているかによって、同じ言葉の意味が反転するという仕掛けは、地味だが鋭い。</p>
+    <p>カリュプソの扱いにも同じ問いが宿る。劇中の彼女は、オデュッセウスを七年にわたって島に留め置く存在として描かれ、原典の神話が伝えるような、彼女自身の孤独の背景——なぜ彼女がひとり島に住み、なぜ人間の男に執着したのか、という長い来歴——にはほとんど触れられない。結果として観客の前に残るのは、帰還を阻む邪魔者としてのカリュプソだけだ。だがこれは単なる省略ではなく、ひとつの選択として読むべきだろう。オデュッセウス側の視点で語られる物語において、彼を引き留めた者の内面は、意図的に空白のまま残される。この映画が「あえて描かないこと」によって何を選び取っているかを考えるなら、それはこの作品が最後まで誰の目を通して神話を語っているかという問いに、静かに行き着く。</p>
+    <Fragment slot="margin">
+      <p class="margin-label">Blank Spaces 余白</p>
+      <p class="margin-note">「海からの民」は、語る側によって指す相手が裏返る呼び名。カリュプソの沈黙もまた、描かれなかったことそのものが選択として読める。</p>
+    </Fragment>
+  </ChapterRow>
+
+  <ChapterRow>
+    <h2>誰の声で、ホメロスを語るか</h2>
+    <p>公開前から燻っていたのは、キャスティングをめぐる論争だけではない。ノーランが脚色にあたってどの『オデュッセイア』の翻訳版を土台に据えたかという一点をめぐって、原典との相違や神話的伝承との齟齬に対する反発は根強かった。三千年近く語り継がれ、幾多の言語・幾多の翻訳者の手を経てきたテクストを映画化するとき、「どの版を、誰の視点で読むか」は、単なる考証の正確性の問題ではない。</p>
+    <p>ホメロスのテクストそのものが、すでに無数の異読と解釈の層を抱えている。ある翻訳者は女性の声を強調し、ある翻訳者は英雄叙事詩としての勇壮さを強調する。ノーランがどの版を選び、どこを大胆に書き換えたかは、単なる脚色上の判断ではなく、「この映画が誰の物語として語られるべきか」という、作家としての態度表明そのものだ。翻訳をめぐる論争を瑕疵として片づけてしまうのは簡単だが、それはこの映画が原典に対してとった立ち位置——大胆さも危うさも含めて——を見えなくしてしまう。</p>
+    <Fragment slot="margin">
+      <p class="margin-label">Adaptation</p>
+      <p class="margin-note">どの翻訳を土台に据えるかは、技術的な選択である以上に、誰の視点で神話を語り直すかという作家の意思表示である。</p>
+    </Fragment>
+  </ChapterRow>
+
+  <ChapterRow>
+    <h2>帰郷の本当の意味</h2>
+    <p>十年に及ぶ航海の果てに、オデュッセウスが本当に求めていたものは何だったのか。素直に読めば、答えは家族の待つ故郷イタケーであり、妻ペネロペイアである。だが本作を、罪と赦しの物語として——「英雄か、罪人か」の章で見た通り——読み直すなら、この帰郷はもうひとつの相貌を見せ始める。</p>
+    <p>故郷への帰還そのものは、実のところ本命の目的地ではなく、自らの犯した罪と向き合い、反省し、償いへの覚悟を決めるための、長い時間だったのではないか。トロイアでの木馬の策略、ポリュペモスを盲目にした慢心、部下たちを死なせた数々の判断——十年の漂流は、罰であると同時に、それらと一つひとつ向き合わざるを得ない時間でもあった。カリュプソの島での七年も、キルケーの島での一年も、単なる寄り道ではなく、償いの前段としての足止めだったと読むことができる。</p>
+    <p>だからこそ、ようやく辿り着いたイタケーで、オデュッセウスが選ぶのは凱旋の玉座ではなく、死者を弔う追放の旅だった。帰郷が目的地ではなく通過点だったのだとすれば、この映画の本当の結末は、彼が家に帰り着いた瞬間ではなく、その先でなお過ちと共に生きていくことを選んだ瞬間にある。</p>
+    <Fragment slot="margin">
+      <p class="margin-label">Homecoming 帰郷</p>
+      <figure class="key-figure ship-figure">
+        <div class="key-figure-mark">
+          <svg viewBox="0 0 180 120" role="img" aria-label="船と波の抽象図。帰還の航海を象徴する図">
+            <path class="ship-wave" d="M0,92 Q15,86 30,92 T60,92 T90,92 T120,92 T150,92 T180,92"></path>
+            <path class="ship-wave is-deep" d="M0,105 Q15,99 30,105 T60,105 T90,105 T120,105 T150,105 T180,105"></path>
+            <path class="ship-hull" d="M38,86 L142,86 L124,103 L56,103 Z"></path>
+            <line class="ship-mast" x1="90" y1="86" x2="90" y2="30"></line>
+            <path class="ship-sail" d="M90,32 L90,80 L52,80 Z"></path>
+          </svg>
+        </div>
+        <figcaption class="key-figure-caption">船と海 — 償いのための遠回り</figcaption>
+      </figure>
+      <p class="margin-note">十年の漂流は罰であると同時に、過ちと向き合うための時間でもあった。船が目指したのは、家よりも先に、自分自身だったのかもしれない。</p>
+    </Fragment>
+  </ChapterRow>
+
+  <ChapterRow>
+    <h2>原典とノーラン版——継承と書き換えの地図</h2>
+    <p>『The Odyssey』は、ホメロスの原典をそのまま映像化した作品ではない。マット・デイモンのオデュッセウス、アン・ハサウェイのペネロペイア、シャーリーズ・セロンのカリュプソ、ルピタ・ニョンゴのヘレネ、ロバート・パティンソンのアンティノオス、ゼンデイヤのアテナ、トラヴィス・スコットの吟遊詩人——確認されているキャスティングだけを手がかりにしても、原典のどのエピソードにどれだけの比重が割かれているかは、すでにいくらか透けて見える。これは翻案というより、ノーラン監督なりの解釈によって組み直された、いわば"ノーラン版オデュッセイア"と呼ぶべきものだ。</p>
+    <p>以下の比較表では、公開情報として確認できる事実(キャスティング、および本稿でこれまで触れてきた上映内容の一部)と、確認できない具体的な脚色の詳細とを、はっきり分けて示す。後者については創作せず、ノーラン作品に一貫する作家性——時間の主観的な引き伸ばし、信頼できない語り手、記憶と不在者への執着、IMAXへのこだわり——から導かれる、批評的な推論として明記する。</p>
+    <Fragment slot="margin">
+      <p class="margin-label">Correspondence 配役対応</p>
+      <ul class="cast-map">
+        <li><span class="cast-orig">オデュッセウス</span><span class="arrow" aria-hidden="true">→</span><span class="cast-actor">マット・デイモン</span></li>
+        <li><span class="cast-orig">ペネロペイア</span><span class="arrow" aria-hidden="true">→</span><span class="cast-actor">アン・ハサウェイ</span></li>
+        <li><span class="cast-orig">カリュプソ</span><span class="arrow" aria-hidden="true">→</span><span class="cast-actor">シャーリーズ・セロン</span></li>
+        <li><span class="cast-orig">ヘレネ</span><span class="arrow" aria-hidden="true">→</span><span class="cast-actor">ルピタ・ニョンゴ</span></li>
+        <li><span class="cast-orig">アンティノオス</span><span class="arrow" aria-hidden="true">→</span><span class="cast-actor">ロバート・パティンソン</span></li>
+        <li><span class="cast-orig">アテナ</span><span class="arrow" aria-hidden="true">→</span><span class="cast-actor">ゼンデイヤ</span></li>
+        <li><span class="cast-orig">吟遊詩人</span><span class="arrow" aria-hidden="true">→</span><span class="cast-actor">トラヴィス・スコット</span></li>
+      </ul>
+    </Fragment>
+  </ChapterRow>
+
+  <section class="wide-panel">
+    <p class="panel-eyebrow">Fig. 3 — 原典 / ノーラン版 比較表</p>
+    <div class="panel-scroll">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th scope="col">エピソード</th>
+            <th scope="col">原典(ホメロス)</th>
+            <th scope="col">ノーラン版での位置づけ</th>
+            <th scope="col">作家の手つき</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">カリュプソの島<br/>(7年の抑留)</th>
+            <td>冒頭近くで明かされる、7年に及ぶ抑留。時間の主観的な長さそのものが主題になる挿話。</td>
+            <td>シャーリーズ・セロンが演じることは確認済み。尺や演出の詳細は未確認。ノーラン作品に一貫する時間の主観的な引き伸ばし(『インターステラー』『TENET』)を踏まえれば、抑留の年月を体感時間のねじれとして描いた可能性がある、と推測できる。</td>
+            <td class="stance"><span class="stance-mark"><span class="stance-dot is-rewritten" aria-hidden="true"></span>再解釈(推測)</span></td>
+          </tr>
+          <tr>
+            <th scope="row">一つ目巨人<br/>ポリュペモスの洞窟</th>
+            <td>「ウーティス(誰でもない者)」の詐術で目を潰し、知略で脱出する試練。</td>
+            <td>遭遇は確認済み。本稿既述の通り、IMAXの単一レンズの隠喩として演出されている。</td>
+            <td class="stance"><span class="stance-mark"><span class="stance-dot is-kept" aria-hidden="true"></span>重視</span></td>
+          </tr>
+          <tr>
+            <th scope="row">セイレーンの歌</th>
+            <td>船を帆柱に縛りつけ、部下の耳を蝋で塞いで聴く誘惑の試練。</td>
+            <td>遭遇は確認済み。具体的な演出は未確認だが、「聞こえてはならない声を聞く」というモチーフは、ノーランの音響設計への執着(『ダンケルク』の時計音、『TENET』の逆再生音)と響き合う、と読める。</td>
+            <td class="stance"><span class="stance-mark"><span class="stance-dot is-kept" aria-hidden="true"></span>重視(推測含む)</span></td>
+          </tr>
+          <tr>
+            <th scope="row">魔女キルケーの島</th>
+            <td>部下を豚に変える魔女のもとで1年を過ごす挿話。</td>
+            <td>遭遇は確認済み。</td>
+            <td class="stance"><span class="stance-mark"><span class="stance-dot is-kept" aria-hidden="true"></span>重視</span></td>
+          </tr>
+          <tr>
+            <th scope="row">冥府行(ネキュイア)</th>
+            <td>予言者テイレシアースに会うため死者の国へ下る、叙事詩でも屈指の重い挿話。</td>
+            <td>劇中描写としては未確認。本稿の間奏見出し「ΝΕΚΥΙΑ」は評者による構成上の借用であり、対応する場面が実在することを意味しない(Fig. 1参照)。</td>
+            <td class="stance"><span class="stance-mark"><span class="stance-dot is-absent" aria-hidden="true"></span>不在/未確認</span></td>
+          </tr>
+          <tr>
+            <th scope="row">ペネロペイアの<br/>機織りの策略</th>
+            <td>求婚者たちを3年にわたり欺き続けた、機織りと夜ごとの解きほどきの計略。</td>
+            <td>アン・ハサウェイが演じることは確認済み。場面の具体は未確認だが、観客に隠された時間経過を操るノーランの得意技法(『メメント』の逆順構成、『ダンケルク』の三つの時間軸)と、この挿話の"欺きの時間"は相性がよい、という読みが成立する。</td>
+            <td class="stance"><span class="stance-mark"><span class="stance-dot is-rewritten" aria-hidden="true"></span>再解釈(推測)</span></td>
+          </tr>
+          <tr>
+            <th scope="row">求婚者たちとの対決<br/>(弓の試練)</th>
+            <td>変装したオデュッセウスが弓の試練を経て、110人を超える求婚者を討つクライマックス。</td>
+            <td>ロバート・パティンソンが求婚者の首領格アンティノオスを演じることは確認済み。対決そのものの存在は濃厚に推測できるが、規模や解決の脚色は未確認。</td>
+            <td class="stance"><span class="stance-mark"><span class="stance-dot is-kept" aria-hidden="true"></span>重視(推測含む)</span></td>
+          </tr>
+          <tr>
+            <th scope="row">アテナの介在</th>
+            <td>終始オデュッセウスを導く、人智を超えた視座を体現する守護神。</td>
+            <td>ゼンデイヤが演じることは確認済み。観客より一段上から時間や構造を操作する視点というノーランの常套手法(『TENET』の逆行者、『インターステラー』の五次元存在)と地続きに読める配役だ。</td>
+            <td class="stance"><span class="stance-mark"><span class="stance-dot is-kept" aria-hidden="true"></span>重視</span></td>
+          </tr>
+          <tr>
+            <th scope="row">ヘレネの扱い</th>
+            <td>本筋の外側にいる、第四歌でメネラーオス宮廷に姿を見せる程度の脇役。</td>
+            <td>ルピタ・ニョンゴが演じることは確認済み。原典での扱いの小ささに対し配役の重みが不釣り合いに大きく、意図的な拡大解釈と読める。</td>
+            <td class="stance"><span class="stance-mark"><span class="stance-dot is-rewritten" aria-hidden="true"></span>再解釈(推測)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="compare-legend">
+      <li><span class="stance-dot is-kept" aria-hidden="true"></span>重視 — 原典の骨格を保持・強調</li>
+      <li><span class="stance-dot is-rewritten" aria-hidden="true"></span>再解釈 — 大胆に読み替え</li>
+      <li><span class="stance-dot is-absent" aria-hidden="true"></span>不在/未確認 — 劇中での対応描写は未確認</li>
+      <li>「(推測)」— キャスティング等の確認事実からの、批評的な推論であることを示す</li>
+    </ul>
+  </section>
+
+  <ChapterRow>
+    <h2>帰還(ノストス)の物語系譜——オッペンハイマー、インターステラー、TENETの先に</h2>
+    <p>『オッペンハイマー』が、ひとりの科学者の内面に閉じていく求心的な伝記劇だったとすれば、『The Odyssey』はその対極——外へ外へと広がっていく、神話的なスケールの遠心的な物語である。だが両者に共通するのは、"すでに結末を知っている物語"を、どう新しく語り直すかという一点だ。原爆の開発も、オデュッセウスの帰還も、観客はあらかじめ結末を知っている。ノーランが繰り返し挑んでいるのは、既知の結末に向かって、それでもなお緊張を持続させる語りの技術そのものだと言っていい。</p>
+    <p>さらに一歩踏み込むなら、オッペンハイマーは「帰還できない男」の物語だったと読める。原爆を完成させたあの瞬間から、彼は倫理的にはもう元の自分へと戻れない——広島・長崎の後も、聴聞会での屈辱を経ても、映画は最後まで彼を"元いた場所"へは帰さなかった。対して『The Odyssey』のオデュッセウスは、十年に及ぶ漂流の果てにイタケーへ、ペネロペイアのもとへと、文字通り帰り着く「帰還を成し遂げる男」である。この対比を補助線として立てるなら、『The Odyssey』は、ノーランがこれまで繰り返し変奏してきた"ノストス(帰還)"という主題の、ひとつの到達点として位置づけられるのではないか。</p>
+    <p>その主題の系譜のなかでもっとも直接に響き合うのは、おそらく『インターステラー』だろう。宇宙飛行士クーパーが、相対論的な時間のねじれと隔たりを超えて娘マーフィーのもとへ帰り着く物語と、オデュッセウスが神々の意志と海の広がりに阻まれながらも妻ペネロペイアのもとへ帰り着く物語は、「時間と距離を超えた帰還」という一点で重なって見える。クーパーにとっての五次元の書架が、オデュッセウスにとっての十年の漂流に置き換わっただけだ、と言ってしまえば単純化が過ぎるが、両者を貫くのが"待つ者のもとへ戻る"という同じ一つの祈りであることは、指摘しておいてよいはずだ。</p>
+    <p>一方『TENET』が主題化していたのは、帰還そのものよりも、時間という構造そのものだった。順行と逆行が同じ画面のなかで同時に進行し、物語全体がパリンドローム(回文)的な構成を取る。劇中の「時間を理解しようとするな、感じるんだ」という台詞は、因果律で時間を捉えることを観客に手放させる一言だったが、この態度は『The Odyssey』における神話的な時間——神々の介入によって伸び縮みし、十年という歳月そのものが体感として押し寄せてくる、線形の因果律を超えた時間——とも呼応する、と読めなくもない。オデュッセウスの航海もまた、理解するより先に感じるべき時間として、劇場の巨大画面に投げ出されているのかもしれない。</p>
+    <p>『オッペンハイマー』『インターステラー』『TENET』、そして『The Odyssey』。この四作を並べたとき浮かび上がってくるのは、時間の主観的な重さと、帰還という行為と、自らの選択の重みを背負わされた主人公という、一貫したモチーフである。むろんこれは確認された事実ではなく、あくまで一批評家が四作のあいだに引いた補助線にすぎない。だが、この線に沿って眺めるなら、『The Odyssey』は単発の神話映画としてではなく、ノーランが撮り続けてきた"時間と帰還"の物語系譜における、ひとつの結節点として読むことができる。</p>
+    <p>この作品をまだ観ていない人には、まず劇場の大画面で、トラヴィス・スコットの語りが響く場面と、ポリュペモスの洞窟が画面いっぱいに広がる瞬間だけでも体験してほしいと勧めたい。作品の是非をめぐる論争そのものが、この映画がどれほど大きな賭けに出たかを逆説的に物語っている。</p>
+    <p>すでに一度観た人には、二度目の鑑賞であらためて、ノーランがどの場面でどの登場人物に"語り"を託しているかを追ってみることを勧めたい。誰の声で神話が語られ、誰の視点でこの帰還が描かれているか——その配分の妙こそが、公開直後の熱狂と論争が引いたいまだからこそ、静かに浮かび上がってくるはずだ。</p>
+    <Fragment slot="margin">
+      <p class="margin-label">帰還の系譜 Nostos</p>
+      <p class="margin-note">オッペンハイマー(帰還できない男)/ インターステラー(時間と距離を超えた帰還)/ TENET(時間という構造そのもの)/ The Odyssey(帰還を成し遂げる男)——批評的な補助線として。</p>
+      <p class="margin-label" style="margin-top:1.6rem">遭遇する神話的存在</p>
+      <ul class="margin-list">
+        <li>一つ目巨人ポリュペモス</li>
+        <li>セイレーン</li>
+        <li>魔女キルケー</li>
+      </ul>
+    </Fragment>
+  </ChapterRow>
+</main>
+
+<style>{`
+  :root{
+    --ink:        #e9dcbe;
+    --ink-raised: #e1d1a9;
+    --paper:      #3a2a17;
+    --paper-dim:  #5f4c30;
+    --ash:        #64512f;
+    --ash-faint:  #6c5836;
+    --rule:       #d2bd8e;
+    --wine:       #8a3420;
+    --aegean:     #5c6a42;
+    --aegean-deep:#dee2c9;
+    --bronze:     #96742f;
+    --bronze-deep:#382a12;
+    --texture-blend: multiply;
+    --serif-display: "Cormorant", "Georgia", serif;
+    --mono:          "Space Mono", "SFMono-Regular", ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#171008; --ink-raised:#1f160b; --paper:#ecdbb6; --paper-dim:#c2a878;
+      --ash:#a48c62; --ash-faint:#937d54; --rule:#3a2c17; --wine:#d9764c;
+      --aegean:#93a878; --aegean-deep:#20281a; --bronze:#dcac53; --bronze-deep:#0f0a04;
+      --texture-blend: screen;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#171008; --ink-raised:#1f160b; --paper:#ecdbb6; --paper-dim:#c2a878;
+    --ash:#a48c62; --ash-faint:#48381f; --rule:#3a2c17; --wine:#d9764c;
+    --aegean:#93a878; --aegean-deep:#20281a; --bronze:#dcac53; --bronze-deep:#0f0a04;
+    --texture-blend: screen;
+  }
+
+  body{
+    background-color: var(--ink);
+    background-image:
+      radial-gradient(ellipse 62% 46% at 10% 4%, color-mix(in srgb, var(--ash-faint) 60%, transparent), transparent 72%),
+      radial-gradient(ellipse 50% 60% at 96% 88%, color-mix(in srgb, var(--rule) 55%, transparent), transparent 74%),
+      radial-gradient(ellipse 38% 30% at 78% 22%, color-mix(in srgb, var(--ash-faint) 40%, transparent), transparent 70%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' seed='7' stitchTiles='stitch' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 0.34  0 0 0 0 0.26  0 0 0 0 0.15  0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+    background-size: auto, auto, auto, 240px 240px;
+    background-attachment: fixed, fixed, fixed, fixed;
+    background-blend-mode: normal, normal, normal, var(--texture-blend);
+    color: var(--paper);
+    font-family: var(--serif-body);
+  }
+  ::selection{ background: var(--wine); color: var(--ink); }
+  p{ margin: 0; }
+  h1, h2{ margin: 0; }
+
+  .page{ max-width: 1680px; margin: 0 auto; padding: 0 clamp(24px, 6vw, 84px); }
+
+  .wide-panel{ margin: clamp(3.4rem, 7vh, 5rem) 0; }
+  .panel-eyebrow{
+    margin: 0 0 1.1rem; font-family: var(--mono); font-size: .68rem;
+    letter-spacing: .24em; color: var(--ash); text-transform: uppercase;
+  }
+  .panel-scroll{ overflow-x: auto; }
+
+  .compare-table{
+    width: 100%; min-width: 760px; border-collapse: collapse;
+    font-family: var(--serif-body); font-size: .92rem; line-height: 1.65;
+  }
+  .compare-table caption{ caption-side: top; text-align: left; margin-bottom: 1rem; }
+  .compare-table th, .compare-table td{
+    text-align: left; vertical-align: top; padding: 1.05rem 1.3rem 1.05rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .compare-table thead th{
+    padding-top: 0; padding-bottom: .8rem; border-top: none; border-bottom: 2px solid var(--bronze);
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .14em; color: var(--ash); text-transform: uppercase; font-weight: 400;
+  }
+  .compare-table tbody th{
+    font-family: var(--serif-display); font-style: italic; font-weight: 500;
+    font-size: 1.05rem; color: var(--paper); width: 15em;
+  }
+  .compare-table td{ color: var(--paper-dim); }
+  .compare-table td.stance{ width: 9em; color: var(--paper); }
+  .stance-mark{
+    display: inline-flex; align-items: center; gap: .55em;
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .04em;
+  }
+  .stance-dot{ flex: none; width: .85em; height: .85em; border-radius: 50%; border: 1.5px solid var(--bronze); }
+  .stance-dot.is-kept{ background: var(--bronze); }
+  .stance-dot.is-rewritten{ background: linear-gradient(135deg, var(--bronze) 50%, transparent 50%); }
+  .stance-dot.is-absent{ background: transparent; border-style: dashed; }
+
+  .compare-legend{
+    list-style: none; margin: 1.3rem 0 0; padding: 0;
+    display: flex; flex-wrap: wrap; gap: 1.6rem;
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .04em; color: var(--ash);
+  }
+  .compare-legend li{ display: flex; align-items: center; gap: .55em; }
+
+  .cast-map{ list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .55rem; }
+  .cast-map li{
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: baseline; gap: .5rem;
+    font-family: var(--mono); font-size: .7rem; letter-spacing: .01em;
+  }
+  .cast-map .cast-orig{ color: var(--ash); text-align: right; }
+  .cast-map .arrow{ color: var(--ash-faint); text-align: center; }
+  .cast-map .cast-actor{ color: var(--paper); }
+
+  .voyage-figure{
+    display: flex; flex-direction: column; gap: 1.4rem;
+    padding: clamp(1.8rem, 4vw, 3rem) clamp(1.6rem, 4vw, 3.4rem);
+    border: 1px solid var(--rule);
+    background: color-mix(in srgb, var(--ink-raised) 55%, transparent);
+  }
+  .voyage-figure svg{ width: 100%; height: auto; display: block; }
+  .voyage-figure .route-line{ fill: none; stroke: var(--bronze); stroke-width: 1.6; stroke-linecap: round; }
+  .voyage-figure .route-line.is-uncertain{ stroke-dasharray: 2 5; stroke: var(--ash-faint); }
+  .voyage-figure .route-node{ fill: var(--ink); stroke: var(--bronze); stroke-width: 1.6; }
+  .voyage-figure .route-node.is-origin{ fill: var(--wine); stroke: var(--wine); }
+  .voyage-figure .route-node.is-uncertain{ fill: var(--ink); stroke: var(--ash-faint); stroke-dasharray: 2 3; }
+  .voyage-figure .route-label{ font-family: var(--mono); font-size: 9.5px; letter-spacing: .02em; fill: var(--paper-dim); }
+  .voyage-figure .route-label.is-origin{ fill: var(--paper); font-weight: 700; }
+  .voyage-figure-caption{
+    font-family: var(--serif-body); font-style: italic; font-size: .92rem;
+    line-height: 1.7; color: var(--paper-dim); max-width: 48em;
+  }
+
+  .law-figure{
+    display: flex; flex-direction: column; gap: 1.4rem;
+    padding: clamp(1.8rem, 4vw, 3rem) clamp(1.6rem, 4vw, 3.4rem);
+    border: 1px solid var(--rule);
+    background: color-mix(in srgb, var(--ink-raised) 55%, transparent);
+  }
+  .law-figure svg{ width: 100%; height: auto; display: block; }
+  .law-figure .law-line{ stroke: var(--bronze); stroke-width: 1.6; }
+  .law-figure .law-break path{ stroke: var(--wine); stroke-width: 2; stroke-linecap: round; }
+  .law-figure .law-node{ fill: var(--ink); stroke: var(--ash); stroke-width: 1.6; }
+  .law-figure .law-node.is-trial{ stroke: var(--ash); stroke-dasharray: 2 3; }
+  .law-figure .law-node.is-resolved{ fill: var(--bronze); stroke: var(--bronze); }
+  .law-figure .law-node.is-resolved-ring{ fill: none; stroke: var(--bronze); stroke-width: 1; opacity: .45; }
+  .law-figure .law-label{ font-family: var(--mono); font-size: 9.5px; letter-spacing: .02em; fill: var(--paper-dim); }
+  .law-figure .law-label.is-resolved{ fill: var(--paper); font-weight: 700; }
+  .law-figure .law-sub{ font-family: var(--serif-body); font-style: italic; font-size: 9.5px; fill: var(--ash); }
+  .law-figure-caption{
+    font-family: var(--serif-body); font-style: italic; font-size: .92rem;
+    line-height: 1.7; color: var(--paper-dim); max-width: 48em;
+  }
+
+  .key-figure{ margin: 1.6rem 0 0; display: flex; flex-direction: column; align-items: center; gap: .8rem; }
+  .key-figure-mark{ width: clamp(128px, 14vw, 168px); }
+  .key-figure-mark svg{ width: 100%; height: auto; display: block; }
+  .key-figure-caption{
+    font-family: var(--mono); font-size: .64rem; letter-spacing: .1em; color: var(--ash);
+    text-align: center; line-height: 1.6;
+  }
+  .helm-figure .helm-dome{ fill: var(--ink-raised); stroke: var(--bronze); stroke-width: 1.6; }
+  .helm-figure .helm-crest{ fill: var(--bronze); }
+  .helm-figure .helm-slit{ fill: var(--ink); stroke: var(--rule); stroke-width: 1; }
+  .helm-figure .helm-cheek{ fill: var(--ink-raised); stroke: var(--bronze); stroke-width: 1.4; }
+  .ship-figure .ship-wave{ fill: none; stroke: var(--aegean); stroke-width: 1.4; opacity: .85; }
+  .ship-figure .ship-wave.is-deep{ stroke: var(--ash-faint); opacity: .55; }
+  .ship-figure .ship-hull{ fill: var(--ink-raised); stroke: var(--bronze); stroke-width: 1.6; }
+  .ship-figure .ship-mast{ stroke: var(--bronze); stroke-width: 1.6; }
+  .ship-figure .ship-sail{ fill: color-mix(in srgb, var(--paper) 14%, transparent); stroke: var(--rule); stroke-width: 1.2; }
+  .bow-figure .bow-arc{ fill: none; stroke: var(--bronze); stroke-width: 2; }
+  .bow-figure .bow-string{ stroke: var(--rule); stroke-width: 1; }
+  .bow-figure .arrow-shaft{ stroke: var(--bronze); stroke-width: 1.8; }
+  .bow-figure .arrow-head{ fill: var(--wine); }
+  .bow-figure .arrow-fletch{ fill: none; stroke: var(--ash); stroke-width: 1.4; }
+
+  .trivia-panel{
+    margin: clamp(3.2rem, 6vh, 4.6rem) 0;
+    padding: clamp(1.8rem, 4vw, 2.6rem) clamp(1.8rem, 4vw, 2.8rem);
+    border: 1px dashed var(--rule);
+    background: color-mix(in srgb, var(--ink-raised) 42%, transparent);
+  }
+  .trivia-panel-head{
+    display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap;
+    gap: .6rem 1.4rem; margin-bottom: clamp(1.4rem, 3vw, 2rem);
+    padding-bottom: 1.1rem; border-bottom: 1px solid var(--rule);
+  }
+  .trivia-eyebrow{ font-family: var(--mono); font-size: .68rem; letter-spacing: .22em; color: var(--ash); text-transform: uppercase; }
+  .trivia-tag{ font-family: var(--serif-display); font-style: italic; font-weight: 400; font-size: 1.05rem; color: var(--paper-dim); }
+  .trivia-grid{
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.7rem 2.4rem;
+  }
+  .trivia-item{ display: flex; flex-direction: column; gap: .5rem; }
+  .trivia-item .trivia-label{
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .08em; color: var(--bronze);
+    text-transform: uppercase;
+  }
+  .trivia-item p{ margin: 0; font-family: var(--serif-body); font-size: .9rem; line-height: 1.75; color: var(--paper-dim); }
+
+  .hero{ padding-top: clamp(9rem, 20vh, 15rem); padding-bottom: clamp(3.5rem, 7vh, 5rem); }
+  .opening-mark{ width: 3px; height: clamp(40px, 7vh, 64px); background: var(--paper); opacity: .55; margin: 0 0 clamp(2.6rem, 6vh, 4rem); }
+  .kicker{ font-family: var(--mono); font-size: .7rem; letter-spacing: .28em; color: var(--ash); text-transform: uppercase; }
+  .title{ margin-top: clamp(1.4rem, 3vh, 2rem); line-height: .92; }
+  .title-rest{
+    display: block; font-family: var(--mono); font-weight: 700;
+    font-size: clamp(.78rem, 1.6vw, .95rem); letter-spacing: .5em;
+    color: var(--ash); margin: 0 0 .5em .08em;
+  }
+  .title-num{
+    display: block; font-family: var(--serif-display); font-style: italic;
+    font-weight: 400; font-size: clamp(3.6rem, 13.5vw, 9.2rem); letter-spacing: -.01em;
+  }
+  .subtitle{
+    font-family: var(--serif-body); font-style: italic; font-weight: 400;
+    font-size: clamp(1.15rem, 2.4vw, 1.5rem); color: var(--paper-dim);
+    margin-top: clamp(1.6rem, 4vh, 2.6rem);
+  }
+  .meta{
+    display: flex; flex-wrap: wrap; align-items: center; gap: .7em 1em;
+    margin-top: clamp(2.2rem, 5vh, 3.2rem);
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .04em; color: var(--ash);
+  }
+  .meta-sep{ color: var(--ash-faint); }
+  .tone-badge{
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border: 1px solid var(--rule); border-radius: 100px;
+    color: var(--paper); letter-spacing: .12em;
+  }
+  .tone-badge .dot{ width: 6px; height: 6px; border-radius: 50%; background: var(--aegean); box-shadow: 0 0 8px var(--aegean); }
+
+  .lede p{ font-size: clamp(1.05rem, .9rem + .5vw, 1.2rem); line-height: 1.95; color: var(--paper); max-width: 44em; }
+  .lede p::first-letter{
+    font-family: var(--serif-display); font-style: italic; font-weight: 600; font-size: 3.1em; line-height: .78;
+    float: left; padding: .04em .1em 0 0; color: var(--paper);
+  }
+
+  .stat.chapter-row{
+    display: grid; align-items: baseline; row-gap: 1.3rem;
+    margin-top: clamp(4.5rem, 10vh, 7rem); margin-bottom: clamp(4.5rem, 10vh, 7rem);
+    margin-left: auto; margin-right: 0; width: 66%; max-width: 66%;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 22em);
+    padding-top: clamp(2rem, 4vh, 2.6rem);
+    border-top: 1px solid var(--rule);
+  }
+  .stat-label{ grid-column: 1 / -1; font-family: var(--mono); font-size: .68rem; letter-spacing: .26em; color: var(--ash); text-transform: uppercase; }
+  .stat-number{ display: flex; align-items: baseline; gap: .5rem; font-family: var(--serif-display); }
+  .stat-number .num{ font-size: clamp(3.2rem, 9vw, 5.6rem); font-weight: 340; line-height: 1; color: var(--paper); font-variant-numeric: tabular-nums; }
+  .stat-number .unit{ font-family: var(--mono); font-size: .8rem; letter-spacing: .08em; color: var(--ash); }
+  .stat-number .of{ font-family: var(--mono); font-size: .8rem; color: var(--ash-faint); }
+  .stat-caption{
+    font-family: var(--serif-body); font-size: .98rem; line-height: 1.8; color: var(--paper-dim);
+    max-width: 24em; padding-left: clamp(1.4rem, 2.4vw, 2rem); border-left: 1px solid var(--rule);
+  }
+  @media (max-width: 880px){
+    .stat.chapter-row{ grid-template-columns: 1fr; width: 100%; max-width: 100%; margin-left: 0; }
+    .stat-caption{ max-width: 44em; border-left: none; padding-left: 0; padding-top: 1.2rem; border-top: 1px solid var(--rule); }
+  }
+
+  .margin-figure{
+    display: flex; align-items: baseline; gap: .4rem; margin: 0 0 .7rem;
+    font-family: var(--serif-display); font-weight: 340;
+    font-size: clamp(2rem, 4vw, 2.8rem); color: var(--paper);
+  }
+  .margin-figure .unit{ font-family: var(--mono); font-size: .7rem; letter-spacing: .06em; color: var(--ash); }
+  .margin-label{
+    margin: 0 0 .9rem; font-family: var(--mono); font-size: .66rem;
+    letter-spacing: .22em; color: var(--ash); text-transform: uppercase;
+  }
+  .margin-note{ margin: 0; font-family: var(--serif-body); font-size: .92rem; line-height: 1.75; color: var(--paper-dim); }
+  .margin-facts{ margin: 0; display: flex; flex-direction: column; gap: .75rem; }
+  .margin-facts > div{ display: flex; justify-content: space-between; gap: 1.2rem; font-family: var(--mono); font-size: .72rem; letter-spacing: .02em; }
+  .margin-facts dt{ margin: 0; color: var(--ash); }
+  .margin-facts dd{ margin: 0; color: var(--paper); text-align: right; }
+  .margin-list{ list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .6rem; font-family: var(--serif-body); font-style: italic; font-size: .92rem; color: var(--paper-dim); }
+
+  .cyclops-eye{
+    flex: none; width: .4em; height: .4em; border-radius: 50%; align-self: center;
+    background: radial-gradient(circle at 40% 35%, #ffb08a, var(--wine) 60%, color-mix(in srgb, var(--wine) 60%, black) 100%);
+    box-shadow: 0 0 .5em .06em color-mix(in srgb, var(--wine) 65%, transparent);
+  }
+`}</style>

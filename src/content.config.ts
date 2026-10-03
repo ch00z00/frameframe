@@ -8,18 +8,27 @@ import { glob } from 'astro/loaders';
 // headline render the film title in italics without string-parsing `title`.
 const articles = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/articles' }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    publishDate: z.date(),
-    updatedDate: z.date().optional(),
-    tags: z.array(z.string()).min(1),
-    is_premium: z.boolean().default(false),
-    draft: z.boolean().default(false),
-    tone: z.enum(['cold', 'warm']),
-    work: z.string(),
-    subtitle: z.string(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      publishDate: z.date(),
+      updatedDate: z.date().optional(),
+      tags: z.array(z.string()).min(1),
+      is_premium: z.boolean().default(false),
+      draft: z.boolean().default(false),
+      tone: z.enum(['cold', 'warm']),
+      work: z.string(),
+      englishTitle: z.string(),
+      subtitle: z.string(),
+      director: z.string(),
+      production: z.string(),
+      cast: z.array(z.string()).min(1),
+      // Homepage card art. Optional — articles without one fall back to the
+      // existing tone-tinted gradient frame. User-supplied stills only
+      // (see project chat: no scraped/IMDb imagery — copyright).
+      image: image().optional(),
+    }),
 });
 
 export const collections = { articles };

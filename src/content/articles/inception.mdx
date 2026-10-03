@@ -1,0 +1,821 @@
+---
+title: "『インセプション』独楽が倒れる前に、画面は切れる"
+description: "現実から夢へ、夢から夢へ、さらにその奥のリンボへ——五層の入れ子構造を降りながら、独楽が最後まで倒れるかどうかを見せない結末の意味を読む。"
+publishDate: 2026-09-16
+tags: ["クリストファー・ノーラン", "夢の構造", "時間"]
+tone: cold
+work: "インセプション"
+englishTitle: "Inception"
+subtitle: "独楽が倒れる前に、画面は切れる"
+director: "クリストファー・ノーラン"
+production: "ワーナー・ブラザース"
+cast: ["レオナルド・ディカプリオ", "ジョセフ・ゴードン=レヴィット", "エリオット・ペイジ"]
+image: "../../assets/articles/inception.jpg"
+---
+
+{/*
+  五層の入れ子構造。.depth-map-anchor は position:fixed; inset:0 で常に
+  画面中央に固定され、記事全体を通して唯一「階層構造そのもの」を描く
+  図になる。IntersectionObserver が現在読んでいる .depth-section を検知し、
+  対応する輪だけを発光させる。狭い画面幅・reduced-motion では非表示。
+  docs/artifacts/detail-mock-inception.html からの移植。
+*/}
+
+<div class="inception-article">
+
+<div class="depth-map-anchor" aria-hidden="true">
+  <div class="depth-map">
+    <div class="frame-tunnel">
+      <div class="frame" data-depth="0">
+        <div class="frame" data-depth="1">
+          <div class="frame" data-depth="2">
+            <div class="frame" data-depth="3">
+              <div class="frame" data-depth="4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="depth-map-label"><span class="num" id="depthMapNum">00</span><span id="depthMapName">現実</span></p>
+</div>
+
+<div class="site">
+
+<section class="cover">
+  <p class="kicker">FILM CRITICISM JOURNAL — 長編批評</p>
+  <h1 class="work-title">『インセプション』<span class="subtitle">独楽が倒れる前に、画面は切れる</span></h1>
+  <div class="meta-row">
+    <span>2026.09.16</span>
+    <span class="sep">・</span>
+    <span class="tag-list">
+      <span class="tag">クリストファー・ノーラン</span>
+      <span class="tag">夢の構造</span>
+      <span class="tag">時間</span>
+    </span>
+    <span class="sep">・</span>
+    <span class="tone-badge"><span class="dot" aria-hidden="true"></span>COOL — 冷徹</span>
+  </div>
+</section>
+
+<figure class="structure-figure reveal">
+  <div class="figure-body">
+    <div class="structure-tunnel frame-tunnel" role="img" aria-label="現実を最外殻とし、リンボを最内殻とする五層の入れ子構造の図。層が深くなるほど区画は狭まる。">
+      <div class="frame" data-depth="0" aria-hidden="true">
+        <div class="frame" data-depth="1" aria-hidden="true">
+          <div class="frame" data-depth="2" aria-hidden="true">
+            <div class="frame" data-depth="3" aria-hidden="true">
+              <div class="frame" data-depth="4" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="structure-legend">
+      <li data-depth="0"><span class="swatch" aria-hidden="true"></span><span class="legend-name">現実</span><span class="legend-ratio">実時間 × 1</span></li>
+      <li data-depth="1"><span class="swatch" aria-hidden="true"></span><span class="legend-name">夢・雨に沈む街</span><span class="legend-ratio">体感 × 12</span></li>
+      <li data-depth="2"><span class="swatch" aria-hidden="true"></span><span class="legend-name">夢・無重力のホテル</span><span class="legend-ratio">体感 × 24</span></li>
+      <li data-depth="3"><span class="swatch" aria-hidden="true"></span><span class="legend-name">夢・雪山要塞</span><span class="legend-ratio">体感 × 20</span></li>
+      <li data-depth="4"><span class="swatch" aria-hidden="true"></span><span class="legend-name">リンボ</span><span class="legend-ratio">時間 ∞</span></li>
+    </ul>
+  </div>
+  <figcaption>『インセプション』は現実を最外殻として、夢が夢を内側に入れ子にする五層構造を持つ。潜るほど区画(矩形)は狭まり、体感時間は現実から遠ざかって伸びていく。この図と同じ入れ子矩形は、この先も画面の中央に固定されたまま消えない——読み進めるたびに、いま読んでいる階層の輪だけが光って現在地を示す。</figcaption>
+</figure>
+
+<p class="stack-intro reveal">左には、五つの階層をまたいでも途切れない一続きの物語を置く。右には、対応する場面とおおよそ高さを揃えて読み解きを置く——見比べながら読み進められるように。画面中央には常にこの五層構造の地図が浮かんでいて、いま読んでいる階層の輪だけが発光する。</p>
+
+<div class="depth-stack">
+
+<section class="depth-section" id="layer-0" data-depth="0" aria-labelledby="dv-h0">
+  <div class="depth-heading">
+    <p class="depth-kicker">階層 00</p>
+    <h2 class="depth-heading-title" id="dv-h0">現実</h2>
+    <p class="depth-ratio">実時間 × 1</p>
+  </div>
+  <div class="depth-content-wrap dossier">
+    <div class="dossier-head" aria-hidden="true">
+      <p class="dossier-head-fact">客観 <span class="jp">— 物語の流れ</span></p>
+      <p class="dossier-head-crit">批評 <span class="jp">— 読み解き</span></p>
+    </div>
+    <p class="p-fact scene-fact reveal"><span class="ptype">事実</span>タイトルが出る前に、映画はすでに一つの謎を提示している。波打ち際に打ち上げられた老人が、見知らぬ子供たちに銃を向けられ、朽ちかけた要塞へ連れて行かれる。出迎えるのは、これも老いた斎藤。二人は初対面のように、しかしどこか旧知のように向き合う。観客はまだ何も説明されていない——これがいつの場面で、現実なのか、それとも別の何かなのか。</p>
+    <div class="p-crit scene-crit reveal"><p><span class="ptype">批評</span>クリストファー・ノーランは、この映画を理解する手がかりになるはずの説明を、あえて最初に与えない。『インセプション』は、現実から始まり、夢の第1階層、第2階層、第3階層、そしてリンボへと潜っていく、五層の入れ子構造を持つ。この先、五つの階層はそれぞれ独立した場面として上から下へ普通に流れていく——画面中央に浮かぶ入れ子矩形の地図だけが位置を動かさず、いま読んでいる階層の輪を光らせて現在地を教え続ける。</p></div>
+    <p class="p-fact scene-fact reveal"><span class="ptype">事実</span>出発点はコブの独楽(コマ)。彼が「現実」を確かめるために回し続ける、亡き妻から受け継いだ小さな道具である。この装置が最終的に何を意味するのかは、階層を降りきったところで扱う。</p>
+  </div>
+</section>
+
+<section class="depth-section" id="layer-1" data-depth="1" aria-labelledby="dv-h1">
+  <div class="depth-heading">
+    <p class="depth-kicker">階層 01</p>
+    <h2 class="depth-heading-title" id="dv-h1">夢<span class="jp">・雨に沈む街</span></h2>
+    <p class="depth-ratio">体感 × 12(10h→1週間)</p>
+  </div>
+  <div class="depth-content-wrap dossier">
+    <div class="dossier-head" aria-hidden="true">
+      <p class="dossier-head-fact">客観 <span class="jp">— 物語の流れ</span></p>
+      <p class="dossier-head-crit">批評 <span class="jp">— 読み解き</span></p>
+    </div>
+    <p class="p-fact scene-fact reveal"><span class="ptype">事実</span>劇中の設定によれば、現実の10時間は第1階層の夢でおよそ1週間に相当する。物語の終盤、4つの階層(バンの車内、ホテル、雪山要塞、リンボ)で同時に進行する危機は、体感時間の速度がまったく異なるまま並行して編集される。バンが橋から落下する数秒が、上の階層では数分に、その下では数時間に、さらに下では数年に引き延ばされていく。</p>
+    <div class="p-crit scene-crit reveal"><p><span class="ptype">批評</span>この換算比は、単なる添え物のガジェットではない。この設定が問うているのは、SF的などんでん返しではない。「どの階層の時間感覚を信じるか」という選択そのものが、映画全体の主題と重なっている。階層が深くなるほど、そこで過ごした時間は当人にとって長く、重く、現実味を帯びていく——コブがリンボで数十年分の記憶を積み重ねたように。ならば、どの階層が「本当の現実」かという問いは、経過時間の長さでは決められない。むしろ本作は、時間の相対性を突きつけることで、その問い自体を無効化しようとしている。</p></div>
+    <p class="p-fact scene-fact reveal"><span class="ptype">事実</span>各階層への「キック(蹴り落とし)」の合図に使われるのは、エディット・ピアフの「水に流して」——それを引き伸ばして作られたハンス・ジマーの劇伴が、階層が一段深まるごとに、さらに引き伸ばされて鳴る。</p>
+    <div class="p-crit scene-crit reveal"><p><span class="ptype">批評</span>この主題は音響にも刻まれている。観客が耳で聴いている音の速度そのものが、いま自分がどの深さにいるかを教えてくれる仕掛けだ。時間の相対性は、脚本上の設定であると同時に、スクリーンの外側、音の設計にまで及んでいる。</p></div>
+
+    <figure class="rain-figure reveal">
+      <p class="figure-label">図版 — 街を包む雨と、引き伸ばされる音の速さ</p>
+      <div class="rain-scroll">
+        <svg viewBox="0 0 920 240" role="img" aria-label="雨に沈む都市のシルエットに雨が降り注ぐ図。右側では、現実の音の速さを示す密な破線と、この階層で聴こえる体感12倍に引き伸ばされた音の速さを示す粗い破線を対比させている。">
+          <rect class="skyline" x="6" y="130" width="34" height="80"></rect>
+          <rect class="skyline" x="46" y="96" width="28" height="114"></rect>
+          <rect class="skyline" x="80" y="150" width="40" height="60"></rect>
+          <rect class="skyline" x="126" y="76" width="24" height="134"></rect>
+          <rect class="skyline" x="156" y="124" width="46" height="86"></rect>
+          <rect class="skyline" x="208" y="108" width="30" height="102"></rect>
+          <rect class="skyline" x="244" y="146" width="38" height="64"></rect>
+          <rect class="skyline" x="288" y="90" width="20" height="120"></rect>
+          <line class="rain-line" x1="10" y1="0" x2="-16" y2="222" opacity="0.45"></line>
+          <line class="rain-line" x1="42" y1="4" x2="16" y2="224" opacity="0.3"></line>
+          <line class="rain-line" x1="74" y1="0" x2="48" y2="220" opacity="0.5"></line>
+          <line class="rain-line" x1="106" y1="6" x2="80" y2="226" opacity="0.28"></line>
+          <line class="rain-line" x1="140" y1="0" x2="112" y2="222" opacity="0.42"></line>
+          <line class="rain-line" x1="172" y1="4" x2="146" y2="224" opacity="0.3"></line>
+          <line class="rain-line" x1="206" y1="0" x2="178" y2="220" opacity="0.5"></line>
+          <line class="rain-line" x1="240" y1="6" x2="212" y2="226" opacity="0.28"></line>
+          <line class="rain-line" x1="274" y1="0" x2="246" y2="222" opacity="0.42"></line>
+          <line class="rain-line" x1="308" y1="4" x2="280" y2="224" opacity="0.32"></line>
+          <line class="rain-line" x1="340" y1="0" x2="312" y2="220" opacity="0.5"></line>
+          <line class="rain-line" x1="360" y1="8" x2="336" y2="222" opacity="0.24"></line>
+
+          <line class="divider" x1="378" y1="10" x2="378" y2="222"></line>
+
+          <text class="row-label" x="410" y="64">現実 — 実時間の速さ</text>
+          <line class="row-line" x1="410" y1="76" x2="900" y2="76" stroke-dasharray="2 2"></line>
+          <text class="row-ratio" x="410" y="100">× 1</text>
+
+          <text class="row-label" x="410" y="152">第1階層 — この階層で聴こえる速さ</text>
+          <line class="row-line" x1="410" y1="164" x2="900" y2="164" stroke-dasharray="20 9"></line>
+          <text class="row-ratio" x="410" y="188">× 12(この階層の体感倍率と同じ)</text>
+        </svg>
+      </div>
+      <figcaption>この階層の体感速度は現実のおよそ12倍。キックの合図に使われる楽曲も、階層が一段深まるごとに、さらに引き伸ばされて鳴る——雨に沈む街を追われるコブたちの体感の速さは、画面の外側、音の伸び方にも同じ倍率で刻まれている。</figcaption>
+    </figure>
+
+    <figure class="kick-figure reveal">
+      <p class="figure-label">図版 — キックの同期タイムライン</p>
+      <div class="kick-scroll">
+        <svg viewBox="0 0 920 300" role="img" aria-label="実時間ではほぼ同時に起きる衝突の瞬間に、現実・第2階層・第3階層・リンボの4つの階層すべてのキックが同期するよう仕組まれている図。階層が深いほど、その一瞬に賭けられている体感時間は長い。">
+          <defs>
+            <marker id="kickArrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="currentColor"></path>
+            </marker>
+          </defs>
+          <line class="sync-line" x1="760" y1="18" x2="760" y2="266"></line>
+          <text class="sync-label" x="768" y="30">同じ実時間の一瞬</text>
+          <line x1="760" y1="248" x2="760" y2="266" stroke="var(--cold)" stroke-width="1.4" marker-end="url(#kickArrow)" color="var(--cold)"></line>
+          <text class="sync-label" x="768" y="262">キックが連動</text>
+
+          <text class="row-label" x="0" y="52">現実 — バンの車内</text>
+          <line class="row-line" x1="150" y1="60" x2="760" y2="60"></line>
+          <circle class="row-dot" cx="760" cy="60" r="4"></circle>
+          <text class="row-ratio" x="774" y="64">実時間 × 1</text>
+
+          <text class="row-label" x="0" y="132">第2階層 — 無重力のホテル</text>
+          <line class="row-line" x1="150" y1="140" x2="760" y2="140" stroke-dasharray="10 5"></line>
+          <circle class="row-dot" cx="760" cy="140" r="4"></circle>
+          <text class="row-ratio" x="774" y="144">体感 × 24</text>
+
+          <text class="row-label" x="0" y="212">第3階層 — 雪山要塞</text>
+          <line class="row-line" x1="150" y1="220" x2="760" y2="220" stroke-dasharray="18 6"></line>
+          <circle class="row-dot" cx="760" cy="220" r="4"></circle>
+          <text class="row-ratio" x="774" y="224">体感 × 20</text>
+
+          <text class="row-label" x="0" y="284">リンボ — 未構築領域</text>
+          <line class="row-line" x1="150" y1="292" x2="760" y2="292" stroke-dasharray="2 3" opacity="0.9"></line>
+          <circle class="row-dot" cx="760" cy="292" r="4" fill="#7fa3bd"></circle>
+          <text class="row-ratio" x="774" y="296">時間 ∞</text>
+        </svg>
+      </div>
+      <figcaption>実時間ではわずか数秒に満たない衝突の瞬間に、4つの階層すべての「キック」が同期するよう仕組まれている。行の破線が粗くなるほど、その階層で引き伸ばされている体感時間は長い——リンボにいたっては、ほとんど区切りがない。深い階層ほど、この一瞬に何年分もの体感時間を賭けていることになる。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="depth-section" id="layer-2" data-depth="2" aria-labelledby="dv-h2">
+  <div class="depth-heading">
+    <p class="depth-kicker">階層 02</p>
+    <h2 class="depth-heading-title" id="dv-h2">夢<span class="jp">・無重力のホテル</span></h2>
+    <p class="depth-ratio">体感 × 24(1週間→6ヶ月)</p>
+  </div>
+  <div class="depth-content-wrap dossier">
+    <div class="dossier-head" aria-hidden="true">
+      <p class="dossier-head-fact">客観 <span class="jp">— 物語の流れ</span></p>
+      <p class="dossier-head-crit">批評 <span class="jp">— 読み解き</span></p>
+    </div>
+    <p class="p-fact scene-fact reveal"><span class="ptype">事実</span>この階層で繰り返し起こるのは、モルの侵入である。彼女はコブの亡き妻であり、設定上はすでに現実で死んでいる。にもかかわらず、彼女はどの階層にも、招かれていないのに現れ、コブが慎重に設計した建築(アーキテクチャー)を内側から壊していく。</p>
+    <div class="p-crit scene-crit reveal"><p><span class="ptype">批評</span>ここには、この映画の建築的なルールがそのまま利用されている。夢の階層は本来、互いに独立した区画として設計されるはずのものだ。しかしモルは、その区画の境界を平然と越えてくる。これは演出上の都合ではなく、主題そのものである——罪悪感や喪失は、区切って封じ込めようとした場所の外まで漏れ出してくる、という事実を形にしたものだ。</p></div>
+
+    <figure class="gravity-figure reveal">
+      <p class="figure-label">図版 — 無重力の区画と、越えてくる境界</p>
+      <div class="gravity-scroll">
+        <svg viewBox="0 0 620 460" role="img" aria-label="無重力の中で異なる角度に浮かぶ複数の区画と、設計上は越えられないはずの境界線を横切ってひとつの区画の内側へ侵入していく経路を示す図。">
+          <g transform="rotate(-14 170 120)"><rect class="compartment" x="90" y="70" width="160" height="100"></rect></g>
+          <g transform="rotate(9 430 110)"><rect class="compartment-quiet" x="360" y="40" width="140" height="140"></rect></g>
+          <g transform="rotate(-7 470 300)"><rect class="compartment" x="390" y="230" width="160" height="140"></rect></g>
+          <g transform="rotate(16 190 340)"><rect class="compartment-quiet" x="110" y="270" width="160" height="140"></rect></g>
+          <g transform="rotate(28 90 230)"><rect class="compartment-quiet" x="55" y="195" width="80" height="70"></rect></g>
+
+          <circle class="debris" cx="300" cy="60" r="3"></circle>
+          <line class="debris-trail" x1="300" y1="60" x2="286" y2="46"></line>
+          <circle class="debris" cx="520" cy="380" r="4"></circle>
+          <line class="debris-trail" x1="520" y1="380" x2="536" y2="394"></line>
+          <circle class="debris" cx="46" cy="400" r="2.5"></circle>
+          <line class="debris-trail" x1="46" y1="400" x2="36" y2="412"></line>
+
+          <line class="boundary-line" x1="300" y1="80" x2="330" y2="360"></line>
+          <text class="boundary-label" x="336" y="222">境界(設計上は越えられない)</text>
+
+          <path class="intrusion-path" d="M110,230 C200,190 250,170 300,200 C350,230 380,260 430,290"></path>
+          <circle class="intrusion-dot" cx="110" cy="230" r="3.5"></circle>
+          <circle class="intrusion-dot" cx="430" cy="290" r="4.5"></circle>
+          <text class="intrusion-label" x="52" y="252">モル</text>
+          <text class="intrusion-label" x="438" y="312">侵入</text>
+        </svg>
+      </div>
+      <figcaption>夢の階層は本来、互いに独立した区画として設計される。だがモルは、その境界を平然と越えてくる——コブが処理し損ねた記憶そのものとして。</figcaption>
+    </figure>
+
+    <div class="p-crit scene-crit reveal"><p><span class="ptype">批評</span><strong>コブがチームの中で最も信頼できない設計者(アーキテクト)であるのは、彼の技術が劣るからではない。</strong>彼の潜在意識——モルという形をとった記憶——が、どの階層にいても勝手に顔を出すからだ。侵入してくるのはモルではなく、コブ自身が処理し損ねた過去そのものである。</p></div>
+    <p class="p-fact scene-fact reveal"><span class="ptype">事実</span>モルが生前コブに説いていたのは、独楽という物証よりも「信じる」という行為の方を選べ、という思想だった。彼女はその思想のままリンボに留まり、コブを引き止めようとする。</p>
+    <div class="p-crit scene-crit reveal"><p><span class="ptype">批評</span>本作で最も皮肉なのは、モルの侵入という「恐怖」として描かれるものが、実はラストでコブ自身が選び取る態度と同じ形をしているという点だ。この階層はその伏線を、まだ観客に気づかせないまま仕込んでいる。</p></div>
+  </div>
+</section>
+
+<section class="depth-section" id="layer-3" data-depth="3" aria-labelledby="dv-h3">
+  <div class="depth-heading">
+    <p class="depth-kicker">階層 03</p>
+    <h2 class="depth-heading-title" id="dv-h3">夢<span class="jp">・雪山要塞</span></h2>
+    <p class="depth-ratio">体感 × 20(6ヶ月→10年)</p>
+  </div>
+  <div class="depth-content-wrap dossier">
+    <div class="dossier-head" aria-hidden="true">
+      <p class="dossier-head-fact">客観 <span class="jp">— 物語の流れ</span></p>
+      <p class="dossier-head-crit">批評 <span class="jp">— 読み解き</span></p>
+    </div>
+
+    <figure class="fortress-figure reveal">
+      <p class="figure-label">図版 — 雪山要塞の見取りと、体感時間の目盛り</p>
+      <div class="fortress-scroll">
+        <svg viewBox="0 0 900 260" role="img" aria-label="雪山に築かれた要塞をテラス状の断面図として示し、あわせて第2階層で流れた6ヶ月がこの階層ではおよそ10年、体感で20倍に伸びることを二本の帯の長さで示す図。">
+          <defs>
+            <marker id="fortressArrow" viewBox="0 0 8 8" refX="4" refY="6" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L8,0 L4,8 Z" fill="currentColor"></path>
+            </marker>
+          </defs>
+
+          <polygon class="peak" points="40,150 210,30 380,150"></polygon>
+          <line class="snow-tick" x1="80" y1="120" x2="68" y2="108"></line>
+          <line class="snow-tick" x1="110" y1="95" x2="98" y2="83"></line>
+          <line class="snow-tick" x1="140" y1="70" x2="128" y2="58"></line>
+          <line class="snow-tick" x1="280" y1="120" x2="292" y2="108"></line>
+          <line class="snow-tick" x1="250" y1="95" x2="262" y2="83"></line>
+          <line class="snow-tick" x1="220" y1="70" x2="232" y2="58"></line>
+
+          <rect class="level level-1" x="40" y="150" width="340" height="24"></rect>
+          <rect class="level level-2" x="75" y="176" width="270" height="24"></rect>
+          <rect class="level level-3" x="110" y="202" width="200" height="24"></rect>
+          <rect class="level level-4" x="150" y="228" width="120" height="20"></rect>
+
+          <text class="bank-sub" x="480" y="54">第2階層 6ヶ月</text>
+          <rect class="bank-bar-quiet" x="480" y="60" width="60" height="22"></rect>
+          <line class="bank-arrow" x1="510" y1="86" x2="510" y2="116" marker-end="url(#fortressArrow)" color="var(--ash)"></line>
+          <text class="bank-sub" x="480" y="114">この階層 10年</text>
+          <rect class="bank-bar-spent" x="480" y="120" width="360" height="22"></rect>
+          <text class="bank-ratio" x="480" y="166">体感 × 20</text>
+        </svg>
+      </div>
+      <figcaption>第2階層で流れた6ヶ月は、この階層ではおよそ10年に伸びる(体感 × 20)。要塞に潜っている時間は現実にはわずかでも、そこで生きる者には十年分の重さがある。</figcaption>
+    </figure>
+
+    <p class="p-fact scene-fact reveal"><span class="ptype">事実</span>独楽が最後まで倒れるかどうかを、映画は見せない。回り続ける独楽をカメラが捉えたまま、画面は暗転する。</p>
+    <div class="p-crit scene-crit reveal"><p><span class="ptype">批評</span>これは安っぽいどんでん返しの技巧ではない。2時間以上かけて観客は、「どの階層が現実かは、totem(トーテム)という物証で確認できる」という前提を叩き込まれてきた。ラストは、その前提がまさに報われるはずの瞬間に、証拠だけを差し出さない。</p></div>
+    <p class="p-fact scene-fact reveal"><span class="ptype">事実</span>コブ自身、独楽をそれ以上見届けずに背を向け、子供たちのもとへ歩いていく。</p>
+    <div class="p-crit scene-crit reveal"><p><span class="ptype">批評</span>検証をやめて、信じることを選んだのだ。ノーランの編集は、コブが手放した「確認」という行為を、観客にも同じだけ手放させる。<em>形式(見せない編集)が、主題(証明より確信を選ぶこと)をそのまま演じている。</em>だからこの結末は、答えを隠しているのではない——答えという概念そのものを、静かに退けている。</p></div>
+
+    <figure class="totem-figure reveal">
+      <div class="totem-glyph" role="img" aria-label="回転を止めないまま描かれた独楽の線画。最後まで倒れるかどうかは示されない。">
+        <svg viewBox="0 0 132 168" aria-hidden="true">
+          <g class="totem-spin">
+            <path class="totem-line" d="M50,26 L82,26 C95,35 101,50 101,63 C101,80 85,106 66,146 C47,106 31,80 31,63 C31,50 37,35 50,26 Z"></path>
+            <line class="totem-line" x1="66" y1="26" x2="66" y2="146"></line>
+          </g>
+          <ellipse class="totem-wobble" cx="66" cy="152" rx="32" ry="7.5"></ellipse>
+          <ellipse class="totem-wobble" cx="66" cy="152" rx="21" ry="5"></ellipse>
+          <ellipse class="totem-wobble" cx="66" cy="152" rx="10" ry="2.6"></ellipse>
+        </svg>
+      </div>
+      <figcaption>独楽(トーテム)——倒れるかどうかを、この稿も見せない。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="depth-section" id="layer-4" data-depth="4" aria-labelledby="dv-h4">
+  <div class="depth-heading">
+    <p class="depth-kicker">階層 04</p>
+    <h2 class="depth-heading-title" id="dv-h4">リンボ <span class="jp">— 未構築領域</span></h2>
+    <p class="depth-ratio">時間 ∞</p>
+  </div>
+  <div class="depth-content-wrap dossier depth-rupture">
+    <div class="dossier-head" aria-hidden="true">
+      <p class="dossier-head-fact">客観 <span class="jp">— 物語の流れ</span></p>
+      <p class="dossier-head-crit">批評 <span class="jp">— 読み解き</span></p>
+    </div>
+    <blockquote class="reveal">
+      「あなたは列車を待っている。どこか遠くへ運んでくれる列車を。行き先はわかる気がしても、確信は持てない。でも、そんなことはどうでもいいはずでしょう——なぜだかわかる?」
+      <cite>モル(劇中セリフより)</cite>
+    </blockquote>
+    <p class="p-fact scene-fact reveal"><span class="ptype">事実</span>この台詞が交わされるのは、建築のルールがそもそも存在しないリンボの中でだ。</p>
+    <div class="p-crit scene-crit reveal"><p><span class="ptype">批評</span>ここでモルが語っているのは、正しい行き先を知ることではなく、確信が持てないまま進むことを引き受ける態度そのものである。それは、独楽の結末を見せない設計と、正確に同じ問いを反復している。</p></div>
+    <div class="p-crit scene-crit reveal"><p><span class="ptype">批評</span>二度目に観たときに初めて見えてくるものがある。冒頭、波打ち際に打ち上げられる老いたコブの場面は、実は物語の終盤——リンボから帰還した直後——のそれと同じ時制だ。つまり観客は、まだ何も知らないまま、物語の「後」から始まる映画をすでに見せられている。一度目はそれに気づかず、ただの謎めいた導入として受け取る。二度目は、その導入がすでに結末を内包していたことに気づいて、震える。</p></div>
+    <p class="p-fact scene-fact reveal"><span class="ptype">事実</span>さらに、多くの再見者が指摘する通り、コブの記憶の中の子供たちは、終盤まで一貫して後ろ姿でしか描かれない。振り返ってその顔を見せるのは、最後の帰宅シーンだけである。</p>
+    <div class="p-crit scene-crit reveal"><p><span class="ptype">批評</span>独楽よりもよほど雄弁なこのトーテムを、脚本は一度も説明しない。本稿もまた、ここで結論を急がない。降りてきた階層をそのまま引き返し、答え合わせをする代わりに——この稿もまた、回り続けたまま、止める。</p></div>
+  </div>
+</section>
+
+</div>
+
+</div>
+
+</div>
+
+<style>{`
+  /* ---------------------------------------------------------------
+     depth accents — theme-reactive, used by the opening structure
+     figure and any small icon sitting on the normal reading ground
+     --------------------------------------------------------------- */
+  .inception-article{
+    --d0: var(--rule);
+    --d1: color-mix(in srgb, var(--cold) 42%, var(--rule) 58%);
+    --d2: color-mix(in srgb, var(--cold) 62%, var(--rule) 38%);
+    --d3: color-mix(in srgb, var(--cold) 82%, var(--rule) 18%);
+    --d4: #3d5a70;
+    --map-ring-0: color-mix(in srgb, var(--paper-dim) 70%, transparent);
+    --map-ring-1: color-mix(in srgb, var(--cold) 55%, var(--paper-dim) 45%);
+    --map-ring-2: color-mix(in srgb, var(--cold) 75%, var(--paper-dim) 25%);
+    --map-ring-3: color-mix(in srgb, var(--cold) 92%, black 8%);
+    --map-ring-4: color-mix(in srgb, var(--cold) 70%, black 30%);
+    --content-scrim: color-mix(in srgb, var(--ink) 90%, transparent);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .inception-article{
+      --map-ring-0: color-mix(in srgb, var(--paper) 55%, transparent);
+      --map-ring-1: color-mix(in srgb, var(--cold) 70%, var(--paper) 30%);
+      --map-ring-2: color-mix(in srgb, var(--cold) 90%, var(--paper) 10%);
+      --map-ring-3: var(--cold);
+      --map-ring-4: color-mix(in srgb, var(--cold) 88%, white 12%);
+    }
+  }
+  :root[data-theme="dark"] .inception-article{
+    --map-ring-0: color-mix(in srgb, var(--paper) 55%, transparent);
+    --map-ring-1: color-mix(in srgb, var(--cold) 70%, var(--paper) 30%);
+    --map-ring-2: color-mix(in srgb, var(--cold) 90%, var(--paper) 10%);
+    --map-ring-3: var(--cold);
+    --map-ring-4: color-mix(in srgb, var(--cold) 88%, white 12%);
+  }
+
+  /* ---------------------------------------------------------------
+     Frame-tunnel — the nested-rectangle motif
+     --------------------------------------------------------------- */
+  .frame-tunnel{ position: relative; width: 100%; height: 100%; display: flex; }
+  .frame{
+    flex: 1; display: flex; box-sizing: border-box;
+    border: 1.5px solid var(--rule); border-radius: 4px; padding: 7.5% 6%;
+    transition: border-color .5s ease, box-shadow .5s ease, background-color .5s ease;
+  }
+  .frame[data-depth="0"]{ border-color: var(--d0); }
+  .frame[data-depth="1"]{ border-color: var(--d1); }
+  .frame[data-depth="2"]{ border-color: var(--d2); }
+  .frame[data-depth="3"]{ border-color: var(--d3); }
+  .frame[data-depth="4"]{ border-color: var(--d4); background: #06070a; }
+  .frame.is-active{
+    border-color: var(--cold);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--cold) 26%, transparent),
+                0 0 16px color-mix(in srgb, var(--cold) 55%, transparent);
+    background: color-mix(in srgb, var(--cold) 14%, transparent);
+  }
+
+  /* ---------------------------------------------------------------
+     Page shell / article
+     --------------------------------------------------------------- */
+  .site{
+    position: relative; z-index: 1; background: var(--content-scrim);
+    max-width: 980px; margin: 0 auto; padding: 0 clamp(20px,4vw,48px);
+  }
+  @media (min-width: 1420px){ .site{ max-width: 1500px; } }
+
+  .cover{ padding: clamp(40px,7vw,76px) 0 clamp(28px,4vw,40px); border-bottom: 1px solid var(--rule); }
+  .kicker{
+    margin: 0 0 clamp(16px,2.4vw,22px); font-family: var(--mono); font-size: .68rem;
+    letter-spacing: .22em; color: var(--ash); text-transform: uppercase;
+  }
+  .work-title{
+    margin: 0; font-family: var(--serif-display); font-optical-sizing: auto; font-weight: 480;
+    font-size: clamp(2.1rem, 5.6vw, 3.6rem); line-height: 1.14; letter-spacing: -.01em; text-wrap: balance;
+  }
+  .work-title .subtitle{
+    display: block; margin-top: .28em; font-style: italic; font-weight: 380;
+    font-size: clamp(1.2rem, 2.6vw, 1.7rem); color: var(--paper-dim);
+  }
+  .meta-row{
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+    margin-top: clamp(22px,3.4vw,32px); font-family: var(--mono); font-size: .72rem;
+    letter-spacing: .04em; color: var(--paper-dim);
+  }
+  .meta-row .sep{ color: var(--ash-faint); }
+  .tag-list{ display: inline-flex; flex-wrap: wrap; gap: 8px; }
+  .tag{ padding: 3px 10px; border: 1px solid var(--rule); border-radius: 100px; }
+  .tone-badge{
+    display: inline-flex; align-items: center; gap: 6px; padding: 3px 11px;
+    border: 1px solid var(--cold); border-radius: 100px; color: var(--cold);
+  }
+  .tone-badge .dot{ width: 6px; height: 6px; border-radius: 50%; background: var(--cold); }
+
+  @media (min-width: 1420px){
+    .cover{ display: grid; grid-template-columns: 190px minmax(0,1fr); column-gap: clamp(28px,3.6vw,56px); align-items: end; }
+    .kicker{ grid-column: 1; grid-row: 1; margin-bottom: 0; }
+    .work-title{ grid-column: 2; grid-row: 1 / 3; }
+    .meta-row{ grid-column: 1; grid-row: 2; flex-direction: column; align-items: flex-start; gap: 10px; margin-top: clamp(18px,2.4vw,26px); }
+    .meta-row .sep{ display: none; }
+    .tag-list{ flex-direction: column; align-items: flex-start; gap: 6px; }
+  }
+
+  /* ---------------------------------------------------------------
+     Reveal-on-scroll
+     --------------------------------------------------------------- */
+  .reveal{ opacity: 0; transform: translateY(14px); }
+  .reveal.is-revealed{ opacity: 1; transform: translateY(0); transition: opacity .6s ease, transform .6s ease; }
+
+  /* ---------------------------------------------------------------
+     Figure A — the structure diagram (opening figure)
+     --------------------------------------------------------------- */
+  .structure-figure{
+    margin: clamp(30px,5vw,52px) 0 0; padding: clamp(24px,3.6vw,36px) 0 clamp(10px,2vw,18px);
+    border-bottom: 1px solid var(--rule);
+    display: flex; flex-direction: column; gap: clamp(18px,3vw,28px);
+  }
+  .structure-figure .figure-body{
+    display: flex; align-items: center; gap: clamp(20px,4vw,48px); flex-wrap: wrap;
+  }
+  .structure-tunnel{ width: min(280px, 42vw); height: min(280px, 42vw); flex: 0 0 auto; }
+  .structure-legend{
+    list-style: none; margin: 0; padding: 0; flex: 1 1 260px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .structure-legend li{
+    display: grid; grid-template-columns: 12px auto 1fr; align-items: baseline; column-gap: 10px;
+    font-family: var(--mono); font-size: .74rem; letter-spacing: .02em; padding: 6px 0;
+    border-bottom: 1px dashed color-mix(in srgb, var(--rule) 70%, transparent);
+  }
+  .structure-legend li:last-child{ border-bottom: none; }
+  .structure-legend .swatch{ width: 10px; height: 10px; border-radius: 2px; border: 1.5px solid currentColor; align-self: center; }
+  .structure-legend li[data-depth="0"]{ color: var(--d0); }
+  .structure-legend li[data-depth="1"]{ color: var(--d1); }
+  .structure-legend li[data-depth="2"]{ color: var(--d2); }
+  .structure-legend li[data-depth="3"]{ color: var(--d3); }
+  .structure-legend li[data-depth="4"]{ color: #7fa3bd; }
+  .structure-legend .legend-name{ font-family: var(--serif-body); font-style: italic; font-size: .92rem; color: var(--paper); letter-spacing: 0; }
+  .structure-legend .legend-ratio{ text-align: right; color: var(--ash); }
+  figcaption{
+    font-family: var(--serif-body); font-style: italic; color: var(--paper-dim);
+    font-size: .92rem; line-height: 1.75; max-width: 62ch;
+  }
+  .stack-intro{
+    margin: 0 0 clamp(10px,1.8vw,18px); font-family: var(--serif-body); font-style: italic;
+    color: var(--ash); font-size: .84rem; line-height: 1.7; max-width: 68ch;
+  }
+
+  /* ---------------------------------------------------------------
+     Depth stack
+     --------------------------------------------------------------- */
+  .depth-stack{ margin-top: clamp(6px,1.4vw,14px); display: flex; flex-direction: column; gap: clamp(2px,.6vw,6px); }
+  .depth-section{ position: relative; }
+  .depth-section + .depth-section{ border-top: 1px solid var(--rule); }
+  .depth-heading{
+    display: flex; flex-direction: column; gap: 6px;
+    padding: clamp(26px,4.2vw,42px) 0 clamp(14px,2.4vw,20px);
+  }
+  .depth-kicker{
+    margin: 0; font-family: var(--mono); font-size: .68rem;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--ash);
+  }
+  .depth-heading-title{
+    margin: 0; font-family: var(--serif-display); font-weight: 520;
+    font-size: clamp(1.5rem,3.6vw,2.2rem); letter-spacing: -.005em; text-wrap: balance;
+  }
+  .depth-heading-title .jp{ font-weight: 380; font-style: italic; color: var(--paper-dim); }
+  .depth-ratio{
+    margin: 0; font-family: var(--mono); font-size: .76rem;
+    letter-spacing: .05em; color: var(--ash);
+  }
+
+  /* ---------------------------------------------------------------
+     Depth map — the fixed, always-centred layer map
+     --------------------------------------------------------------- */
+  .depth-map-anchor{
+    position: fixed; inset: 0; z-index: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: clamp(10px,1.6vw,16px); pointer-events: none;
+    /* Hidden until the hero (added for the card→header morph transition,
+       see ArticleHero.astro) has fully scrolled past — it's fixed+centred,
+       so without this it would float on top of the hero's own key art
+       before the reader has reached any actual "depth" to represent. */
+    opacity: 0; transition: opacity .5s ease;
+  }
+  .depth-map-anchor.is-visible{ opacity: 1; }
+  .depth-map{
+    width: clamp(260px, 46vw, 640px); aspect-ratio: 1;
+    filter: blur(1.2px); opacity: .92;
+    transition: opacity .8s ease, filter .8s ease;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .depth-map{ opacity: 1; filter: blur(.6px); }
+  }
+  :root[data-theme="dark"] .depth-map{ opacity: 1; filter: blur(.6px); }
+  .depth-map .frame{
+    border-width: 4px; transition: border-color .7s ease, box-shadow .7s ease, background-color .7s ease;
+    box-shadow: 0 0 20px color-mix(in srgb, var(--cold) 32%, transparent);
+  }
+  .depth-map .frame[data-depth="0"]{ border-color: var(--map-ring-0); }
+  .depth-map .frame[data-depth="1"]{ border-color: var(--map-ring-1); }
+  .depth-map .frame[data-depth="2"]{ border-color: var(--map-ring-2); }
+  .depth-map .frame[data-depth="3"]{ border-color: var(--map-ring-3); }
+  .depth-map .frame[data-depth="4"]{ border-color: var(--map-ring-4); }
+  .depth-map .frame.is-current{
+    border-color: var(--cold);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--cold) 30%, transparent),
+                0 0 42px color-mix(in srgb, var(--cold) 62%, transparent);
+    background: color-mix(in srgb, var(--cold) 18%, transparent);
+    animation: depth-map-pulse 3.4s ease-in-out infinite;
+  }
+  @keyframes depth-map-pulse{
+    0%,100%{ box-shadow: 0 0 0 5px color-mix(in srgb, var(--cold) 26%, transparent), 0 0 34px color-mix(in srgb, var(--cold) 50%, transparent); }
+    50%{     box-shadow: 0 0 0 7px color-mix(in srgb, var(--cold) 40%, transparent), 0 0 50px color-mix(in srgb, var(--cold) 68%, transparent); }
+  }
+  .depth-map-label{
+    margin: 0; font-family: var(--mono); font-size: .64rem; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--ash); opacity: .6; white-space: nowrap;
+  }
+  .depth-map-label .num{ font-variant-numeric: tabular-nums; color: var(--cold); margin-right: .6em; }
+  @media (max-width: 759px), (prefers-reduced-motion: reduce){
+    .depth-map-anchor{ display: none; }
+  }
+
+  /* ---------------------------------------------------------------
+     Dossier — the two-column body inside each .depth-content-wrap
+     --------------------------------------------------------------- */
+  .dossier{
+    display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(24px,4vw,52px);
+    row-gap: 4px; padding: clamp(28px,5vw,48px) 0 clamp(30px,5vw,56px);
+  }
+  .dossier-head{ display: contents; }
+  .dossier-head p{
+    margin: 0 0 6px; font-family: var(--mono); font-size: .74rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ash); padding-bottom: 10px; border-bottom: 1px solid var(--rule);
+  }
+  .dossier-head .jp{ text-transform: none; letter-spacing: .02em; color: var(--paper-dim); }
+  .dossier-head-fact{ grid-column: 1; }
+  .dossier-head-crit{ grid-column: 2; }
+  .scene-fact{ grid-column: 1; }
+  .scene-crit{ grid-column: 2; }
+  .layer p, .scene-fact, .scene-crit p{
+    font-family: var(--serif-body); font-size: clamp(1rem, 1.05vw, 1.1rem);
+    line-height: 1.9; margin: 0 0 1.15em; max-width: 60ch;
+  }
+  .scene-fact p:last-child, .scene-crit p:last-child{ margin-bottom: 0; }
+  .scene-crit p + p{ margin-top: 1.15em; }
+  em{ font-style: italic; }
+  strong{ font-weight: 600; color: var(--paper); }
+
+  .ptype{
+    display: inline-block; font-family: var(--mono); font-size: .6rem; letter-spacing: .14em;
+    text-transform: uppercase; padding: 1px 8px 2px; border-radius: 3px; line-height: 1.7;
+    margin: 0 .65em .15em 0; font-style: normal; vertical-align: .1em; white-space: nowrap;
+  }
+  p.p-fact{ font-style: italic; color: var(--paper-dim); }
+  p.p-fact .ptype{ border: 1px solid var(--ash-faint); color: var(--ash); background: transparent; }
+  p.p-crit{ font-style: normal; color: inherit; }
+  p.p-crit .ptype{ background: var(--ember); border: 1px solid var(--ember); color: #fff; }
+
+  @media (max-width: 759px){
+    .dossier{ grid-template-columns: 1fr; row-gap: 0; }
+    .scene-fact, .scene-crit, .dossier-head-fact, .dossier-head-crit{ grid-column: 1; }
+    .dossier-head{ display: block; }
+    .dossier-head-crit{ margin-top: 14px; }
+    .scene-fact{ margin-top: clamp(18px,4vw,26px); }
+    .scene-crit{ margin-top: 10px; padding: 14px clamp(14px,3.6vw,20px); border-left: 2px solid var(--rule); background: color-mix(in srgb, var(--ink) 92%, var(--cold) 8%); border-radius: 0 6px 6px 0; }
+  }
+
+  blockquote{
+    grid-column: 1 / -1; margin: .6em 0 1.6em; padding: .2em 0 .2em 1.3em; border-left: 3px solid #7fa3bd;
+    font-family: var(--serif-body); font-style: italic; font-size: clamp(1.05rem,1.4vw,1.22rem);
+    line-height: 1.85; color: inherit; max-width: 56ch;
+  }
+  blockquote cite{
+    display: block; margin-top: .7em; font-family: var(--mono); font-style: normal;
+    font-size: .66rem; letter-spacing: .1em; color: #8b9aa6; text-transform: uppercase;
+  }
+
+  .depth-rupture{
+    background: transparent; color: var(--paper); border-radius: 0 0 8px 8px;
+    padding: clamp(22px,3.6vw,36px) clamp(20px,3.6vw,32px) clamp(30px,4.6vw,44px);
+  }
+
+  /* ---------------------------------------------------------------
+     Figure C — rain / audio-stretch
+     --------------------------------------------------------------- */
+  .rain-figure{
+    grid-column: 1 / -1; margin: clamp(10px,2vw,18px) 0 clamp(24px,3.6vw,34px);
+    padding: clamp(20px,3.2vw,32px) 0 0; border-top: 1px solid var(--rule);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .rain-figure .figure-label{
+    margin: 0; font-family: var(--mono); font-size: .68rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ash);
+  }
+  .rain-scroll{ overflow-x: auto; padding-bottom: 4px; }
+  .rain-figure svg{ display: block; width: 100%; min-width: 620px; height: auto; }
+  .rain-figure .skyline{ fill: color-mix(in srgb, var(--rule) 14%, transparent); stroke: var(--rule); stroke-width: 1.4; }
+  .rain-figure .rain-line{ stroke: var(--cold); stroke-linecap: round; stroke-width: 1.1; }
+  .rain-figure .row-label{ font-family: var(--mono); font-size: 12px; fill: var(--paper); }
+  .rain-figure .row-ratio{ font-family: var(--mono); font-size: 11px; fill: var(--ash); }
+  .rain-figure .row-line{ stroke: var(--cold); stroke-width: 2; fill: none; }
+  .rain-figure .divider{ stroke: var(--rule); stroke-width: 1; opacity: .5; }
+
+  /* ---------------------------------------------------------------
+     Figure B — kick synchronisation timeline
+     --------------------------------------------------------------- */
+  .kick-figure{
+    grid-column: 1 / -1; margin: clamp(10px,2vw,18px) 0 clamp(30px,4.6vw,48px);
+    padding: clamp(20px,3.2vw,32px) 0 0; border-top: 1px solid var(--rule);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .kick-figure .figure-label{
+    margin: 0; font-family: var(--mono); font-size: .68rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ash);
+  }
+  .kick-scroll{ overflow-x: auto; padding-bottom: 4px; }
+  .kick-figure svg{ display: block; width: 100%; min-width: 640px; height: auto; color: var(--paper); }
+  .kick-figure .row-label{ font-family: var(--mono); font-size: 12px; fill: var(--paper); }
+  .kick-figure .row-ratio{ font-family: var(--mono); font-size: 11px; fill: var(--ash); }
+  .kick-figure .sync-label{ font-family: var(--mono); font-size: 11px; fill: var(--cold); letter-spacing: .02em; }
+  .kick-figure .row-line{ stroke: var(--rule); stroke-width: 2; }
+  .kick-figure .row-dot{ fill: var(--cold); }
+  .kick-figure .sync-line{ stroke: var(--cold); stroke-width: 1.4; stroke-dasharray: 3 4; }
+
+  /* ---------------------------------------------------------------
+     Figure D — zero-gravity compartments
+     --------------------------------------------------------------- */
+  .gravity-figure{
+    grid-column: 1 / -1; margin: clamp(10px,2vw,18px) 0 clamp(24px,3.6vw,34px);
+    padding: clamp(20px,3.2vw,32px) 0 0; border-top: 1px solid var(--rule);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .gravity-figure .figure-label{
+    margin: 0; font-family: var(--mono); font-size: .68rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ash);
+  }
+  .gravity-scroll{ overflow-x: auto; padding-bottom: 4px; }
+  .gravity-figure svg{ display: block; width: 100%; min-width: 420px; max-width: 480px; height: auto; margin: 0 auto; }
+  .gravity-figure .compartment{ fill: color-mix(in srgb, var(--cold) 7%, transparent); stroke: var(--cold); stroke-width: 1.3; }
+  .gravity-figure .compartment-quiet{ fill: color-mix(in srgb, var(--rule) 10%, transparent); stroke: var(--rule); stroke-width: 1.2; }
+  .gravity-figure .debris{ fill: var(--ash-faint); }
+  .gravity-figure .debris-trail{ stroke: var(--ash-faint); stroke-width: 1; opacity: .5; }
+  .gravity-figure .boundary-line{ stroke: var(--rule); stroke-width: 1.3; stroke-dasharray: 6 5; }
+  .gravity-figure .boundary-label{ font-family: var(--mono); font-size: 10.5px; fill: var(--ash); letter-spacing: .02em; }
+  .gravity-figure .intrusion-path{ stroke: var(--ember); stroke-width: 1.8; fill: none; }
+  .gravity-figure .intrusion-dot{ fill: var(--ember); }
+  .gravity-figure .intrusion-label{ font-family: var(--mono); font-size: 10.5px; fill: var(--ember); letter-spacing: .04em; }
+
+  /* ---------------------------------------------------------------
+     Figure E — fortress cross-section
+     --------------------------------------------------------------- */
+  .fortress-figure{
+    grid-column: 1 / -1; margin: 0 0 clamp(22px,3.4vw,32px);
+    padding: 0 0 clamp(18px,2.8vw,26px); border-bottom: 1px dashed color-mix(in srgb, var(--rule) 70%, transparent);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .fortress-figure .figure-label{
+    margin: 0; font-family: var(--mono); font-size: .68rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ash);
+  }
+  .fortress-scroll{ overflow-x: auto; padding-bottom: 4px; }
+  .fortress-figure svg{ display: block; width: 100%; min-width: 640px; height: auto; }
+  .fortress-figure .peak{ fill: color-mix(in srgb, var(--rule) 8%, transparent); stroke: var(--rule); stroke-width: 1.3; }
+  .fortress-figure .snow-tick{ stroke: color-mix(in srgb, var(--cold) 55%, var(--paper) 45%); stroke-width: 1; opacity: .7; }
+  .fortress-figure .level-1{ fill: color-mix(in srgb, var(--d1) 16%, transparent); stroke: var(--d1); }
+  .fortress-figure .level-2{ fill: color-mix(in srgb, var(--d2) 18%, transparent); stroke: var(--d2); }
+  .fortress-figure .level-3{ fill: color-mix(in srgb, var(--d3) 20%, transparent); stroke: var(--d3); }
+  .fortress-figure .level-4{ fill: color-mix(in srgb, var(--d4) 32%, transparent); stroke: var(--d4); }
+  .fortress-figure .level{ stroke-width: 1.4; }
+  .fortress-figure .bank-label{ font-family: var(--mono); font-size: 12px; fill: var(--paper); }
+  .fortress-figure .bank-sub{ font-family: var(--mono); font-size: 10.5px; fill: var(--ash); }
+  .fortress-figure .bank-bar-quiet{ fill: var(--ash-faint); }
+  .fortress-figure .bank-bar-spent{ fill: var(--ember); }
+  .fortress-figure .bank-ratio{ font-family: var(--mono); font-size: 13px; fill: var(--cold); letter-spacing: .02em; }
+  .fortress-figure .bank-arrow{ stroke: var(--ash); stroke-width: 1.3; }
+
+  /* ---------------------------------------------------------------
+     Totem figure
+     --------------------------------------------------------------- */
+  .totem-figure{
+    grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center;
+    gap: 14px; margin: clamp(12px,2vw,20px) 0 clamp(30px,4.6vw,48px); text-align: center;
+  }
+  .totem-glyph{ width: clamp(96px,14vw,132px); color: var(--warm); }
+  .totem-glyph svg{ display: block; width: 100%; height: auto; overflow: visible; }
+  .totem-glyph .totem-line{ fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+  .totem-glyph .totem-wobble{ fill: none; stroke: currentColor; stroke-width: 1; opacity: .5; stroke-dasharray: 2.5 4; }
+  .totem-glyph .totem-spin{ transform-origin: 66px 86px; animation: totem-spin 7s linear infinite; }
+  @keyframes totem-spin{ to{ transform: rotate(360deg); } }
+  .totem-figure figcaption{
+    max-width: 34ch; font-size: .82rem; letter-spacing: .01em;
+  }
+`}</style>
+
+<script>{`
+  (function(){
+    /* ---------------- reveal-on-scroll ---------------- */
+    var revealTargets = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+    if ('IntersectionObserver' in window){
+      var ioReveal = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting){ entry.target.classList.add('is-revealed'); ioReveal.unobserve(entry.target); }
+        });
+      }, { rootMargin: '0px 0px -6% 0px', threshold: .04 });
+      revealTargets.forEach(function(t){ ioReveal.observe(t); });
+    } else {
+      revealTargets.forEach(function(t){ t.classList.add('is-revealed'); });
+    }
+
+    /* ---------------- depth map tracking ---------------- */
+    (function(){
+      var depthMapAnchor = document.querySelector('.depth-map-anchor');
+      var articleHero = document.querySelector('.article-hero');
+      if (depthMapAnchor && articleHero){
+        var syncDepthMapVisibility = function(){
+          depthMapAnchor.classList.toggle('is-visible', articleHero.getBoundingClientRect().bottom <= 0);
+        };
+        syncDepthMapVisibility();
+        window.addEventListener('scroll', syncDepthMapVisibility, { passive: true });
+      } else if (depthMapAnchor) {
+        depthMapAnchor.classList.add('is-visible');
+      }
+
+      var depthMeta = [
+        { name: '現実' },
+        { name: '夢・雨に沈む街' },
+        { name: '夢・無重力のホテル' },
+        { name: '夢・雪山要塞' },
+        { name: 'リンボ' }
+      ];
+      var mapFrames = document.querySelectorAll('.depth-map .frame');
+      var numEl = document.getElementById('depthMapNum');
+      var nameEl = document.getElementById('depthMapName');
+      function setActiveDepth(n){
+        mapFrames.forEach(function(f){
+          f.classList.toggle('is-current', f.getAttribute('data-depth') === String(n));
+        });
+        if (numEl && nameEl && depthMeta[n]){
+          numEl.textContent = '0' + n;
+          nameEl.textContent = depthMeta[n].name;
+        }
+      }
+      var depthSections = Array.prototype.slice.call(document.querySelectorAll('.depth-section'));
+      if (!depthSections.length) return;
+      function resolveByPosition(){
+        var triggerY = window.innerHeight / 3;
+        for (var i = 0; i < depthSections.length; i++){
+          var rect = depthSections[i].getBoundingClientRect();
+          if (rect.top <= triggerY && rect.bottom >= triggerY){
+            return Number(depthSections[i].getAttribute('data-depth'));
+          }
+        }
+        var firstRect = depthSections[0].getBoundingClientRect();
+        if (firstRect.top > triggerY) return 0;
+        return Number(depthSections[depthSections.length - 1].getAttribute('data-depth'));
+      }
+      if ('IntersectionObserver' in window){
+        var currentlyIn = {};
+        var ioDepth = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            currentlyIn[entry.target.getAttribute('data-depth')] = entry.isIntersecting;
+          });
+          var maxDepth = null;
+          Object.keys(currentlyIn).forEach(function(k){
+            if (currentlyIn[k] && (maxDepth === null || Number(k) > maxDepth)) maxDepth = Number(k);
+          });
+          setActiveDepth(maxDepth !== null ? maxDepth : resolveByPosition());
+        }, { rootMargin: '-33% 0px -66% 0px', threshold: 0 });
+        depthSections.forEach(function(s){ ioDepth.observe(s); });
+      }
+      setActiveDepth(0);
+    })();
+  })();
+`}</script>

@@ -1,0 +1,96 @@
+---
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Cursor from './Cursor.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import ArticleHero from './ArticleHero.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  work: string;
+  englishTitle: string;
+  subtitle: string;
+  tone: 'cold' | 'warm';
+  image?: ImageMetadata;
+}
+
+const { title, description, work, englishTitle, subtitle, tone, image } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <Cursor />
+
+  <div class="topbar">
+    <a class="topbar-mark" href="/">FRAME<span class="accent-i">frame</span></a>
+    <ThemeToggle />
+  </div>
+
+  <ArticleHero work={work} englishTitle={englishTitle} subtitle={subtitle} tone={tone} image={image} />
+
+  <slot />
+
+  <footer class="footer">
+    <a class="back-link" href="/">← トップページに戻る</a>
+    <p class="footer-mark">FRAME<span class="accent-i">frame</span></p>
+  </footer>
+</BaseLayout>
+
+<style>
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px clamp(20px, 5vw, 60px);
+    background: color-mix(in srgb, var(--ink) 86%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .topbar-mark {
+    font-family: var(--serif-display);
+    font-weight: 600;
+    font-size: 0.92rem;
+    letter-spacing: 0.01em;
+  }
+  .topbar-mark :global(.accent-i) {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ash);
+  }
+
+  .footer {
+    margin-top: clamp(64px, 9vw, 96px);
+    padding: clamp(24px, 4vw, 32px) clamp(20px, 5vw, 60px) clamp(40px, 6vw, 56px);
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .back-link {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    color: var(--paper);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+  }
+  .back-link:hover {
+    color: var(--ember);
+  }
+  .footer-mark {
+    font-family: var(--serif-display);
+    font-size: 0.82rem;
+    color: var(--ash);
+    margin: 0;
+  }
+  .footer-mark :global(.accent-i) {
+    font-style: italic;
+    color: var(--ash-faint);
+  }
+</style>

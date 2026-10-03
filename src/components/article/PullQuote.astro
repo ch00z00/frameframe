@@ -1,0 +1,48 @@
+---
+// Centered pull-quote with an optional leading marker (e.g. a small dot)
+// before the quote text, and an optional citation. Ported from the
+// `.quote` device in docs/artifacts/detail-mock-2001-odyssey.html.
+interface Props {
+  cite?: string;
+}
+const { cite } = Astro.props;
+---
+
+<blockquote class="quote">
+  <p>
+    <slot name="marker" />
+    <slot />
+  </p>
+  {cite && <cite>{cite}</cite>}
+</blockquote>
+
+<style>
+  .quote {
+    margin: clamp(2.6rem, 6vh, 3.6rem) auto;
+    padding: 0 0 0 clamp(1.2rem, 3vw, 1.8rem);
+    border-left: 2px solid var(--ember);
+    max-width: 54em;
+  }
+  .quote p {
+    font-family: var(--serif-body);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.3rem, 3vw, 1.75rem);
+    line-height: 1.6;
+    color: var(--paper);
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.55em;
+  }
+  .quote cite {
+    display: block;
+    margin-top: 0.9rem;
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: var(--ash);
+    text-transform: uppercase;
+  }
+</style>
